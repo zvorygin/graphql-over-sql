@@ -1,0 +1,38 @@
+package graphql.sql.core.config.domain.type;
+
+import com.healthmarketscience.sqlbuilder.QueryPreparer;
+import graphql.Scalars;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+
+public class TimestampTypeUtil extends AbstractTypeUtil {
+
+    public static final TimestampTypeUtil INSTANCE = new TimestampTypeUtil();
+
+    private TimestampTypeUtil() {
+        super(Scalars.GraphQLString);
+    }
+
+    @Override
+    public Timestamp getValue(ResultSet rs, int position) throws SQLException {
+        return rs.getTimestamp(position);
+    }
+
+    @Override
+    public QueryPreparer.StaticPlaceHolder createStaticPlaceHolder(Object value, QueryPreparer queryPreparer) {
+        return queryPreparer.addStaticPlaceHolder(new QueryPreparer.StaticPlaceHolder(queryPreparer) {
+            @Override
+            public void setValue(PreparedStatement ps) throws SQLException {
+                ps.setTimestamp(getIndex(), (Timestamp) value);
+            }
+
+            @Override
+            public String displayToString() {
+                return "'" + value + "'";
+            }
+        });
+    }
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+       http://www.springframework.org/schema/jdbc
+       http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd">
+
+    <jdbc:embedded-database type="HSQL" id="dataSource">
+        <jdbc:script location="classpath:data/00_create.sql"/>
+        <jdbc:script location="classpath:data/01_office.sql"/>
+        <jdbc:script location="classpath:data/02_person.sql"/>
+        <jdbc:script location="classpath:data/03_employee.sql"/>
+        <jdbc:script location="classpath:data/04_customer.sql"/>
+        <jdbc:script location="classpath:data/05_product.sql"/>
+        <jdbc:script location="classpath:data/06_order.sql"/>
+        <jdbc:script location="classpath:data/07_order_detail.sql"/>
+        <jdbc:script location="classpath:data/08_payment.sql"/>
+    </jdbc:embedded-database>
+
+    <bean id="databaseIntrospector" class="graphql.sql.core.introspect.JDBCIntrospector">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+
+    <bean id="nameProvider" class="graphql.sql.core.config.impl.UnderscoreToCamelcaseNameProvider">
+        <constructor-arg>
+            <bean class="graphql.sql.core.config.impl.IdentityAbbreviationResolver"/>
+        </constructor-arg>
+    </bean>
+
+    <bean id="configProvider" class="graphql.sql.core.config.groovy.GroovyConfigProvider">
+        <constructor-arg index="0" value="classpath:integration-test-graphql-config.graphqlsql"/>
+        <constructor-arg index="1" ref="nameProvider"/>
+        <constructor-arg index="2" ref="databaseIntrospector"/>
+    </bean>
+</beans>

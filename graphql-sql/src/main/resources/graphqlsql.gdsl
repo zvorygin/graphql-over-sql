@@ -1,0 +1,16 @@
+def scriptContext = context(filetypes: ["graphqlsql"], scope: scriptScope())
+
+contributor(scriptContext) {
+    method name: "schema", type: "void", params: ["schemaName": String.name]
+    method name: "entity", type: "Entity", params: [args: [
+            parameter(name: "name", type: String.name),
+            parameter(name: "table", type: String.name),
+            parameter(name: "schema", type: String.name),
+            parameter(name: "parent", type: "Entity")
+    ]]
+    method name: "query", type: "graphql.sql.config.domain.Query", params: [args: [
+            parameter(name: "name", type: String.name),
+            parameter(name: "entity", type: "Entity"),
+            parameter(name: "fields", type: "java.util.Collection<EntityField>")
+    ]]
+}
