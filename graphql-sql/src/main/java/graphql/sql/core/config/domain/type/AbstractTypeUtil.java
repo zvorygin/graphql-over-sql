@@ -3,7 +3,7 @@ package graphql.sql.core.config.domain.type;
 import graphql.language.Node;
 import graphql.schema.GraphQLInputType;
 
-public abstract class AbstractTypeUtil implements TypeUtil {
+public abstract class AbstractTypeUtil<T> implements TypeUtil<T> {
 
     private final GraphQLInputType graphQLScalarType;
 
@@ -16,12 +16,7 @@ public abstract class AbstractTypeUtil implements TypeUtil {
         return graphQLScalarType;
     }
 
-    @Override
-    public String getArrayTypeName() {
-        return "DZVORYGIN.VARCHAR_TABLE";
-    }
-
-    public Object getValue(Node value) {
+    public T getValue(Node value) {
         throw new IllegalStateException("Not implemented yet");
     }
 }

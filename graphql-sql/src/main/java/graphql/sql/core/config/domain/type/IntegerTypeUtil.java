@@ -8,7 +8,7 @@ import graphql.language.Node;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class IntegerTypeUtil extends AbstractTypeUtil {
+public class IntegerTypeUtil extends AbstractTypeUtil<Integer> {
 
     public static final IntegerTypeUtil INSTANCE = new IntegerTypeUtil();
 
@@ -29,7 +29,7 @@ public class IntegerTypeUtil extends AbstractTypeUtil {
     }
 
     @Override
-    public QueryPreparer.StaticPlaceHolder createStaticPlaceHolder(Object value, QueryPreparer queryPreparer) {
-        return queryPreparer.addStaticPlaceHolder((Integer) value);
+    public QueryPreparer.StaticPlaceHolder createStaticPlaceHolder(Integer value, QueryPreparer queryPreparer) {
+        return queryPreparer.addStaticPlaceHolder(value);
     }
 }

@@ -9,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DoubleTypeUtil extends AbstractTypeUtil {
+public class DoubleTypeUtil extends AbstractTypeUtil<Double> {
 
     public static final DoubleTypeUtil INSTANCE = new DoubleTypeUtil();
 
@@ -29,11 +29,11 @@ public class DoubleTypeUtil extends AbstractTypeUtil {
     }
 
     @Override
-    public QueryPreparer.StaticPlaceHolder createStaticPlaceHolder(Object value, QueryPreparer queryPreparer) {
+    public QueryPreparer.StaticPlaceHolder createStaticPlaceHolder(Double value, QueryPreparer queryPreparer) {
         return queryPreparer.addStaticPlaceHolder(new QueryPreparer.StaticPlaceHolder(queryPreparer) {
             @Override
             public void setValue(PreparedStatement ps) throws SQLException {
-                ps.setDouble(getIndex(), (Double) value);
+                ps.setDouble(getIndex(), value);
             }
 
             @Override

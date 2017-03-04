@@ -14,8 +14,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 public class QueryNode<T extends SqlQueryNode> {
 
     private final QueryRoot graph;
@@ -28,7 +26,7 @@ public class QueryNode<T extends SqlQueryNode> {
 
     private final RejoinTable table;
 
-    private Collection<EntityField> fieldsToQuery = new LinkedHashSet<>();
+    private HashMap<EntityField, Integer> fieldsToQuery = new LinkedHashMap<>();
 
     private Map<String, QueryNode<SqlQueryNode>> references = new LinkedHashMap<>();
 
@@ -42,6 +40,47 @@ public class QueryNode<T extends SqlQueryNode> {
         this.hierarchyMaster = hierarchyMaster == null ? this : hierarchyMaster;
         this.graph = graph == null ? (QueryRoot) this : graph;
         this.table = table;
+    }
+
+    public QueryNode fetchEntityAtHierarchy(Entity entity) {
+
+        QueryNode masterNode = getHierarchyMaster();
+
+        Entity masterEntity = masterNode.getEntity();
+
+        if (entity.isParentOf(masterEntity)) {
+            QueryNode currentNode = masterNode;
+
+            while (!currentNode.getEntity().equals(entity)) {
+                currentNode = currentNode.fetchParent();
+            }
+
+            return currentNode;
+
+        } else if (masterEntity.isParentOf(entity)) {
+            List<Entity> path = new ArrayList<>();
+            Iterator<Entity> hierarchyIterator = entity.hierarchyIterator();
+            while (hierarchyIterator.hasNext()) {
+                Entity next = hierarchyIterator.next();
+                if (next.equals(masterEntity)) {
+                    break;
+                }
+                path.add(next);
+            }
+
+            ListIterator<Entity> reverseIterator = path.listIterator(path.size());
+            QueryNode currentNode = masterNode;
+            while (reverseIterator.hasPrevious()) {
+                currentNode = currentNode.fetchChild(reverseIterator.previous());
+            }
+            return currentNode;
+        }
+
+        throw new IllegalStateException(
+                String.format("There's no entity [%s] in hierarchy of node [%s] with master [%s]",
+                        entity.getEntityName(),
+                        getEntity().getEntityName(),
+                        masterNode.getEntity().getEntityName()));
     }
 
     @Nonnull
@@ -104,11 +143,9 @@ public class QueryNode<T extends SqlQueryNode> {
                 });
     }
 
-    public void fetchField(EntityField entityField) {
-        if (!fieldsToQuery.contains(entityField)) {
-            fieldsToQuery.add(entityField);
-            graph.getSqlQueryNode().addColumn(table.findColumn(entityField.getColumn()));
-        }
+    public int fetchField(EntityField entityField) {
+        return fieldsToQuery.computeIfAbsent(entityField,
+                (field) -> graph.getSqlQueryNode().addColumn(table.findColumn(entityField.getColumn())));
     }
 
     public Entity getEntity() {
@@ -117,22 +154,6 @@ public class QueryNode<T extends SqlQueryNode> {
 
     public QueryNode getHierarchyMaster() {
         return hierarchyMaster;
-    }
-
-    public Collection<EntityField> getFieldsToQuery() {
-        return fieldsToQuery;
-    }
-
-    public QueryNode getParent() {
-        return parent;
-    }
-
-    public Map<Entity, QueryNode<? extends SqlQueryNode>> getChildren() {
-        return children;
-    }
-
-    public Map<String, QueryNode<SqlQueryNode>> getReferences() {
-        return references;
     }
 
     public T getSqlQueryNode() {

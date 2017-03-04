@@ -2,22 +2,18 @@ package graphql.sql.core.config.domain.type;
 
 import com.healthmarketscience.sqlbuilder.QueryPreparer;
 import graphql.language.Node;
-import graphql.language.Value;
 import graphql.schema.GraphQLInputType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
-public interface TypeUtil {
+public interface TypeUtil<T> {
 
     GraphQLInputType getGraphQLScalarType();
 
-    String getArrayTypeName();
+    T getValue(Node child);
 
-    Object getValue(Node child);
+    T getValue(ResultSet rs, int position) throws SQLException;
 
-    Object getValue(ResultSet rs, int position) throws SQLException;
-
-    QueryPreparer.StaticPlaceHolder createStaticPlaceHolder(Object value, QueryPreparer queryPreparer);
+    QueryPreparer.StaticPlaceHolder createStaticPlaceHolder(T value, QueryPreparer queryPreparer);
 }

@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-public class TimestampTypeUtil extends AbstractTypeUtil {
+public class TimestampTypeUtil extends AbstractTypeUtil<Timestamp> {
 
     public static final TimestampTypeUtil INSTANCE = new TimestampTypeUtil();
 
@@ -22,11 +22,11 @@ public class TimestampTypeUtil extends AbstractTypeUtil {
     }
 
     @Override
-    public QueryPreparer.StaticPlaceHolder createStaticPlaceHolder(Object value, QueryPreparer queryPreparer) {
+    public QueryPreparer.StaticPlaceHolder createStaticPlaceHolder(Timestamp value, QueryPreparer queryPreparer) {
         return queryPreparer.addStaticPlaceHolder(new QueryPreparer.StaticPlaceHolder(queryPreparer) {
             @Override
             public void setValue(PreparedStatement ps) throws SQLException {
-                ps.setTimestamp(getIndex(), (Timestamp) value);
+                ps.setTimestamp(getIndex(), value);
             }
 
             @Override

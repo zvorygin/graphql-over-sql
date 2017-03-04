@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.sql.DataSource;
 
 public class JDBCIntrospector implements DatabaseIntrospector {
@@ -105,6 +106,12 @@ public class JDBCIntrospector implements DatabaseIntrospector {
                             forward.getFromColumns().toArray(new DbColumn[forward.getFromColumns().size()]));
                     return dbSpec.addJoin(dbJoin);
                 });
+    }
+
+    @Nullable
+    @Override
+    public DbConstraint getPrimaryKeyConstraint(DbTable table) {
+        return tableToPrimaryKeyConstraint.get(table);
     }
 
     private Collection<DbForeignKeyConstraint> buildForeignKeyConstraints(DbTable table) {

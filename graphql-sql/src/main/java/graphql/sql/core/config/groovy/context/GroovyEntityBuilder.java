@@ -1,20 +1,15 @@
 package graphql.sql.core.config.groovy.context;
 
-import graphql.sql.core.config.NameProvider;
-import graphql.sql.core.config.domain.Entity;
-import graphql.sql.core.config.domain.EntityField;
-import graphql.sql.core.config.domain.EntityReference;
-import graphql.sql.core.config.domain.ScalarType;
-import graphql.sql.core.config.domain.ReferenceType;
-import graphql.sql.core.introspect.DatabaseIntrospector;
-
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbForeignKeyConstraint;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
+import graphql.sql.core.config.NameProvider;
+import graphql.sql.core.config.domain.*;
+import graphql.sql.core.introspect.DatabaseIntrospector;
 
+import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
 
 public class GroovyEntityBuilder {
 
@@ -106,6 +101,6 @@ public class GroovyEntityBuilder {
                     introspector.getReverseJoin(constraint), parent, ReferenceType.MANY_TO_ONE);
         }
 
-        return new Entity(entityName, table, entityFields, parentReference);
+        return new Entity(entityName, table, entityFields, parentReference, introspector.getPrimaryKeyConstraint(table));
     }
 }

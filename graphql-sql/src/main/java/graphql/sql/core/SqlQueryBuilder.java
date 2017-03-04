@@ -1,4 +1,4 @@
-package graphql.sql.core.sqlquery;
+package graphql.sql.core;
 
 import com.healthmarketscience.sqlbuilder.*;
 import com.healthmarketscience.sqlbuilder.dbspec.RejoinTable;
@@ -7,6 +7,7 @@ import graphql.language.*;
 import graphql.sql.core.config.GraphQLTypesProvider;
 import graphql.sql.core.config.domain.*;
 import graphql.sql.core.config.domain.type.TypeUtil;
+import graphql.sql.core.extractor.NodeExtractor;
 import graphql.sql.core.querygraph.QueryRoot;
 import graphql.sql.core.querygraph.QueryGraphBuilder;
 import graphql.sql.core.querygraph.QueryNode;
@@ -96,5 +97,9 @@ public class SqlQueryBuilder {
             return referencedValue.toArray(new Object[referencedValue.size()]);
         }
         throw new IllegalStateException(String.format("Argument [%s] value is not collection", argument.getName()));
+    }
+
+    public NodeExtractor getExtractor() {
+        return graphBuilder.getExtractor();
     }
 }

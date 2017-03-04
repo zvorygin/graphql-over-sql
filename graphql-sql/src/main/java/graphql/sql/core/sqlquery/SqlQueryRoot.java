@@ -13,8 +13,9 @@ public class SqlQueryRoot extends SqlQueryNode {
         super(master);
     }
 
-    public boolean addColumn(RejoinTable.RejoinColumn column) {
-        return columnList.add(column);
+    public int addColumn(RejoinTable.RejoinColumn column) {
+        columnList.add(column);
+        return columnList.size();
     }
 
     public SelectQuery buildSelectQuery() {

@@ -1,15 +1,13 @@
 package graphql.sql.core.config.domain;
 
 import com.google.common.collect.Iterators;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbConstraint;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.*;
 
 public class Entity implements Comparable<Entity> {
 
@@ -28,14 +26,19 @@ public class Entity implements Comparable<Entity> {
     @Nullable
     private final EntityReference parentReference;
 
+    @Nullable
+    private final DbConstraint primaryKeyConstraint;
+
     public Entity(@Nonnull String entityName,
                   @Nonnull DbTable table,
                   @Nonnull List<EntityField> entityFields,
-                  @Nullable EntityReference parentReference) {
+                  @Nullable EntityReference parentReference,
+                  @Nullable DbConstraint primaryKeyConstraint) {
         this.entityName = entityName;
         this.table = table;
         this.entityFields.addAll(entityFields);
         this.parentReference = parentReference;
+        this.primaryKeyConstraint = primaryKeyConstraint;
     }
 
     @Nonnull
@@ -55,6 +58,11 @@ public class Entity implements Comparable<Entity> {
 
     public EntityReference getParentReference() {
         return parentReference;
+    }
+
+    @Nullable
+    public DbConstraint getPrimaryKeyConstraint() {
+        return primaryKeyConstraint;
     }
 
     @Override
@@ -100,15 +108,6 @@ public class Entity implements Comparable<Entity> {
         return entityName;
     }
 
-    public EntityField getField(String name) {
-        // TODO (dzvorygin) use cache here
-        Optional<EntityField> field = findField(name);
-        if (!field.isPresent()) {
-            throw new IllegalStateException(String.format("Field [%s] not found on entity [%s]", name, entityName));
-        }
-        return field.get();
-    }
-
     public Optional<EntityField> findField(String name) {
         return entityFields.stream().filter(f -> f.getFieldName().equals(name)).findAny();
     }
@@ -118,7 +117,7 @@ public class Entity implements Comparable<Entity> {
     }
 
     public void addReference(EntityReference reference) {
-        this.entityReferences.add(reference);
+        entityReferences.add(reference);
     }
 
     @Nonnull
@@ -130,6 +129,7 @@ public class Entity implements Comparable<Entity> {
         return entityReferences.stream().filter(reference -> reference.getName().equals(fieldName)).findAny();
     }
 
+    @SuppressWarnings("unused") // Used from groovy script
     public EntityField getAt(String name) {
         return findField(name).orElseThrow(() -> new NoSuchElementException(String.format("Entity [%s] doesn't have field [%s]", this, name)));
     }
@@ -137,5 +137,15 @@ public class Entity implements Comparable<Entity> {
     @Override
     public int compareTo(Entity o) {
         return entityName.compareTo(o.entityName);
+    }
+
+    public EntityField findField(DbColumn column) {
+        // TODO(dzvorygin) use hashmap here
+        for (EntityField entityField : entityFields) {
+            if (entityField.getColumn().equals(column))
+                return entityField;
+        }
+
+        throw new NoSuchElementException(String.format("Column [%s] not found in entity [%s]", column.getName(), getEntityName()));
     }
 }

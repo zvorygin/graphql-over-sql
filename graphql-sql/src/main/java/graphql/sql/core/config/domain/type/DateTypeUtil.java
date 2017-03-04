@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DateTypeUtil extends AbstractTypeUtil {
+public class DateTypeUtil extends AbstractTypeUtil<Date> {
 
     public static final DateTypeUtil INSTANCE = new DateTypeUtil();
 
@@ -22,11 +22,11 @@ public class DateTypeUtil extends AbstractTypeUtil {
     }
 
     @Override
-    public QueryPreparer.StaticPlaceHolder createStaticPlaceHolder(Object value, QueryPreparer queryPreparer) {
+    public QueryPreparer.StaticPlaceHolder createStaticPlaceHolder(Date value, QueryPreparer queryPreparer) {
         return queryPreparer.addStaticPlaceHolder(new QueryPreparer.StaticPlaceHolder(queryPreparer) {
             @Override
             public void setValue(PreparedStatement ps) throws SQLException {
-                ps.setDate(getIndex(), (Date) value);
+                ps.setDate(getIndex(), value);
             }
 
             @Override

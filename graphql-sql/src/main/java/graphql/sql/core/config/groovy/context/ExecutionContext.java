@@ -53,7 +53,7 @@ public class ExecutionContext {
     }
 
     public void setSchemaName(String schema) {
-        this.schemaName = schema;
+        schemaName = schema;
     }
 
     public String getCatalogName() {

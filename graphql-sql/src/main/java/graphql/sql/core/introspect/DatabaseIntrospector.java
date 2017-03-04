@@ -1,13 +1,11 @@
 package graphql.sql.core.introspect;
 
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbForeignKeyConstraint;
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbJoin;
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbSpec;
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.*;
 
 import java.util.Collection;
 import java.util.Optional;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public interface DatabaseIntrospector {
 
@@ -25,4 +23,7 @@ public interface DatabaseIntrospector {
 
     @Nonnull
     DbJoin getReverseJoin(DbForeignKeyConstraint constraint);
+
+    @Nullable
+    DbConstraint getPrimaryKeyConstraint(DbTable table);
 }
