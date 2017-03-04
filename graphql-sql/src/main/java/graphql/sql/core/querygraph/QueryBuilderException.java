@@ -1,4 +1,4 @@
-package graphql.sql.core.query;
+package graphql.sql.core.querygraph;
 
 public class QueryBuilderException extends RuntimeException {
 

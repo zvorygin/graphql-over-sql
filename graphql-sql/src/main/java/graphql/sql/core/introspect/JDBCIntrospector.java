@@ -94,18 +94,15 @@ public class JDBCIntrospector implements DatabaseIntrospector {
     @Nonnull
     @Override
     public DbJoin getReverseJoin(DbForeignKeyConstraint constraint) {
+
         return reverseForeignKeyConstraintToDbJoin.computeIfAbsent(constraint,
                 dbForeignKeyConstraint -> {
-                    List<DbColumn> columns = constraint.getColumns();
-                    List<DbColumn> referencedColumns = constraint.getReferencedColumns();
-                    // Dirty hack since there's no way to get table from constraint.
-                    DbTable table = columns.get(0).getTable();
-                    DbTable referencedTable = constraint.getReferencedTable();
-                    DbJoin dbJoin = new DbJoin(dbSpec,
-                            referencedTable,
-                            table,
-                            referencedColumns.toArray(new DbColumn[referencedColumns.size()]),
-                            columns.toArray(new DbColumn[columns.size()]));
+                    DbJoin forward = getJoin(constraint);
+                    DbJoin dbJoin = new DbJoin(forward.getSpec(),
+                            forward.getToTable(),
+                            forward.getFromTable(),
+                            forward.getToColumns().toArray(new DbColumn[forward.getToColumns().size()]),
+                            forward.getFromColumns().toArray(new DbColumn[forward.getFromColumns().size()]));
                     return dbSpec.addJoin(dbJoin);
                 });
     }

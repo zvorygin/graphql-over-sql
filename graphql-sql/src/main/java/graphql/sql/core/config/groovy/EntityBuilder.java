@@ -51,7 +51,7 @@ public class EntityBuilder {
         DatabaseIntrospector introspector = executionContext.getIntrospector();
         NameProvider nameProvider = executionContext.getNameProvider();
         executionContext.findEntity(constraint.getReferencedTable()).ifPresent(referencedEntity -> {
-                    Optional<EntityReference> parentReference = entity.getParentReference();
+            Optional<EntityReference> parentReference = Optional.ofNullable(entity.getParentReference());
 
                     // Don't register parent/child references in field references
                     DbJoin join = introspector.getJoin(constraint);

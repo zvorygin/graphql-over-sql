@@ -5,10 +5,10 @@ import graphql.execution.ExecutionContext;
 import graphql.execution.SimpleExecutionStrategy;
 import graphql.language.Field;
 import graphql.schema.GraphQLObjectType;
-import graphql.sql.core.SqlQueryBuilder;
 import graphql.sql.core.config.GraphQLTypesProvider;
 import graphql.sql.core.config.domain.Config;
-import graphql.sql.core.query.QueryGraphBuilder;
+import graphql.sql.core.querygraph.QueryGraphBuilder;
+import graphql.sql.core.sqlquery.SqlQueryBuilder;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

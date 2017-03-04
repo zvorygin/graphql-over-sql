@@ -13,14 +13,14 @@ public class EntityField {
     private final DbColumn column;
 
     @Nonnull
-    private final EntityType entityType;
+    private final ScalarType scalarType;
 
     public EntityField(@Nonnull String fieldName,
                        @Nonnull DbColumn column,
-                       @Nonnull EntityType entityType) {
+                       @Nonnull ScalarType scalarType) {
         this.fieldName = fieldName;
         this.column = column;
-        this.entityType = entityType;
+        this.scalarType = scalarType;
     }
 
     @Nonnull
@@ -33,8 +33,8 @@ public class EntityField {
         return column;
     }
 
-    public EntityType getEntityType() {
-        return entityType;
+    public ScalarType getScalarType() {
+        return scalarType;
     }
 
     @Override

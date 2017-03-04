@@ -16,20 +16,20 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-public enum EntityType {
+public enum ScalarType {
     STRING(StringTypeUtil.INSTANCE, "VARCHAR", "CLOB"),
     INTEGER(IntegerTypeUtil.INSTANCE, "INTEGER", "SMALLINT"),
     DOUBLE(DoubleTypeUtil.INSTANCE, "DOUBLE"),
     DATE(DateTypeUtil.INSTANCE),
     TIMESTAMP(TimestampTypeUtil.INSTANCE, "TIMESTAMP");
 
-    private static final Map<String, EntityType> SQL_TYPE_NAME_TO_ENTITY_TYPE = new HashMap<>();
+    private static final Map<String, ScalarType> SQL_TYPE_NAME_TO_ENTITY_TYPE = new HashMap<>();
     private static final Set<String> NUMERIC_TYPES = new HashSet<>(Arrays.asList("NUMERIC", "DECIMAL"));
 
     static {
-        for (EntityType entityType : EntityType.values()) {
-            for (String sqlTypesName : entityType.sqlTypesNames) {
-                SQL_TYPE_NAME_TO_ENTITY_TYPE.put(sqlTypesName, entityType);
+        for (ScalarType scalarType : ScalarType.values()) {
+            for (String sqlTypesName : scalarType.sqlTypesNames) {
+                SQL_TYPE_NAME_TO_ENTITY_TYPE.put(sqlTypesName, scalarType);
             }
         }
     }
@@ -37,7 +37,7 @@ public enum EntityType {
     private final TypeUtil typeUtil;
     private final String[] sqlTypesNames;
 
-    EntityType(TypeUtil typeUtil, String... sqlTypesNames) {
+    ScalarType(TypeUtil typeUtil, String... sqlTypesNames) {
         this.typeUtil = typeUtil;
         this.sqlTypesNames = sqlTypesNames;
     }
@@ -46,10 +46,10 @@ public enum EntityType {
         return typeUtil;
     }
 
-    public static EntityType getByColumn(DbColumn column) {
-        EntityType entityType = SQL_TYPE_NAME_TO_ENTITY_TYPE.get(column.getTypeNameSQL());
-        if (entityType != null) {
-            return entityType;
+    public static ScalarType getByColumn(DbColumn column) {
+        ScalarType scalarType = SQL_TYPE_NAME_TO_ENTITY_TYPE.get(column.getTypeNameSQL());
+        if (scalarType != null) {
+            return scalarType;
         }
 
         if (NUMERIC_TYPES.contains(column.getTypeNameSQL())) {
@@ -62,6 +62,6 @@ public enum EntityType {
         }
 
         throw new NoSuchElementException(
-                String.format("Failed to find EntityType for sql type name [%s]", column.getTypeNameSQL()));
+                String.format("Failed to find ScalarType for sql type name [%s]", column.getTypeNameSQL()));
     }
 }

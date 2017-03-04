@@ -53,9 +53,8 @@ public class Entity implements Comparable<Entity> {
         return entityFields;
     }
 
-    @Nonnull
-    public Optional<EntityReference> getParentReference() {
-        return Optional.ofNullable(parentReference);
+    public EntityReference getParentReference() {
+        return parentReference;
     }
 
     @Override
@@ -84,7 +83,8 @@ public class Entity implements Comparable<Entity> {
             @Override
             public Entity next() {
                 Entity result = current;
-                current = current.getParentReference().map(EntityReference::getTargetEntity).orElse(null);
+                EntityReference parentReference = current.getParentReference();
+                current = parentReference == null ? null : parentReference.getTargetEntity();
                 return result;
             }
         };

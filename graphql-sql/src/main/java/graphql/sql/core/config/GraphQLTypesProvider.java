@@ -65,7 +65,7 @@ public class GraphQLTypesProvider {
             return GraphQLArgument.newArgument()
                     .name(nameProvider.getFieldListName(entityField))
                     .type(new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(
-                            entityField.getEntityType().getTypeUtil().getGraphQLScalarType()))))
+                            entityField.getScalarType().getTypeUtil().getGraphQLScalarType()))))
                     .build();
         }
         GraphQLInputObjectType.Builder elementTypeBuilder = GraphQLInputObjectType.newInputObject()
@@ -76,7 +76,7 @@ public class GraphQLTypesProvider {
                 .stream()
                 .map(field -> GraphQLInputObjectField.newInputObjectField()
                         .name(field.getFieldName())
-                        .type(new GraphQLNonNull(field.getEntityType().getTypeUtil().getGraphQLScalarType()))
+                        .type(new GraphQLNonNull(field.getScalarType().getTypeUtil().getGraphQLScalarType()))
                 )
                 .forEach(elementTypeBuilder::field);
         return new GraphQLArgument("query",

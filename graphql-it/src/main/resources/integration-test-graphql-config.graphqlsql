@@ -4,7 +4,6 @@ entity table: "OFFICE"
 
 def person = entity table: "PERSON"
 
-
 def employee = entity table: "EMPLOYEE", parent: person
 
 entity table: "CUSTOMER", parent: person
@@ -18,4 +17,5 @@ entity table: "ORDER_DETAIL"
 entity table: "PAYMENT"
 
 query name: "employeeById", entity: employee, fields: [employee["employeeNumber"]]
+
 query name: "personById", entity: person, fields: [person["personNumber"]]

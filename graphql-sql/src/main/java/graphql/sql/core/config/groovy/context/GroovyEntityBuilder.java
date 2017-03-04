@@ -4,7 +4,7 @@ import graphql.sql.core.config.NameProvider;
 import graphql.sql.core.config.domain.Entity;
 import graphql.sql.core.config.domain.EntityField;
 import graphql.sql.core.config.domain.EntityReference;
-import graphql.sql.core.config.domain.EntityType;
+import graphql.sql.core.config.domain.ScalarType;
 import graphql.sql.core.config.domain.ReferenceType;
 import graphql.sql.core.introspect.DatabaseIntrospector;
 
@@ -75,7 +75,7 @@ public class GroovyEntityBuilder {
                 .map(column -> new EntityField(
                         nameProvider.getFieldName(column.getName()),
                         column,
-                        EntityType.getByColumn(column)))
+                        ScalarType.getByColumn(column)))
                 .collect(Collectors.toList());
 
         EntityReference parentReference = null;

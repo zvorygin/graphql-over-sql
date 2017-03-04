@@ -1,4 +1,4 @@
-package graphql.sql.core.query;
+package graphql.sql.core.querygraph;
 
 import graphql.sql.core.config.GraphQLTypesProvider;
 import graphql.sql.core.config.domain.Config;
@@ -27,12 +27,13 @@ public class QueryGraphBuilder {
     private final GraphQLTypesProvider typesProvider;
 
     public QueryGraphBuilder(Config config, GraphQLTypesProvider typesProvider) {
+
         this.config = config;
         this.typesProvider = typesProvider;
     }
 
-    public QueryGraph build(Entity rootEntity, Field rootField, ExecutionContext executionContext) {
-        QueryGraph graph = new QueryGraph(rootEntity);
+    public QueryRoot build(Entity rootEntity, Field rootField, ExecutionContext executionContext) {
+        QueryRoot graph = new QueryRoot(rootEntity);
 
         processSelectionSet(executionContext, graph, rootField.getSelectionSet());
 
@@ -41,11 +42,11 @@ public class QueryGraphBuilder {
 
     private void processSelectionSet(ExecutionContext executionContext, QueryNode node, SelectionSet selectionSet) {
         for (Selection selection : selectionSet.getSelections()) {
-            processNode(executionContext, node, selection);
+            processSelection(executionContext, node, selection);
         }
     }
 
-    private void processNode(ExecutionContext executionContext, QueryNode node, Selection selection) {
+    private void processSelection(ExecutionContext executionContext, QueryNode node, Selection selection) {
         if (selection instanceof Field) {
             processField(executionContext, node, (Field) selection);
         } else if (selection instanceof InlineFragment) {
@@ -106,9 +107,9 @@ public class QueryGraphBuilder {
         }
     }
 
-    private QueryNode fetchEntityAtHierarchy(QueryNode node, Entity entity) {
+    private static QueryNode fetchEntityAtHierarchy(QueryNode node, Entity entity) {
 
-        QueryNode masterNode = node.findHierarchyMaster();
+        QueryNode masterNode = node.getHierarchyMaster();
 
         Entity masterEntity = masterNode.getEntity();
 
