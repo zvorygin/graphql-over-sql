@@ -20,7 +20,7 @@ public enum ScalarType {
     STRING(StringTypeUtil.INSTANCE, "VARCHAR", "CLOB"),
     INTEGER(IntegerTypeUtil.INSTANCE, "INTEGER", "SMALLINT"),
     DOUBLE(DoubleTypeUtil.INSTANCE, "DOUBLE"),
-    DATE(DateTypeUtil.INSTANCE),
+    DATE(DateTypeUtil.INSTANCE, "DATE"),
     TIMESTAMP(TimestampTypeUtil.INSTANCE, "TIMESTAMP");
 
     private static final Map<String, ScalarType> SQL_TYPE_NAME_TO_ENTITY_TYPE = new HashMap<>();
@@ -34,15 +34,15 @@ public enum ScalarType {
         }
     }
 
-    private final TypeUtil typeUtil;
+    private final TypeUtil<?> typeUtil;
     private final String[] sqlTypesNames;
 
-    ScalarType(TypeUtil typeUtil, String... sqlTypesNames) {
+    ScalarType(TypeUtil<?> typeUtil, String... sqlTypesNames) {
         this.typeUtil = typeUtil;
         this.sqlTypesNames = sqlTypesNames;
     }
 
-    public TypeUtil getTypeUtil() {
+    public TypeUtil<?> getTypeUtil() {
         return typeUtil;
     }
 

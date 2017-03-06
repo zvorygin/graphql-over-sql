@@ -1,4 +1,4 @@
-package graphql.sql.core.querygraph;
+package graphql.sql.core;
 
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbConstraint;
@@ -12,33 +12,31 @@ import graphql.sql.core.config.domain.EntityReference;
 import graphql.sql.core.extractor.FragmentExtractor;
 import graphql.sql.core.extractor.NodeExtractor;
 import graphql.sql.core.extractor.ScalarExtractor;
+import graphql.sql.core.querygraph.QueryBuilderException;
+import graphql.sql.core.querygraph.QueryNode;
+import graphql.sql.core.querygraph.QueryRoot;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
-public class QueryGraphBuilder {
+public class GraphQLQueryExecutorBuilder {
 
     private final Config config;
     private final GraphQLTypesProvider typesProvider;
-    private QueryRoot graph;
-    private NodeExtractor extractor;
 
-    public QueryGraphBuilder(Config config, GraphQLTypesProvider typesProvider) {
+    public GraphQLQueryExecutorBuilder(Config config, GraphQLTypesProvider typesProvider) {
 
         this.config = config;
         this.typesProvider = typesProvider;
     }
 
-    public QueryRoot build(Entity rootEntity, Field rootField, ExecutionContext executionContext) {
-        graph = new QueryRoot(rootEntity);
-        extractor = new NodeExtractor();
+    public GraphQLQueryExecutor build(Entity rootEntity, Field rootField, ExecutionContext executionContext) {
+        QueryRoot graph = new QueryRoot(rootEntity);
+        NodeExtractor extractor = new NodeExtractor();
         addPrimaryKeysToExtractor(graph, extractor);
         processSelectionSet(executionContext, graph, extractor, rootField.getSelectionSet());
 
-        return graph;
-    }
-
-    public NodeExtractor getExtractor() {
-        return extractor;
+        return new GraphQLQueryExecutor(graph, extractor);
     }
 
     private void processSelectionSet(ExecutionContext executionContext, QueryNode node, FragmentExtractor extractor, SelectionSet selectionSet) {
@@ -65,15 +63,15 @@ public class QueryGraphBuilder {
 
     private void processField(ExecutionContext executionContext, QueryNode node, FragmentExtractor extractor, Field field) {
         QueryNode current = node;
-        String fieldName = field.getAlias() == null ? field.getName() : field.getAlias();
+        String alias = field.getAlias() == null ? field.getName() : field.getAlias();
 
-        while (current != null) {
+        while (true) {
             Entity currentEntity = current.getEntity();
-            Optional<EntityField> entityField = currentEntity.findField(fieldName);
+            Optional<EntityField> entityField = currentEntity.findField(field.getName());
             if (entityField.isPresent()) {
                 int position = current.fetchField(entityField.get());
-                extractor.addField(fieldName,
-                        new ScalarExtractor(position, entityField.get().getScalarType().getTypeUtil()));
+                extractor.addField(alias,
+                        new ScalarExtractor<>(position, entityField.get().getScalarType().getTypeUtil()));
                 return;
             }
 
@@ -81,18 +79,22 @@ public class QueryGraphBuilder {
             if (reference.isPresent()) {
                 QueryNode referencedNode = current.fetchReference(reference.get());
                 NodeExtractor referenceExtractor = new NodeExtractor();
-                extractor.addReference(fieldName, referenceExtractor);
+                extractor.addReference(alias, referenceExtractor);
                 addPrimaryKeysToExtractor(referencedNode, referenceExtractor);
 
                 processSelectionSet(executionContext, referencedNode, referenceExtractor, field.getSelectionSet());
                 return;
             }
 
+            if (current.getEntity().getParentReference() == null) {
+                throw new QueryBuilderException(String.format("Failed to find field [%s] in hierarchy of entity [%s]",
+                        field.getName(),
+                        node.getEntity().getEntityName()));
+
+            }
+
             current = current.fetchParent();
         }
-        throw new QueryBuilderException(String.format("Failed to find field [%s] in hierarchy of entity [%s]",
-                field.getName(),
-                node.getEntity().getEntityName()));
     }
 
     private void addPrimaryKeysToExtractor(QueryNode node, NodeExtractor extractor) {
@@ -101,7 +103,7 @@ public class QueryGraphBuilder {
         DbConstraint primaryKeyConstraint = entity.getPrimaryKeyConstraint();
         for (DbColumn column : primaryKeyConstraint.getColumns()) {
             EntityField primaryKeyField = entity.findField(column);
-            ScalarExtractor keyExtractor = new ScalarExtractor(node.fetchField(primaryKeyField),
+            ScalarExtractor keyExtractor = new ScalarExtractor<>(node.fetchField(primaryKeyField),
                     primaryKeyField.getScalarType().getTypeUtil());
             extractor.addKeyExtractor(keyExtractor);
         }
@@ -128,7 +130,7 @@ public class QueryGraphBuilder {
         for (DbColumn column : columns) {
             EntityField referencedEntityPrimaryField = referencedEntity.findField(column);
             int referencedEntityPrimaryColumnPosition = referencedNode.fetchField(referencedEntityPrimaryField);
-            int relativePosition = extractor.addKeyExtractor(new ScalarExtractor(referencedEntityPrimaryColumnPosition,
+            int relativePosition = extractor.addKeyExtractor(new ScalarExtractor<>(referencedEntityPrimaryColumnPosition,
                     referencedEntityPrimaryField.getScalarType().getTypeUtil()));
             primaryKeyIndices[i++] = relativePosition;
         }

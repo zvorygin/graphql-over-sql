@@ -9,7 +9,7 @@ public class QueryRoot extends QueryNode<SqlQueryRoot> {
     private int nodeNumber = 0;
 
     public QueryRoot(Entity root) {
-        this(root, root.getTable().rejoin("t"));
+        this(root, root.getTable().rejoin("t0"));
     }
 
     private QueryRoot(Entity root, RejoinTable t) {

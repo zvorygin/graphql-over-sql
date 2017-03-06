@@ -9,7 +9,7 @@ public class ScalarExtractor<T> {
     private final int position;
     private final TypeUtil<T> typeUtil;
 
-    public ScalarExtractor(int position, TypeUtil typeUtil) {
+    public ScalarExtractor(int position, TypeUtil<T> typeUtil) {
         this.position = position;
         this.typeUtil = typeUtil;
     }

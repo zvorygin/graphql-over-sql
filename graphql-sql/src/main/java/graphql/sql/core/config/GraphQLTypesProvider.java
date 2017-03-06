@@ -1,28 +1,14 @@
 package graphql.sql.core.config;
 
+import graphql.schema.*;
 import graphql.sql.core.config.domain.Config;
 import graphql.sql.core.config.domain.Entity;
 import graphql.sql.core.config.domain.EntityField;
 import graphql.sql.core.config.domain.EntityQuery;
 
 import graphql.Scalars;
-import graphql.schema.GraphQLArgument;
-import graphql.schema.GraphQLFieldDefinition;
-import graphql.schema.GraphQLInputObjectField;
-import graphql.schema.GraphQLInputObjectType;
-import graphql.schema.GraphQLInterfaceType;
-import graphql.schema.GraphQLList;
-import graphql.schema.GraphQLNonNull;
-import graphql.schema.GraphQLObjectType;
-import graphql.schema.StaticDataFetcher;
-import graphql.schema.TypeResolverProxy;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Spliterators;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -38,6 +24,7 @@ public class GraphQLTypesProvider {
     private final Map<Entity, GraphQLInterfaceType> interfaceCache = new HashMap<>();
 
     private final GraphQLObjectType queryType;
+    private final GraphQLSchema schema;
 
     public GraphQLTypesProvider(Config config, NameProvider nameProvider) {
         this.config = config;
@@ -55,7 +42,27 @@ public class GraphQLTypesProvider {
 
             queryTypeBuilder.field(fieldBuilder);
         });
+
         queryType = queryTypeBuilder.build();
+
+
+        Collection<GraphQLInterfaceType> interfaceTypes = this.config.getEntities().values().stream()
+                .map(this::getInterfaceType)
+                .collect(Collectors.toList());
+
+        Collection<GraphQLObjectType> objectTypes = this.config.getEntities().values().stream()
+                .map(this::getObjectType)
+                .collect(Collectors.toList());
+
+        Set<GraphQLType> dictionary = new HashSet<>();
+        dictionary.addAll(interfaceTypes);
+        dictionary.addAll(objectTypes);
+
+        schema = GraphQLSchema.newSchema().query(queryType).build(dictionary);
+    }
+
+    public GraphQLSchema getSchema() {
+        return schema;
     }
 
     private GraphQLArgument getQueryArgument(EntityQuery query) {
@@ -83,23 +90,9 @@ public class GraphQLTypesProvider {
                 new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(elementTypeBuilder.build()))));
     }
 
-    public GraphQLObjectType getQueryObject() {
-        return queryType;
-    }
-
     private String getQueryName(EntityQuery entity) {
         String entityName = entity.getName();
         return Character.toLowerCase(entityName.charAt(0)) + entityName.substring(1);
-    }
-
-    public Collection<GraphQLInterfaceType> getInterfaceTypes() {
-        return config.getEntities().values().stream().map(this::getInterfaceType).collect(Collectors.toList());
-    }
-
-    public Collection<GraphQLObjectType> getObjectTypes() {
-        return config.getEntities().values().stream()
-                .map(this::getObjectType)
-                .collect(Collectors.toList());
     }
 
     private GraphQLObjectType getObjectType(Entity entity) {
@@ -149,7 +142,7 @@ public class GraphQLTypesProvider {
                                 String.format("Reference to [%s] via FK [%s]",
                                         reference.getTargetEntity().getTable(),
                                         reference.getJoin().getName()),
-                                GraphQLObjectType.reference(reference.getTargetEntity().getEntityName()),
+                                GraphQLInterfaceType.reference(getInterfaceName(reference.getTargetEntity())),
                                 new StaticDataFetcher(null),
                                 Collections.emptyList(),
                                 null));

@@ -9,7 +9,6 @@ import graphql.sql.core.config.domain.*;
 import graphql.sql.core.config.domain.type.TypeUtil;
 import graphql.sql.core.extractor.NodeExtractor;
 import graphql.sql.core.querygraph.QueryRoot;
-import graphql.sql.core.querygraph.QueryGraphBuilder;
 import graphql.sql.core.querygraph.QueryNode;
 
 import java.sql.Connection;
@@ -24,20 +23,21 @@ public class SqlQueryBuilder {
 
     private final Config config;
     private final GraphQLTypesProvider typesProvider;
-    private final QueryGraphBuilder graphBuilder;
+    private final GraphQLQueryExecutorBuilder graphBuilder;
+    private GraphQLQueryExecutor queryExecutor;
 
-    public SqlQueryBuilder(Config config, GraphQLTypesProvider typesProvider, QueryGraphBuilder graphBuilder) {
+    public SqlQueryBuilder(Config config, GraphQLTypesProvider typesProvider, GraphQLQueryExecutorBuilder graphBuilder) {
         this.config = config;
         this.typesProvider = typesProvider;
         this.graphBuilder = graphBuilder;
     }
 
     public PreparedStatement createPreparedStatement(Connection conn,
-                                                     Map.Entry<String, List<Field>> queryRoot,
+                                                     Field queryField,
                                                      ExecutionContext executionContext) throws SQLException {
-        EntityQuery entityQuery = config.getQuery(queryRoot.getKey());
-        Field queryField = queryRoot.getValue().get(0);
-        QueryRoot queryGraph = graphBuilder.build(entityQuery.getEntity(), queryField, executionContext);
+        EntityQuery entityQuery = config.getQuery(queryField.getName());
+         queryExecutor = graphBuilder.build(entityQuery.getEntity(), queryField, executionContext);
+        QueryRoot queryGraph = queryExecutor.getQueryGraph();
 
         SelectQuery query = queryGraph.getSqlQueryNode().buildSelectQuery();
 
@@ -100,6 +100,6 @@ public class SqlQueryBuilder {
     }
 
     public NodeExtractor getExtractor() {
-        return graphBuilder.getExtractor();
+        return queryExecutor.getNodeExtractor();
     }
 }

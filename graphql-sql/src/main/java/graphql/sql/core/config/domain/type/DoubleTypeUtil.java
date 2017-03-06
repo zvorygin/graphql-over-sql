@@ -23,6 +23,11 @@ public class DoubleTypeUtil extends AbstractTypeUtil<Double> {
     }
 
     @Override
+    protected String getSqlType() {
+        return "DOUBLE";
+    }
+
+    @Override
     public Double getValue(ResultSet rs, int position) throws SQLException {
         double result = rs.getDouble(position);
         return rs.wasNull() ? null : result;

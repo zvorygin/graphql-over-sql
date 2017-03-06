@@ -23,6 +23,11 @@ public class IntegerTypeUtil extends AbstractTypeUtil<Integer> {
     }
 
     @Override
+    protected String getSqlType() {
+        return "INTEGER";
+    }
+
+    @Override
     public Integer getValue(ResultSet rs, int position) throws SQLException {
         int result = rs.getInt(position);
         return rs.wasNull() ? null : result;

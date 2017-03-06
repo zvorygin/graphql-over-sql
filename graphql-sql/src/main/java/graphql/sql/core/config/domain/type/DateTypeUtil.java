@@ -35,4 +35,9 @@ public class DateTypeUtil extends AbstractTypeUtil<Date> {
             }
         });
     }
+
+    @Override
+    protected String getSqlType() {
+        return "DATE";
+    }
 }

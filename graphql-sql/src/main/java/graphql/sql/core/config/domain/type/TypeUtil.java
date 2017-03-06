@@ -16,4 +16,8 @@ public interface TypeUtil<T> {
     T getValue(ResultSet rs, int position) throws SQLException;
 
     QueryPreparer.StaticPlaceHolder createStaticPlaceHolder(T value, QueryPreparer queryPreparer);
+
+    QueryPreparer.PlaceHolder createArrayPlaceholder(QueryPreparer preparer);
+
+    QueryPreparer.StaticPlaceHolder createStaticArrayPlaceholder(QueryPreparer preparer, Object[] data);
 }

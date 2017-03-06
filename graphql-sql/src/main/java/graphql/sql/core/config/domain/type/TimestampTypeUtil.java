@@ -35,4 +35,9 @@ public class TimestampTypeUtil extends AbstractTypeUtil<Timestamp> {
             }
         });
     }
+
+    @Override
+    protected String getSqlType() {
+        return "TIMESTAMP";
+    }
 }

@@ -22,6 +22,11 @@ public class StringTypeUtil extends AbstractTypeUtil<String> {
     }
 
     @Override
+    protected String getSqlType() {
+        return "VARCHAR";
+    }
+
+    @Override
     public String getValue(ResultSet rs, int position) throws SQLException {
         return rs.getString(position);
     }

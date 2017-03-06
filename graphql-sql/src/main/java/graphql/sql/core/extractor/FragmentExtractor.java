@@ -19,7 +19,7 @@ public class FragmentExtractor {
         this.fragmentTypePrimaryKeyRelativePositions = fragmentTypePrimaryKeyRelativePositions;
     }
 
-    public void addField(String name, ScalarExtractor extractor) {
+    public void addField(String name, ScalarExtractor<?> extractor) {
         fieldExtractors.put(name, extractor);
     }
 
