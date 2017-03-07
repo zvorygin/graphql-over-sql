@@ -23,7 +23,6 @@
         <constructor-arg ref="dataSource"/>
     </bean>
 
-
     <bean id="nameProvider" class="graphql.sql.core.config.impl.UnderscoreToCamelcaseNameProvider">
         <constructor-arg>
             <bean class="graphql.sql.core.config.impl.IdentityAbbreviationResolver"/>
@@ -35,4 +34,39 @@
         <constructor-arg index="1" ref="nameProvider"/>
         <constructor-arg index="2" ref="databaseIntrospector"/>
     </bean>
+
+    <bean id="config" factory-bean="configProvider" factory-method="getConfig"/>
+
+    <bean id="graphQLBuilder" class="graphql.sql.core.GraphQLBuilder">
+        <constructor-arg ref="typesProvider"/>
+    </bean>
+
+    <bean id="graphQLSchema" class="graphql.schema.GraphQLSchema" factory-bean="typesProvider"
+          factory-method="getSchema"/>
+
+    <bean id="documentExecutor" class="graphql.sql.core.DocumentExecutor">
+        <constructor-arg index="0" ref="graphQLSchema"/>
+        <constructor-arg index="1" ref="operationExecutor"/>
+        <constructor-arg index="2" value="10"/>
+    </bean>
+
+    <bean id="operationExecutor" class="graphql.sql.core.OperationExecutor">
+        <constructor-arg index="0" ref="typesProvider"/>
+        <constructor-arg index="1" ref="config"/>
+        <constructor-arg index="2" ref="queryExecutorBuilder"/>
+        <constructor-arg index="3" ref="dataSource"/>
+        <constructor-arg index="4" value="10"/>
+        <constructor-arg index="5" value="10"/>
+    </bean>
+
+    <bean id="typesProvider" class="graphql.sql.core.config.GraphQLTypesProvider">
+        <constructor-arg index="0" ref="config"/>
+        <constructor-arg index="1" ref="nameProvider"/>
+    </bean>
+
+    <bean id="queryExecutorBuilder" class="graphql.sql.core.GraphQLQueryExecutorBuilder">
+        <constructor-arg index="0" ref="config"/>
+        <constructor-arg index="1" ref="typesProvider"/>
+    </bean>
+
 </beans>

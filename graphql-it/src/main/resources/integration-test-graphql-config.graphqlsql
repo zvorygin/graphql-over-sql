@@ -10,7 +10,7 @@ entity table: "CUSTOMER", parent: person
 
 entity table: "PRODUCT"
 
-entity table: "ORDER"
+def order = entity table: "ORDER"
 
 entity table: "ORDER_DETAIL"
 
@@ -19,3 +19,5 @@ entity table: "PAYMENT"
 query name: "employeeById", entity: employee, fields: [employee["employeeNumber"]]
 
 query name: "personById", entity: person, fields: [person["personNumber"]]
+
+query name: "order", entity: order, fields:[order["orderNumber"]]

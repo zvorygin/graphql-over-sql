@@ -25,7 +25,6 @@ public class GraphQLQueryExecutorBuilder {
     private final GraphQLTypesProvider typesProvider;
 
     public GraphQLQueryExecutorBuilder(Config config, GraphQLTypesProvider typesProvider) {
-
         this.config = config;
         this.typesProvider = typesProvider;
     }

@@ -12,6 +12,7 @@
         <constructor-arg ref="configProvider"/>
         <constructor-arg ref="dataSource"/>
         <constructor-arg ref="nameProvider"/>
+        <constructor-arg ref="documentExecutor"/>
     </bean>
 
 </beans>

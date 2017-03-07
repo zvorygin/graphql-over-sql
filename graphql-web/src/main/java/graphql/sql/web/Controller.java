@@ -4,10 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
-import graphql.schema.GraphQLInterfaceType;
-import graphql.schema.GraphQLObjectType;
-import graphql.schema.GraphQLSchema;
-import graphql.schema.GraphQLType;
+import graphql.execution.SimpleExecutionStrategy;
+import graphql.sql.core.DocumentExecutor;
+import graphql.sql.core.FieldExecutionStrategy;
 import graphql.sql.core.SqlExecutionStrategy;
 import graphql.sql.core.config.ConfigProvider;
 import graphql.sql.core.config.GraphQLTypesProvider;
@@ -30,17 +29,17 @@ public class Controller {
     private final Config config;
     private final GraphQLTypesProvider typesProvider;
 
-    private DataSource dataSource;
+    private final DataSource dataSource;
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public Controller(ConfigProvider configProvider, DataSource dataSource, NameProvider nameProvider) {
+    private final DocumentExecutor documentExecutor;
+
+    public Controller(ConfigProvider configProvider, DataSource dataSource, NameProvider nameProvider, DocumentExecutor documentExecutor) {
         this.dataSource = dataSource;
         config = configProvider.getConfig();
         typesProvider = new GraphQLTypesProvider(config, nameProvider);
-
-
-
-        graphql = new GraphQL(typesProvider.getSchema(), new SqlExecutionStrategy(config, typesProvider, dataSource));
+        graphql = new GraphQL(typesProvider.getSchema(), new FieldExecutionStrategy());
+        this.documentExecutor = documentExecutor;
     }
 
     @RequestMapping(value = "/",
@@ -56,15 +55,18 @@ public class Controller {
             operationName = body.get("operationName").asText();
         }
 
-        Map variables;
+        Map<String, Object> variables = null;
         if (body.has("variables")) {
             String variablesStr = mapper.writeValueAsString(body.get("variables"));
             variables = mapper.readValue(variablesStr, Map.class);
-        } else {
+        }
+
+        if (variables == null) {
             variables = Collections.emptyMap();
         }
 
-        ExecutionResult executionResult = graphql.execute(query, operationName, null, variables);
+        ExecutionResult executionResult = documentExecutor.execute(query, operationName, variables);
+
         Map<String, Object> result = new LinkedHashMap<>();
         if (executionResult.getErrors().size() > 0) {
             result.put("errors", executionResult.getErrors());
