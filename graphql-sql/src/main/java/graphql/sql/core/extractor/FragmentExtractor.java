@@ -10,8 +10,9 @@ import java.util.Map;
 public class FragmentExtractor {
     private final NodeExtractor nodeExtractor;
     private int[] fragmentTypePrimaryKeyRelativePositions;
-    private final Map<String, ScalarExtractor> fieldExtractors = new LinkedHashMap<>();
-    private final Map<String, NodeExtractor> referencedExtractors = new LinkedHashMap<>();
+    private final Map<String, ScalarExtractor> scalarFieldExtractors = new LinkedHashMap<>();
+    private final Map<String, NodeExtractor> nestedCollectionsExtractors = new LinkedHashMap<>();
+    private final Map<String, NodeExtractor> compositeFieldExtractors = new LinkedHashMap<>();
     private final List<FragmentExtractor> fragmentExtractors = new ArrayList<>();
 
     public FragmentExtractor(NodeExtractor nodeExtractor, int[] fragmentTypePrimaryKeyRelativePositions) {
@@ -19,12 +20,16 @@ public class FragmentExtractor {
         this.fragmentTypePrimaryKeyRelativePositions = fragmentTypePrimaryKeyRelativePositions;
     }
 
-    public void addField(String name, ScalarExtractor<?> extractor) {
-        fieldExtractors.put(name, extractor);
+    public void addScalarField(String name, ScalarExtractor<?> extractor) {
+        scalarFieldExtractors.put(name, extractor);
     }
 
-    public void addReference(String name, NodeExtractor nodeExtractor) {
-        referencedExtractors.put(name, nodeExtractor);
+    public void addNestedCollection(String name, NodeExtractor nodeExtractor) {
+        nestedCollectionsExtractors.put(name, nodeExtractor);
+    }
+
+    public void addCompositeFieldExtractor(String name, NodeExtractor nodeExtractor) {
+        compositeFieldExtractors.put(name, nodeExtractor);
     }
 
     public void addFragment(FragmentExtractor fragmentExtractor) {
@@ -50,8 +55,11 @@ public class FragmentExtractor {
 
     protected void extractTo(ResultSet rs, ResultNode resultNode, boolean extractFields) throws SQLException {
         if (extractFields) {
-            for (Map.Entry<String, ScalarExtractor> extractorEntry : fieldExtractors.entrySet()) {
+            for (Map.Entry<String, ScalarExtractor> extractorEntry : scalarFieldExtractors.entrySet()) {
                 resultNode.setField(extractorEntry.getKey(), extractorEntry.getValue().getValue(rs));
+            }
+            for (Map.Entry<String, NodeExtractor> extractorEntry : compositeFieldExtractors.entrySet()) {
+                resultNode.setCompositeField(extractorEntry.getKey(), extractorEntry.getValue().extract(rs));
             }
         }
 
@@ -61,7 +69,12 @@ public class FragmentExtractor {
             }
         }
 
-        for (Map.Entry<String, NodeExtractor> extractorEntry : referencedExtractors.entrySet()) {
+        for (Map.Entry<String, NodeExtractor> extractorEntry : compositeFieldExtractors.entrySet()) {
+            ResultNode compositeField = resultNode.getCompositeFields().get(extractorEntry.getKey());
+            extractorEntry.getValue().extractTo(rs, compositeField, false);
+        }
+
+        for (Map.Entry<String, NodeExtractor> extractorEntry : nestedCollectionsExtractors.entrySet()) {
             ArrayKey referenceKey = extractorEntry.getValue().getKey(rs);
             if (referenceKey != null) {
                 Map<ArrayKey, ResultNode> references = resultNode.getReferences(extractorEntry.getKey());

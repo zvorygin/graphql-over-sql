@@ -38,6 +38,12 @@ public class NodeExtractor extends FragmentExtractor {
         }
     }
 
+    public ResultNode extract(ResultSet rs) throws SQLException {
+        ResultNode result = new ResultNode(getKey(rs));
+        extractTo(rs, result, true);
+        return result;
+    }
+
     @Nullable
     public ArrayKey getKey(ResultSet rs) throws SQLException {
         Object[] key = new Object[keyExtractors.size()];

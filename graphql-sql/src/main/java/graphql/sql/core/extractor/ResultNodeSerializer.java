@@ -16,6 +16,10 @@ public class ResultNodeSerializer extends JsonSerializer<ResultNode> {
             jsonGenerator.writeFieldName(entry.getKey());
             jsonGenerator.writeObject(entry.getValue());
         }
+        for (Map.Entry<String, ResultNode> entry : node.getCompositeFields().entrySet()) {
+            jsonGenerator.writeFieldName(entry.getKey());
+            serialize(entry.getValue(), jsonGenerator, serializerProvider);
+        }
         for (Map.Entry<String, Map<ArrayKey, ResultNode>> entry : node.getReferences().entrySet()) {
             jsonGenerator.writeFieldName(entry.getKey());
             jsonGenerator.writeStartArray();

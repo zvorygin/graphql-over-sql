@@ -5,10 +5,7 @@ import com.healthmarketscience.sqlbuilder.dbspec.basic.DbConstraint;
 import graphql.execution.ExecutionContext;
 import graphql.language.*;
 import graphql.sql.core.config.GraphQLTypesProvider;
-import graphql.sql.core.config.domain.Config;
-import graphql.sql.core.config.domain.Entity;
-import graphql.sql.core.config.domain.EntityField;
-import graphql.sql.core.config.domain.EntityReference;
+import graphql.sql.core.config.domain.*;
 import graphql.sql.core.extractor.FragmentExtractor;
 import graphql.sql.core.extractor.NodeExtractor;
 import graphql.sql.core.extractor.ScalarExtractor;
@@ -69,17 +66,22 @@ public class GraphQLQueryExecutorBuilder {
             Optional<EntityField> entityField = currentEntity.findField(field.getName());
             if (entityField.isPresent()) {
                 int position = current.fetchField(entityField.get());
-                extractor.addField(alias,
+                extractor.addScalarField(alias,
                         new ScalarExtractor<>(position, entityField.get().getScalarType().getTypeUtil()));
                 return;
             }
 
             Optional<EntityReference> reference = currentEntity.findReference(field.getName());
             if (reference.isPresent()) {
-                QueryNode referencedNode = current.fetchReference(reference.get());
+                EntityReference entityReference = reference.get();
+                QueryNode referencedNode = current.fetchReference(entityReference);
                 NodeExtractor referenceExtractor = new NodeExtractor();
-                extractor.addReference(alias, referenceExtractor);
                 addPrimaryKeysToExtractor(referencedNode, referenceExtractor);
+                if (entityReference.getReferenceType() == ReferenceType.ONE_TO_MANY) {
+                    extractor.addNestedCollection(alias, referenceExtractor);
+                } else {
+                    extractor.addCompositeFieldExtractor(alias, referenceExtractor);
+                }
 
                 processSelectionSet(executionContext, referencedNode, referenceExtractor, field.getSelectionSet());
                 return;

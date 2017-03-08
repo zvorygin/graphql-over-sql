@@ -11,6 +11,8 @@ public class ResultNode {
 
     private final Map<String, Object> fields = new LinkedHashMap<>();
 
+    private final Map<String, ResultNode> compositeFields = new LinkedHashMap<>();
+
     private final Map<String, Map<ArrayKey, ResultNode>> references = new LinkedHashMap<>();
 
     public ResultNode(ArrayKey key) {
@@ -35,5 +37,13 @@ public class ResultNode {
 
     public Map<String, Map<ArrayKey, ResultNode>> getReferences() {
         return references;
+    }
+
+    public void setCompositeField(String key, ResultNode compositeField) {
+        compositeFields.put(key, compositeField);
+    }
+
+    public Map<String, ResultNode> getCompositeFields() {
+        return compositeFields;
     }
 }
