@@ -1,6 +1,9 @@
 package graphql.sql.core;
 
-import com.google.common.cache.*;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.common.cache.RemovalNotification;
 import graphql.ExecutionResult;
 import graphql.ExecutionResultImpl;
 import graphql.InvalidSyntaxError;
@@ -41,14 +44,12 @@ public class DocumentExecutor {
     public ExecutionResult execute(@Nonnull String documentStr,
                                    @Nullable String operationName,
                                    @Nonnull Map<String, Object> variables) {
-        DocumentContext document = null;
         try {
-            document = documentCache.get(documentStr);
+            return execute(documentCache.get(documentStr), operationName, variables);
         } catch (ExecutionException e) {
             DocumentExecutionException cause = (DocumentExecutionException) e.getCause();
             return new ExecutionResultImpl(cause.getValidationErrors());
         }
-        return execute(document, operationName, variables);
     }
 
     public ExecutionResult execute(@Nonnull DocumentContext document,

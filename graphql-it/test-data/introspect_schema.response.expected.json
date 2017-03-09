@@ -16,18 +16,6 @@
           "interfaces": null,
           "enumValues": [
             {
-              "name": "QUERY",
-              "description": "Indicates the directive is valid on queries.",
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "MUTATION",
-              "description": "Indicates the directive is valid on mutations.",
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "FIELD",
               "description": "Indicates the directive is valid on fields.",
               "isDeprecated": false,
@@ -50,6 +38,18 @@
               "description": "Indicates the directive is valid on inline fragments.",
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "MUTATION",
+              "description": "Indicates the directive is valid on mutations.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "QUERY",
+              "description": "Indicates the directive is valid on queries.",
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "possibleTypes": null
@@ -63,30 +63,6 @@
           "interfaces": null,
           "enumValues": [
             {
-              "name": "SCALAR",
-              "description": "Indicates this type is a scalar.",
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "OBJECT",
-              "description": "Indicates this type is an object. `fields` and `interfaces` are valid fields.",
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "INTERFACE",
-              "description": "Indicates this type is an interface. `fields` and `possibleTypes` are valid fields.",
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "UNION",
-              "description": "Indicates this type is a union. `possibleTypes` is a valid field.",
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "ENUM",
               "description": "Indicates this type is an enum. `enumValues` is a valid field.",
               "isDeprecated": false,
@@ -95,6 +71,12 @@
             {
               "name": "INPUT_OBJECT",
               "description": "Indicates this type is an input object. `inputFields` is a valid field.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "INTERFACE",
+              "description": "Indicates this type is an interface. `fields` and `possibleTypes` are valid fields.",
               "isDeprecated": false,
               "deprecationReason": null
             },
@@ -109,6 +91,24 @@
               "description": "Indicates this type is a non-null. `ofType` is a valid field.",
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "OBJECT",
+              "description": "Indicates this type is an object. `fields` and `interfaces` are valid fields.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "SCALAR",
+              "description": "Indicates this type is a scalar.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "UNION",
+              "description": "Indicates this type is a union. `possibleTypes` is a valid field.",
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "possibleTypes": null
@@ -118,42 +118,6 @@
           "name": "ICustomer",
           "description": "Interface type for table [PUBLIC.CUSTOMER(t3)]",
           "fields": [
-            {
-              "name": "customerNumber",
-              "description": "Field for column [CUSTOMER_NUMBER]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "personNumber",
-              "description": "Field for column [PERSON_NUMBER]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "phone",
-              "description": "Field for column [PHONE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
             {
               "name": "addressLine1",
               "description": "Field for column [ADDRESS_LINE_1]",
@@ -191,44 +155,8 @@
               "deprecationReason": null
             },
             {
-              "name": "state",
-              "description": "Field for column [STATE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "postalCode",
-              "description": "Field for column [POSTAL_CODE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "country",
               "description": "Field for column [COUNTRY]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "salesRepEmployeeNumber",
-              "description": "Field for column [SALES_REP_EMPLOYEE_NUMBER]",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -245,6 +173,30 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "customerNumber",
+              "description": "Field for column [CUSTOMER_NUMBER]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "employee",
+              "description": "Reference to [PUBLIC.EMPLOYEE(t2)] via FK [null]",
+              "args": [],
+              "type": {
+                "kind": "INTERFACE",
+                "name": "IEmployee",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -269,18 +221,6 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "employee",
-              "description": "Reference to [PUBLIC.EMPLOYEE(t2)] via FK [null]",
-              "args": [],
-              "type": {
-                "kind": "INTERFACE",
-                "name": "IEmployee",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -309,6 +249,66 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "personNumber",
+              "description": "Field for column [PERSON_NUMBER]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "phone",
+              "description": "Field for column [PHONE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "postalCode",
+              "description": "Field for column [POSTAL_CODE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "salesRepEmployeeNumber",
+              "description": "Field for column [SALES_REP_EMPLOYEE_NUMBER]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "state",
+              "description": "Field for column [STATE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -328,36 +328,12 @@
           "description": "Interface type for table [PUBLIC.EMPLOYEE(t2)]",
           "fields": [
             {
-              "name": "employeeNumber",
-              "description": "Field for column [EMPLOYEE_NUMBER]",
+              "name": "customers",
+              "description": "Reference to [PUBLIC.CUSTOMER(t3)] via FK [null]",
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "personNumber",
-              "description": "Field for column [PERSON_NUMBER]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "extension",
-              "description": "Field for column [EXTENSION]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "INTERFACE",
+                "name": "ICustomer",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -366,66 +342,6 @@
             {
               "name": "email",
               "description": "Field for column [EMAIL]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "officeCode",
-              "description": "Field for column [OFFICE_CODE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "reportsTo",
-              "description": "Field for column [REPORTS_TO]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "jobTitle",
-              "description": "Field for column [JOB_TITLE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "firstName",
-              "description": "Field for column [FIRST_NAME]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "lastName",
-              "description": "Field for column [LAST_NAME]",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -448,12 +364,72 @@
               "deprecationReason": null
             },
             {
+              "name": "employeeNumber",
+              "description": "Field for column [EMPLOYEE_NUMBER]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "employees",
               "description": "Reference to [PUBLIC.EMPLOYEE(t2)] via FK [null]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
                 "name": "IEmployee",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "extension",
+              "description": "Field for column [EXTENSION]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "firstName",
+              "description": "Field for column [FIRST_NAME]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "jobTitle",
+              "description": "Field for column [JOB_TITLE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "lastName",
+              "description": "Field for column [LAST_NAME]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -472,12 +448,36 @@
               "deprecationReason": null
             },
             {
-              "name": "customers",
-              "description": "Reference to [PUBLIC.CUSTOMER(t3)] via FK [null]",
+              "name": "officeCode",
+              "description": "Field for column [OFFICE_CODE]",
               "args": [],
               "type": {
-                "kind": "INTERFACE",
-                "name": "ICustomer",
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "personNumber",
+              "description": "Field for column [PERSON_NUMBER]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "reportsTo",
+              "description": "Field for column [REPORTS_TO]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -500,42 +500,6 @@
           "name": "IOffice",
           "description": "Interface type for table [PUBLIC.OFFICE(t0)]",
           "fields": [
-            {
-              "name": "officeCode",
-              "description": "Field for column [OFFICE_CODE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "city",
-              "description": "Field for column [CITY]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "phone",
-              "description": "Field for column [PHONE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
             {
               "name": "addressLine1",
               "description": "Field for column [ADDRESS_LINE1]",
@@ -561,8 +525,8 @@
               "deprecationReason": null
             },
             {
-              "name": "state",
-              "description": "Field for column [STATE]",
+              "name": "city",
+              "description": "Field for column [CITY]",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -585,8 +549,56 @@
               "deprecationReason": null
             },
             {
+              "name": "employees",
+              "description": "Reference to [PUBLIC.EMPLOYEE(t2)] via FK [null]",
+              "args": [],
+              "type": {
+                "kind": "INTERFACE",
+                "name": "IEmployee",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "officeCode",
+              "description": "Field for column [OFFICE_CODE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "phone",
+              "description": "Field for column [PHONE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "postalCode",
               "description": "Field for column [POSTAL_CODE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "state",
+              "description": "Field for column [STATE]",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -603,18 +615,6 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "employees",
-              "description": "Reference to [PUBLIC.EMPLOYEE(t2)] via FK [null]",
-              "args": [],
-              "type": {
-                "kind": "INTERFACE",
-                "name": "IEmployee",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -638,8 +638,32 @@
           "description": "Interface type for table [PUBLIC.ORDER(t5)]",
           "fields": [
             {
-              "name": "orderNumber",
-              "description": "Field for column [ORDER_NUMBER]",
+              "name": "comments",
+              "description": "Field for column [COMMENTS]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "customer",
+              "description": "Reference to [PUBLIC.CUSTOMER(t3)] via FK [null]",
+              "args": [],
+              "type": {
+                "kind": "INTERFACE",
+                "name": "ICustomer",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "customerNumber",
+              "description": "Field for column [CUSTOMER_NUMBER]",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -652,6 +676,30 @@
             {
               "name": "orderDate",
               "description": "Field for column [ORDER_DATE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "orderDetails",
+              "description": "Reference to [PUBLIC.ORDER_DETAIL(t6)] via FK [null]",
+              "args": [],
+              "type": {
+                "kind": "INTERFACE",
+                "name": "IOrderDetail",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "orderNumber",
+              "description": "Field for column [ORDER_NUMBER]",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -696,54 +744,6 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
-            },
-            {
-              "name": "comments",
-              "description": "Field for column [COMMENTS]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "customerNumber",
-              "description": "Field for column [CUSTOMER_NUMBER]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "customer",
-              "description": "Reference to [PUBLIC.CUSTOMER(t3)] via FK [null]",
-              "args": [],
-              "type": {
-                "kind": "INTERFACE",
-                "name": "ICustomer",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "orderDetails",
-              "description": "Reference to [PUBLIC.ORDER_DETAIL(t6)] via FK [null]",
-              "args": [],
-              "type": {
-                "kind": "INTERFACE",
-                "name": "IOrderDetail",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -763,12 +763,60 @@
           "description": "Interface type for table [PUBLIC.ORDER_DETAIL(t6)]",
           "fields": [
             {
+              "name": "order",
+              "description": "Reference to [PUBLIC.ORDER(t5)] via FK [null]",
+              "args": [],
+              "type": {
+                "kind": "INTERFACE",
+                "name": "IOrder",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "orderLineNumber",
+              "description": "Field for column [ORDER_LINE_NUMBER]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "orderNumber",
               "description": "Field for column [ORDER_NUMBER]",
               "args": [],
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "priceEach",
+              "description": "Field for column [PRICE_EACH]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "product",
+              "description": "Reference to [PUBLIC.PRODUCT(t4)] via FK [null]",
+              "args": [],
+              "type": {
+                "kind": "INTERFACE",
+                "name": "IProduct",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -797,54 +845,6 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
-            },
-            {
-              "name": "priceEach",
-              "description": "Field for column [PRICE_EACH]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "orderLineNumber",
-              "description": "Field for column [ORDER_LINE_NUMBER]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "order",
-              "description": "Reference to [PUBLIC.ORDER(t5)] via FK [null]",
-              "args": [],
-              "type": {
-                "kind": "INTERFACE",
-                "name": "IOrder",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "product",
-              "description": "Reference to [PUBLIC.PRODUCT(t4)] via FK [null]",
-              "args": [],
-              "type": {
-                "kind": "INTERFACE",
-                "name": "IProduct",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -864,8 +864,8 @@
           "description": "Interface type for table [PUBLIC.PAYMENT(t7)]",
           "fields": [
             {
-              "name": "customerNumber",
-              "description": "Field for column [CUSTOMER_NUMBER]",
+              "name": "amount",
+              "description": "Field for column [AMOUNT]",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -888,36 +888,36 @@
               "deprecationReason": null
             },
             {
-              "name": "paymentDate",
-              "description": "Field for column [PAYMENT_DATE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "amount",
-              "description": "Field for column [AMOUNT]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "customer",
               "description": "Reference to [PUBLIC.CUSTOMER(t3)] via FK [null]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
                 "name": "ICustomer",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "customerNumber",
+              "description": "Field for column [CUSTOMER_NUMBER]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "paymentDate",
+              "description": "Field for column [PAYMENT_DATE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -941,18 +941,6 @@
           "description": "Interface type for table [PUBLIC.PERSON(t1)]",
           "fields": [
             {
-              "name": "personNumber",
-              "description": "Field for column [PERSON_NUMBER]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "firstName",
               "description": "Field for column [FIRST_NAME]",
               "args": [],
@@ -967,6 +955,18 @@
             {
               "name": "lastName",
               "description": "Field for column [LAST_NAME]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "personNumber",
+              "description": "Field for column [PERSON_NUMBER]",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -1004,90 +1004,6 @@
           "description": "Interface type for table [PUBLIC.PRODUCT(t4)]",
           "fields": [
             {
-              "name": "productCode",
-              "description": "Field for column [PRODUCT_CODE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "productName",
-              "description": "Field for column [PRODUCT_NAME]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "productLine",
-              "description": "Field for column [PRODUCT_LINE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "productScale",
-              "description": "Field for column [PRODUCT_SCALE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "productVendor",
-              "description": "Field for column [PRODUCT_VENDOR]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "productDescription",
-              "description": "Field for column [PRODUCT_DESCRIPTION]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "quantityInStock",
-              "description": "Field for column [QUANTITY_IN_STOCK]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "buyPrice",
               "description": "Field for column [BUY_PRICE]",
               "args": [],
@@ -1122,6 +1038,90 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "productCode",
+              "description": "Field for column [PRODUCT_CODE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "productDescription",
+              "description": "Field for column [PRODUCT_DESCRIPTION]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "productLine",
+              "description": "Field for column [PRODUCT_LINE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "productName",
+              "description": "Field for column [PRODUCT_NAME]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "productScale",
+              "description": "Field for column [PRODUCT_SCALE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "productVendor",
+              "description": "Field for column [PRODUCT_VENDOR]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "quantityInStock",
+              "description": "Field for column [QUANTITY_IN_STOCK]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -1140,42 +1140,6 @@
           "name": "Customer",
           "description": "Object type for table [PUBLIC.CUSTOMER(t3)]",
           "fields": [
-            {
-              "name": "customerNumber",
-              "description": "Field for column [CUSTOMER_NUMBER]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "personNumber",
-              "description": "Field for column [PERSON_NUMBER]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "phone",
-              "description": "Field for column [PHONE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
             {
               "name": "addressLine1",
               "description": "Field for column [ADDRESS_LINE_1]",
@@ -1213,44 +1177,8 @@
               "deprecationReason": null
             },
             {
-              "name": "state",
-              "description": "Field for column [STATE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "postalCode",
-              "description": "Field for column [POSTAL_CODE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "country",
               "description": "Field for column [COUNTRY]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "salesRepEmployeeNumber",
-              "description": "Field for column [SALES_REP_EMPLOYEE_NUMBER]",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -1267,6 +1195,30 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "customerNumber",
+              "description": "Field for column [CUSTOMER_NUMBER]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "employee",
+              "description": "Reference to [PUBLIC.EMPLOYEE(t2)] via FK [null]",
+              "args": [],
+              "type": {
+                "kind": "INTERFACE",
+                "name": "IEmployee",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -1291,18 +1243,6 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "employee",
-              "description": "Reference to [PUBLIC.EMPLOYEE(t2)] via FK [null]",
-              "args": [],
-              "type": {
-                "kind": "INTERFACE",
-                "name": "IEmployee",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -1331,6 +1271,66 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "personNumber",
+              "description": "Field for column [PERSON_NUMBER]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "phone",
+              "description": "Field for column [PHONE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "postalCode",
+              "description": "Field for column [POSTAL_CODE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "salesRepEmployeeNumber",
+              "description": "Field for column [SALES_REP_EMPLOYEE_NUMBER]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "state",
+              "description": "Field for column [STATE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -1355,36 +1355,12 @@
           "description": "Object type for table [PUBLIC.EMPLOYEE(t2)]",
           "fields": [
             {
-              "name": "employeeNumber",
-              "description": "Field for column [EMPLOYEE_NUMBER]",
+              "name": "customers",
+              "description": "Reference to [PUBLIC.CUSTOMER(t3)] via FK [null]",
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "personNumber",
-              "description": "Field for column [PERSON_NUMBER]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "extension",
-              "description": "Field for column [EXTENSION]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "INTERFACE",
+                "name": "ICustomer",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -1393,66 +1369,6 @@
             {
               "name": "email",
               "description": "Field for column [EMAIL]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "officeCode",
-              "description": "Field for column [OFFICE_CODE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "reportsTo",
-              "description": "Field for column [REPORTS_TO]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "jobTitle",
-              "description": "Field for column [JOB_TITLE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "firstName",
-              "description": "Field for column [FIRST_NAME]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "lastName",
-              "description": "Field for column [LAST_NAME]",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -1475,12 +1391,72 @@
               "deprecationReason": null
             },
             {
+              "name": "employeeNumber",
+              "description": "Field for column [EMPLOYEE_NUMBER]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "employees",
               "description": "Reference to [PUBLIC.EMPLOYEE(t2)] via FK [null]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
                 "name": "IEmployee",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "extension",
+              "description": "Field for column [EXTENSION]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "firstName",
+              "description": "Field for column [FIRST_NAME]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "jobTitle",
+              "description": "Field for column [JOB_TITLE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "lastName",
+              "description": "Field for column [LAST_NAME]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -1499,12 +1475,36 @@
               "deprecationReason": null
             },
             {
-              "name": "customers",
-              "description": "Reference to [PUBLIC.CUSTOMER(t3)] via FK [null]",
+              "name": "officeCode",
+              "description": "Field for column [OFFICE_CODE]",
               "args": [],
               "type": {
-                "kind": "INTERFACE",
-                "name": "ICustomer",
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "personNumber",
+              "description": "Field for column [PERSON_NUMBER]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "reportsTo",
+              "description": "Field for column [REPORTS_TO]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -1533,42 +1533,6 @@
           "description": "Object type for table [PUBLIC.OFFICE(t0)]",
           "fields": [
             {
-              "name": "officeCode",
-              "description": "Field for column [OFFICE_CODE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "city",
-              "description": "Field for column [CITY]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "phone",
-              "description": "Field for column [PHONE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "addressLine1",
               "description": "Field for column [ADDRESS_LINE1]",
               "args": [],
@@ -1593,8 +1557,8 @@
               "deprecationReason": null
             },
             {
-              "name": "state",
-              "description": "Field for column [STATE]",
+              "name": "city",
+              "description": "Field for column [CITY]",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -1617,8 +1581,56 @@
               "deprecationReason": null
             },
             {
+              "name": "employees",
+              "description": "Reference to [PUBLIC.EMPLOYEE(t2)] via FK [null]",
+              "args": [],
+              "type": {
+                "kind": "INTERFACE",
+                "name": "IEmployee",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "officeCode",
+              "description": "Field for column [OFFICE_CODE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "phone",
+              "description": "Field for column [PHONE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "postalCode",
               "description": "Field for column [POSTAL_CODE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "state",
+              "description": "Field for column [STATE]",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -1635,18 +1647,6 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "employees",
-              "description": "Reference to [PUBLIC.EMPLOYEE(t2)] via FK [null]",
-              "args": [],
-              "type": {
-                "kind": "INTERFACE",
-                "name": "IEmployee",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -1670,8 +1670,32 @@
           "description": "Object type for table [PUBLIC.ORDER(t5)]",
           "fields": [
             {
-              "name": "orderNumber",
-              "description": "Field for column [ORDER_NUMBER]",
+              "name": "comments",
+              "description": "Field for column [COMMENTS]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "customer",
+              "description": "Reference to [PUBLIC.CUSTOMER(t3)] via FK [null]",
+              "args": [],
+              "type": {
+                "kind": "INTERFACE",
+                "name": "ICustomer",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "customerNumber",
+              "description": "Field for column [CUSTOMER_NUMBER]",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -1684,6 +1708,30 @@
             {
               "name": "orderDate",
               "description": "Field for column [ORDER_DATE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "orderDetails",
+              "description": "Reference to [PUBLIC.ORDER_DETAIL(t6)] via FK [null]",
+              "args": [],
+              "type": {
+                "kind": "INTERFACE",
+                "name": "IOrderDetail",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "orderNumber",
+              "description": "Field for column [ORDER_NUMBER]",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -1728,54 +1776,6 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
-            },
-            {
-              "name": "comments",
-              "description": "Field for column [COMMENTS]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "customerNumber",
-              "description": "Field for column [CUSTOMER_NUMBER]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "customer",
-              "description": "Reference to [PUBLIC.CUSTOMER(t3)] via FK [null]",
-              "args": [],
-              "type": {
-                "kind": "INTERFACE",
-                "name": "ICustomer",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "orderDetails",
-              "description": "Reference to [PUBLIC.ORDER_DETAIL(t6)] via FK [null]",
-              "args": [],
-              "type": {
-                "kind": "INTERFACE",
-                "name": "IOrderDetail",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -1795,12 +1795,60 @@
           "description": "Object type for table [PUBLIC.ORDER_DETAIL(t6)]",
           "fields": [
             {
+              "name": "order",
+              "description": "Reference to [PUBLIC.ORDER(t5)] via FK [null]",
+              "args": [],
+              "type": {
+                "kind": "INTERFACE",
+                "name": "IOrder",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "orderLineNumber",
+              "description": "Field for column [ORDER_LINE_NUMBER]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "orderNumber",
               "description": "Field for column [ORDER_NUMBER]",
               "args": [],
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "priceEach",
+              "description": "Field for column [PRICE_EACH]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "product",
+              "description": "Reference to [PUBLIC.PRODUCT(t4)] via FK [null]",
+              "args": [],
+              "type": {
+                "kind": "INTERFACE",
+                "name": "IProduct",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -1829,54 +1877,6 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
-            },
-            {
-              "name": "priceEach",
-              "description": "Field for column [PRICE_EACH]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "orderLineNumber",
-              "description": "Field for column [ORDER_LINE_NUMBER]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "order",
-              "description": "Reference to [PUBLIC.ORDER(t5)] via FK [null]",
-              "args": [],
-              "type": {
-                "kind": "INTERFACE",
-                "name": "IOrder",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "product",
-              "description": "Reference to [PUBLIC.PRODUCT(t4)] via FK [null]",
-              "args": [],
-              "type": {
-                "kind": "INTERFACE",
-                "name": "IProduct",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -1896,8 +1896,8 @@
           "description": "Object type for table [PUBLIC.PAYMENT(t7)]",
           "fields": [
             {
-              "name": "customerNumber",
-              "description": "Field for column [CUSTOMER_NUMBER]",
+              "name": "amount",
+              "description": "Field for column [AMOUNT]",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -1920,36 +1920,36 @@
               "deprecationReason": null
             },
             {
-              "name": "paymentDate",
-              "description": "Field for column [PAYMENT_DATE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "amount",
-              "description": "Field for column [AMOUNT]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "customer",
               "description": "Reference to [PUBLIC.CUSTOMER(t3)] via FK [null]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
                 "name": "ICustomer",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "customerNumber",
+              "description": "Field for column [CUSTOMER_NUMBER]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "paymentDate",
+              "description": "Field for column [PAYMENT_DATE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -1973,18 +1973,6 @@
           "description": "Object type for table [PUBLIC.PERSON(t1)]",
           "fields": [
             {
-              "name": "personNumber",
-              "description": "Field for column [PERSON_NUMBER]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "firstName",
               "description": "Field for column [FIRST_NAME]",
               "args": [],
@@ -1999,6 +1987,18 @@
             {
               "name": "lastName",
               "description": "Field for column [LAST_NAME]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "personNumber",
+              "description": "Field for column [PERSON_NUMBER]",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -2025,90 +2025,6 @@
           "name": "Product",
           "description": "Object type for table [PUBLIC.PRODUCT(t4)]",
           "fields": [
-            {
-              "name": "productCode",
-              "description": "Field for column [PRODUCT_CODE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "productName",
-              "description": "Field for column [PRODUCT_NAME]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "productLine",
-              "description": "Field for column [PRODUCT_LINE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "productScale",
-              "description": "Field for column [PRODUCT_SCALE]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "productVendor",
-              "description": "Field for column [PRODUCT_VENDOR]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "productDescription",
-              "description": "Field for column [PRODUCT_DESCRIPTION]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "quantityInStock",
-              "description": "Field for column [QUANTITY_IN_STOCK]",
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
             {
               "name": "buyPrice",
               "description": "Field for column [BUY_PRICE]",
@@ -2144,6 +2060,90 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "productCode",
+              "description": "Field for column [PRODUCT_CODE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "productDescription",
+              "description": "Field for column [PRODUCT_DESCRIPTION]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "productLine",
+              "description": "Field for column [PRODUCT_LINE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "productName",
+              "description": "Field for column [PRODUCT_NAME]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "productScale",
+              "description": "Field for column [PRODUCT_SCALE]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "productVendor",
+              "description": "Field for column [PRODUCT_VENDOR]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "quantityInStock",
+              "description": "Field for column [QUANTITY_IN_STOCK]",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -2163,13 +2163,25 @@
           "description": null,
           "fields": [
             {
-              "name": "name",
+              "name": "args",
               "description": null,
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "OBJECT",
+                      "name": "__InputValue",
+                      "ofType": null
+                    }
+                  }
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -2207,31 +2219,19 @@
               "deprecationReason": null
             },
             {
-              "name": "args",
+              "name": "name",
               "description": null,
               "args": [],
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "OBJECT",
-                      "name": "__InputValue",
-                      "ofType": null
-                    }
-                  }
-                }
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "onOperation",
+              "name": "onField",
               "description": null,
               "args": [],
               "type": {
@@ -2255,7 +2255,7 @@
               "deprecationReason": "Use `locations`."
             },
             {
-              "name": "onField",
+              "name": "onOperation",
               "description": null,
               "args": [],
               "type": {
@@ -2278,17 +2278,13 @@
           "description": null,
           "fields": [
             {
-              "name": "name",
+              "name": "deprecationReason",
               "description": null,
               "args": [],
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -2322,13 +2318,17 @@
               "deprecationReason": null
             },
             {
-              "name": "deprecationReason",
+              "name": "name",
               "description": null,
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -2344,34 +2344,6 @@
           "name": "__Field",
           "description": null,
           "fields": [
-            {
-              "name": "name",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "description",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
             {
               "name": "args",
               "description": null,
@@ -2397,17 +2369,25 @@
               "deprecationReason": null
             },
             {
-              "name": "type",
+              "name": "deprecationReason",
               "description": null,
               "args": [],
               "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "__Type",
-                  "ofType": null
-                }
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "description",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -2429,29 +2409,6 @@
               "deprecationReason": null
             },
             {
-              "name": "deprecationReason",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [],
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "OBJECT",
-          "name": "__InputValue",
-          "description": null,
-          "fields": [
-            {
               "name": "name",
               "description": null,
               "args": [],
@@ -2463,18 +2420,6 @@
                   "name": "String",
                   "ofType": null
                 }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "description",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -2494,7 +2439,18 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
-            },
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "__InputValue",
+          "description": null,
+          "fields": [
             {
               "name": "defaultValue",
               "description": null,
@@ -2503,6 +2459,50 @@
                 "kind": "SCALAR",
                 "name": "String",
                 "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "description",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "name",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "type",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "__Type",
+                  "ofType": null
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -2518,58 +2518,6 @@
           "name": "__Schema",
           "description": "A GraphQL Introspection defines the capabilities of a GraphQL server. It exposes all available types and directives on the server, the entry points for query, mutation, and subscription operations.",
           "fields": [
-            {
-              "name": "types",
-              "description": "A list of all types supported by this server.",
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "OBJECT",
-                      "name": "__Type",
-                      "ofType": null
-                    }
-                  }
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "queryType",
-              "description": "The type that query operations will be rooted at.",
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "__Type",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "mutationType",
-              "description": "If this server supports mutation, the type that mutation operations will be rooted at.",
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
-                "name": "__Type",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
             {
               "name": "directives",
               "description": "'A list of all directives supported by this server.",
@@ -2595,6 +2543,34 @@
               "deprecationReason": null
             },
             {
+              "name": "mutationType",
+              "description": "If this server supports mutation, the type that mutation operations will be rooted at.",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "__Type",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "queryType",
+              "description": "The type that query operations will be rooted at.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "__Type",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "subscriptionType",
               "description": "'If this server support subscription, the type that subscription operations will be rooted at.",
               "args": [],
@@ -2602,6 +2578,30 @@
                 "kind": "OBJECT",
                 "name": "__Type",
                 "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "types",
+              "description": "A list of all types supported by this server.",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "OBJECT",
+                      "name": "__Type",
+                      "ofType": null
+                    }
+                  }
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -2618,34 +2618,6 @@
           "description": null,
           "fields": [
             {
-              "name": "kind",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "ENUM",
-                  "name": "__TypeKind",
-                  "ofType": null
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "name",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "description",
               "description": null,
               "args": [],
@@ -2653,77 +2625,6 @@
                 "kind": "SCALAR",
                 "name": "String",
                 "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "fields",
-              "description": null,
-              "args": [
-                {
-                  "name": "includeDeprecated",
-                  "description": null,
-                  "type": {
-                    "kind": "SCALAR",
-                    "name": "Boolean",
-                    "ofType": null
-                  },
-                  "defaultValue": "false"
-                }
-              ],
-              "type": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "__Field",
-                    "ofType": null
-                  }
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "interfaces",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "__Type",
-                    "ofType": null
-                  }
-                }
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "possibleTypes",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "__Type",
-                    "ofType": null
-                  }
-                }
               },
               "isDeprecated": false,
               "deprecationReason": null
@@ -2760,6 +2661,37 @@
               "deprecationReason": null
             },
             {
+              "name": "fields",
+              "description": null,
+              "args": [
+                {
+                  "name": "includeDeprecated",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  },
+                  "defaultValue": "false"
+                }
+              ],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "__Field",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "inputFields",
               "description": null,
               "args": [],
@@ -2780,6 +2712,54 @@
               "deprecationReason": null
             },
             {
+              "name": "interfaces",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "__Type",
+                    "ofType": null
+                  }
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "kind",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "__TypeKind",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "name",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "ofType",
               "description": null,
               "args": [],
@@ -2787,6 +2767,26 @@
                 "kind": "OBJECT",
                 "name": "__Type",
                 "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "possibleTypes",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "__Type",
+                    "ofType": null
+                  }
+                }
               },
               "isDeprecated": false,
               "deprecationReason": null

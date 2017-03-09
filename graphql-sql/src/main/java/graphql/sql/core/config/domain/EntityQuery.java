@@ -39,7 +39,7 @@ public class EntityQuery implements Comparable<EntityQuery> {
     }
 
     @Override
-    public int compareTo(EntityQuery o) {
+    public int compareTo(@Nonnull EntityQuery o) {
         return name.compareTo(o.getName());
     }
 

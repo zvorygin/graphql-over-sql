@@ -9,9 +9,6 @@
     <mvc:annotation-driven/>
 
     <bean class="graphql.sql.web.Controller">
-        <constructor-arg ref="configProvider"/>
-        <constructor-arg ref="dataSource"/>
-        <constructor-arg ref="nameProvider"/>
         <constructor-arg ref="documentExecutor"/>
     </bean>
 

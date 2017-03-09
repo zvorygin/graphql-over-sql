@@ -28,7 +28,6 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
@@ -95,9 +94,9 @@ public class SchemaTests {
 
     @Parameterized.Parameters(name = "{0}")
     public static Collection<Object> generateParameters() throws IOException {
-        return Files.list(TEST_DATA)
-                .map(Path::toFile)
-                .map(File::getName)
+        return Files.walk(TEST_DATA)
+                .map(TEST_DATA::relativize)
+                .map(Path::toString)
                 .filter(name -> name.endsWith(".request.json"))
                 .map(name -> name.substring(0, name.length() - ".request.json".length()))
                 .collect(Collectors.toList());
@@ -122,6 +121,7 @@ public class SchemaTests {
         if (node instanceof ArrayNode) {
             ArrayNode arrayNode = (ArrayNode) node;
             ArrayList<JsonNode> children = Lists.newArrayList(arrayNode.iterator());
+            children.iterator().forEachRemaining(this::sortArrays);
             children.sort(JSON_COMPARATOR);
             for (int i = 0; i < children.size(); i++) {
                 arrayNode.set(i, children.get(i));

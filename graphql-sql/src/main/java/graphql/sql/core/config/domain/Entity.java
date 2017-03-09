@@ -56,6 +56,7 @@ public class Entity implements Comparable<Entity> {
         return entityFields;
     }
 
+    @Nullable
     public EntityReference getParentReference() {
         return parentReference;
     }
@@ -135,7 +136,7 @@ public class Entity implements Comparable<Entity> {
     }
 
     @Override
-    public int compareTo(Entity o) {
+    public int compareTo(@Nonnull Entity o) {
         return entityName.compareTo(o.entityName);
     }
 

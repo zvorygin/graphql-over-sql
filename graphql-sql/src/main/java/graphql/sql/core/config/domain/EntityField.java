@@ -33,6 +33,7 @@ public class EntityField {
         return column;
     }
 
+    @Nonnull
     public ScalarType getScalarType() {
         return scalarType;
     }

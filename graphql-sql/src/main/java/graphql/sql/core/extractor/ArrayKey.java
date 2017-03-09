@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 public class ArrayKey {
     private final Object[] value;
-    private int hashCode;
+    private final int hashCode;
 
     @Nullable
     public static ArrayKey createArrayKey(Object[] value) {
