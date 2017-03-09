@@ -1,0 +1,5 @@
+query employees($employeeIds:[Int!]!) {
+    employeeById(employeeNumbers: $employeeIds) {
+        email
+    }
+}

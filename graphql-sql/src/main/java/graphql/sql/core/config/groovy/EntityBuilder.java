@@ -39,10 +39,10 @@ public class EntityBuilder {
         DatabaseIntrospector introspector = executionContext.getIntrospector();
         Entity entity = delegate.build(introspector, executionContext.getNameProvider());
 
+        executionContext.registerEntity(entity);
+
         introspector.getForeignKeyConstraints(entity.getTable())
                 .forEach(constraint -> processForeignKeyConstraint(entity, constraint));
-
-        executionContext.registerEntity(entity);
 
         return entity;
     }

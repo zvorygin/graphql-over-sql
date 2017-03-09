@@ -1,0 +1,15 @@
+{
+  "data": {
+    "employeeById": [
+      {
+        "email": "bhoward@classicmodelcars.com"
+      },
+      {
+        "email": "dmurphy@classicmodelcars.com"
+      },
+      {
+        "email": "ljennings@classicmodelcars.com"
+      }
+    ]
+  }
+}

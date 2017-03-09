@@ -75,7 +75,6 @@ public class SqlFieldExecutor implements FieldExecutor {
     @Nonnull
     public Object execute(Connection conn, Map<String, Object> variables) throws SQLException {
         Map<ArrayKey, ResultNode> response = new LinkedHashMap<>();
-        System.out.println(getQuery());
         try (PreparedStatement ps = conn.prepareStatement(getQuery());
              ResultSet rs = setParametersAndExecute(ps, variables)) {
             NodeExtractor extractor = getNodeExtractor();

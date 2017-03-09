@@ -2,6 +2,7 @@ package graphql.sql.core;
 
 import com.google.common.cache.*;
 import graphql.ExecutionResult;
+import graphql.ExecutionResultImpl;
 import graphql.InvalidSyntaxError;
 import graphql.execution.FieldCollector;
 import graphql.language.Document;
@@ -19,6 +20,7 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class DocumentExecutor {
     private final Parser parser = new Parser();
@@ -39,7 +41,13 @@ public class DocumentExecutor {
     public ExecutionResult execute(@Nonnull String documentStr,
                                    @Nullable String operationName,
                                    @Nonnull Map<String, Object> variables) {
-        DocumentContext document = documentCache.getUnchecked(documentStr);
+        DocumentContext document = null;
+        try {
+            document = documentCache.get(documentStr);
+        } catch (ExecutionException e) {
+            DocumentExecutionException cause = (DocumentExecutionException) e.getCause();
+            return new ExecutionResultImpl(cause.getValidationErrors());
+        }
         return execute(document, operationName, variables);
     }
 

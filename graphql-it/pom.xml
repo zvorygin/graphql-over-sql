@@ -14,10 +14,9 @@
     <name>GraphQL Integration Test</name>
     <dependencies>
         <dependency>
-            <groupId>com.oracle.jdbc</groupId>
-            <artifactId>ojdbc7</artifactId>
-            <version>12.1.0.2</version>
-            <scope>provided</scope>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+            <version>9.4.2.v20170220</version>
         </dependency>
         <dependency>
             <groupId>com.graphql-over-sql</groupId>
