@@ -13,11 +13,6 @@
  *
  *******************************************************************************/
 
-/* Recommended DATABASE name is classicmodels. */
-
-/* CREATE DATABASE classicmodels; */
-/* USE classicmodels; */
-
 /* DROP the existing tables. Comment this out if it is not needed. */
 
 DROP TABLE PAYMENT

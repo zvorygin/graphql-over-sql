@@ -1,10 +1,12 @@
+import graphql.sql.core.config.domain.Entity
+
 schema "PUBLIC"
 
 entity table: "OFFICE"
 
-def person = entity table: "PERSON"
+Entity person = entity table: "PERSON"
 
-def employee = entity table: "EMPLOYEE", parent: person
+Entity employee = entity table: "EMPLOYEE", parent: person
 
 entity table: "CUSTOMER", parent: person
 

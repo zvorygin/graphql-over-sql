@@ -114,7 +114,7 @@ public class SchemaTests {
         JsonNode response = entity.getBody();
         JsonNode expected = OBJECT_MAPPER.readTree(expectedResponsePath.toFile());
         sortArrays(response);
-        compareJsons(expected, response);
+        compareNodes(expected, response);
     }
 
     private void sortArrays(JsonNode node) {
@@ -131,7 +131,7 @@ public class SchemaTests {
         }
     }
 
-    private static void compareJsons(JsonNode expected, JsonNode response) throws JsonProcessingException {
+    private static void compareNodes(JsonNode expected, JsonNode response) throws JsonProcessingException {
         Assert.assertEquals(WRITER.writeValueAsString(expected), WRITER.writeValueAsString(response));
     }
 

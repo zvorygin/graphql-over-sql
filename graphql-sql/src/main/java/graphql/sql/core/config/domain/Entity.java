@@ -141,7 +141,7 @@ public class Entity implements Comparable<Entity> {
     }
 
     public EntityField findField(DbColumn column) {
-        // TODO(dzvorygin) use hashmap here
+        // TODO(dzvorygin) use HashMap here
         for (EntityField entityField : entityFields) {
             if (entityField.getColumn().equals(column))
                 return entityField;

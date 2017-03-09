@@ -43,7 +43,7 @@ public abstract class AbstractTypeUtil<T> implements TypeUtil<T> {
 
         public DelegatingStaticPlaceHolder(QueryPreparer outer, HsqldbArrayPlaceholder arrayPlaceholder, Object[] data) {
             super(outer);
-            this.arrayPlaceHolder = arrayPlaceholder;
+            arrayPlaceHolder = arrayPlaceholder;
             this.data = data;
 
         }
