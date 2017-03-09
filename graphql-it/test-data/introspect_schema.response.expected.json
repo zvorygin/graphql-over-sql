@@ -983,17 +983,17 @@
           "possibleTypes": [
             {
               "kind": "OBJECT",
+              "name": "Customer",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
               "name": "Employee",
               "ofType": null
             },
             {
               "kind": "OBJECT",
               "name": "Person",
-              "ofType": null
-            },
-            {
-              "kind": "OBJECT",
-              "name": "Customer",
               "ofType": null
             }
           ]
