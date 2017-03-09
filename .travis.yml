@@ -6,4 +6,4 @@ install:
 script:
   - mvn test jacoco:report
 after_success:
-  - mvn --non-recursive jacoco-merge coveralls:report
+  - mvn --non-recursive jacoco:merge coveralls:report
