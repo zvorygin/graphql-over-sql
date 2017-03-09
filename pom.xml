@@ -21,7 +21,10 @@
         <spring.version>4.3.5.RELEASE</spring.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <argLine></argLine>
+        <jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
     </properties>
+
+
     <build>
         <pluginManagement>
             <plugins>
@@ -33,21 +36,44 @@
                         <target>1.8</target>
                     </configuration>
                 </plugin>
-                <!--plugin>
+                <plugin>
                     <groupId>org.eluder.coveralls</groupId>
                     <artifactId>coveralls-maven-plugin</artifactId>
                     <version>4.3.0</version>
-                </plugin-->
+                    <configuration>
+                        <jacocoReports>
+                            <jacocoReport>${project.build.directory}/jacoco-merged/merged.exec</jacocoReport>
+                        </jacocoReports>
+                    </configuration>
+                </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.7.9</version>
+                    <version>${jacoco-maven-plugin.version}</version>
                     <executions>
                         <execution>
                             <id>prepare-agent</id>
                             <goals>
                                 <goal>prepare-agent</goal>
                             </goals>
+                        </execution>
+                        <execution>
+                            <inherited>false</inherited>
+                            <id>default-cli</id>
+                            <goals>
+                                <goal>merge</goal>
+                            </goals>
+                            <configuration>
+                                <fileSets>
+                                    <fileSet>
+                                        <directory>${project.basedir}</directory>
+                                        <includes>
+                                            <include>**/jacoco.exec</include>
+                                        </includes>
+                                    </fileSet>
+                                </fileSets>
+                                <destFile>${project.build.directory}/jacoco-merged/merged.exec</destFile>
+                            </configuration>
                         </execution>
                     </executions>
                 </plugin>
@@ -61,6 +87,8 @@
             </plugins>
         </pluginManagement>
     </build>
+
+
 
     <dependencyManagement>
         <dependencies>
