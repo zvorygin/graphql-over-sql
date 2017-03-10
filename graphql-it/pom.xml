@@ -13,11 +13,19 @@
 
     <name>GraphQL Integration Test</name>
 
+    <properties>
+        <sonar.jacoco.itReportPath>${project.basedir}/../target/jacoco/${jacoco.out.it.file}</sonar.jacoco.itReportPath>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
+                <configuration>
+                    <destFile>${project.basedir}/../target/jacoco-it.exec</destFile>
+                    <append>true</append>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
