@@ -39,7 +39,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 @RunWith(Parameterized.class)
-public class GenericTest {
+public class GenericIT {
 
     private static final Path TEST_DATA = Paths.get("test-data");
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -53,7 +53,7 @@ public class GenericTest {
     private final Path requestPath;
     private final Path expectedResponsePath;
 
-    public GenericTest(String testName) {
+    public GenericIT(String testName) {
         documentPath = TEST_DATA.resolve(testName + ".document.graphql");
         requestPath = TEST_DATA.resolve(testName + ".request.json");
         expectedResponsePath = TEST_DATA.resolve(testName + ".response.expected.json");
