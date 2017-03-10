@@ -11,16 +11,8 @@
     <artifactId>graphql-it</artifactId>
     <packaging>war</packaging>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
     <name>GraphQL Integration Test</name>
+
     <dependencies>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
