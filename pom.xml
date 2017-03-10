@@ -20,8 +20,6 @@
     <properties>
         <spring.version>4.3.5.RELEASE</spring.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <argLine></argLine>
-        <jacoco-maven-plugin.version>0.7.9</jacoco-maven-plugin.version>
     </properties>
 
 
@@ -49,7 +47,7 @@
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${jacoco-maven-plugin.version}</version>
+                    <version>0.7.9</version>
                     <executions>
                         <execution>
                             <id>prepare-agent</id>
@@ -57,8 +55,8 @@
                                 <goal>prepare-agent</goal>
                             </goals>
                         </execution>
+
                         <execution>
-                            <inherited>false</inherited>
                             <id>default-cli</id>
                             <goals>
                                 <goal>merge</goal>
@@ -87,8 +85,6 @@
             </plugins>
         </pluginManagement>
     </build>
-
-
 
     <dependencyManagement>
         <dependencies>
