@@ -97,8 +97,8 @@ public class GenericTest {
         return Files.walk(TEST_DATA)
                 .map(TEST_DATA::relativize)
                 .map(Path::toString)
-                .filter(name -> name.endsWith(".request.json"))
-                .map(name -> name.substring(0, name.length() - ".request.json".length()))
+                .filter(name -> name.endsWith(".document.graphql"))
+                .map(name -> name.substring(0, name.length() - ".document.graphql".length()))
                 .collect(Collectors.toList());
     }
 

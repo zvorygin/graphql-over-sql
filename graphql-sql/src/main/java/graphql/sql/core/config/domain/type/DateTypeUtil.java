@@ -2,6 +2,7 @@ package graphql.sql.core.config.domain.type;
 
 import com.healthmarketscience.sqlbuilder.QueryPreparer;
 import graphql.Scalars;
+import graphql.language.Value;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -34,6 +35,11 @@ public class DateTypeUtil extends AbstractTypeUtil<Date> {
                 return "'" + value + "'";
             }
         });
+    }
+
+    @Override
+    protected Date getRawValue(Value value) {
+        throw new IllegalStateException("Not implemented yet");
     }
 
     @Override

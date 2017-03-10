@@ -1,0 +1,10 @@
+{
+  "data": {
+    "personById": [
+      {
+        "lastName": "Bow",
+        "firstName": "Anthony"
+      }
+    ]
+  }
+}

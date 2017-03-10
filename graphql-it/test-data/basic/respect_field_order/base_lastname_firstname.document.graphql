@@ -1,0 +1,6 @@
+{
+    personById(personNumbers: [10]) {
+        lastName
+        firstName
+    }
+}

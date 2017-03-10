@@ -4,6 +4,7 @@ import com.healthmarketscience.sqlbuilder.QueryPreparer;
 import graphql.Scalars;
 import graphql.language.Node;
 import graphql.language.StringValue;
+import graphql.language.Value;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,6 +19,11 @@ public class StringTypeUtil extends AbstractTypeUtil<String> {
 
     @Override
     public String getValue(Node value) {
+        return ((StringValue)value).getValue();
+    }
+
+    @Override
+    protected String getRawValue(Value value) {
         return ((StringValue)value).getValue();
     }
 

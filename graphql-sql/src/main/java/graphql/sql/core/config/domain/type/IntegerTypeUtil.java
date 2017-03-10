@@ -4,6 +4,7 @@ import com.healthmarketscience.sqlbuilder.QueryPreparer;
 import graphql.Scalars;
 import graphql.language.IntValue;
 import graphql.language.Node;
+import graphql.language.Value;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +20,12 @@ public class IntegerTypeUtil extends AbstractTypeUtil<Integer> {
     @Override
     public Integer getValue(Node value) {
         //TODO(dzvorygin) check range
-        return ((IntValue)value).getValue().intValue();
+        return ((IntValue) value).getValue().intValue();
+    }
+
+    @Override
+    protected Integer getRawValue(Value value) {
+        return ((IntValue) value).getValue().intValue();
     }
 
     @Override

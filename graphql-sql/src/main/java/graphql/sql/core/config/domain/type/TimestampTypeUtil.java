@@ -2,6 +2,7 @@ package graphql.sql.core.config.domain.type;
 
 import com.healthmarketscience.sqlbuilder.QueryPreparer;
 import graphql.Scalars;
+import graphql.language.Value;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,6 +35,11 @@ public class TimestampTypeUtil extends AbstractTypeUtil<Timestamp> {
                 return "'" + value + "'";
             }
         });
+    }
+
+    @Override
+    protected Timestamp getRawValue(Value value) {
+        throw new IllegalStateException("Not implemented yet.");
     }
 
     @Override

@@ -2,6 +2,7 @@ package graphql.sql.core.config.domain.type;
 
 import com.healthmarketscience.sqlbuilder.QueryPreparer;
 import graphql.language.Node;
+import graphql.language.Value;
 import graphql.schema.GraphQLInputType;
 
 import java.sql.ResultSet;
@@ -19,5 +20,5 @@ public interface TypeUtil<T> {
 
     QueryPreparer.PlaceHolder createArrayPlaceholder(QueryPreparer preparer);
 
-    QueryPreparer.StaticPlaceHolder createStaticArrayPlaceholder(QueryPreparer preparer, Object[] data);
+    QueryPreparer.StaticPlaceHolder createStaticArrayPlaceholder(QueryPreparer preparer, Value data);
 }

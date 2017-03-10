@@ -24,6 +24,8 @@ import graphql.sql.core.config.domain.ScalarType;
 import graphql.sql.core.config.domain.type.TypeUtil;
 import graphql.sql.core.querygraph.QueryNode;
 import graphql.sql.core.querygraph.QueryRoot;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.sql.DataSource;
@@ -36,6 +38,7 @@ import static graphql.introspection.Introspection.SchemaMetaFieldDef;
 import static graphql.introspection.Introspection.TypeMetaFieldDef;
 
 public class OperationExecutor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(OperationExecutor.class);
     private final GraphQLTypesProvider typesProvider;
     private final Config config;
     private final GraphQLQueryExecutorBuilder graphQLQueryExecutorBuilder;
@@ -75,6 +78,7 @@ public class OperationExecutor {
             queryFields = documentOperationCache.get(operationKey,
                     () -> buildOperationContext(documentContext, operationDefinition, variables));
         } catch (ExecutionException e) {
+            LOGGER.error("Failed to build query fields executors", e);
             return new ExecutionResultImpl(Collections.singletonList(new ExceptionWhileDataFetching(e.getCause())));
         }
 
@@ -89,6 +93,7 @@ public class OperationExecutor {
             }
             return new ExecutionResultImpl(result, Collections.emptyList());
         } catch (SQLException e) {
+            LOGGER.error("Failed to execute operation", e);
             return new ExecutionResultImpl(Collections.singletonList(new ExceptionWhileDataFetching(e)));
         }
     }
@@ -192,7 +197,7 @@ public class OperationExecutor {
             placeHolder = typeUtil.createArrayPlaceholder(queryPreparer);
             placeholders.put(((VariableReference) argumentValue).getName(), placeHolder);
         } else {
-            QueryPreparer.StaticPlaceHolder staticArrayPlaceholder = typeUtil.createStaticArrayPlaceholder(queryPreparer, new Object[]{});
+            QueryPreparer.StaticPlaceHolder staticArrayPlaceholder = typeUtil.createStaticArrayPlaceholder(queryPreparer, argumentValue);
             staticPlaceHolders.add(staticArrayPlaceholder);
             placeHolder = staticArrayPlaceholder;
         }

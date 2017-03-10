@@ -4,6 +4,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalNotification;
+import graphql.ExceptionWhileDataFetching;
 import graphql.ExecutionResult;
 import graphql.ExecutionResultImpl;
 import graphql.InvalidSyntaxError;
@@ -17,6 +18,8 @@ import graphql.validation.ValidationError;
 import graphql.validation.Validator;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -26,6 +29,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class DocumentExecutor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DocumentExecutor.class);
     private final Parser parser = new Parser();
     private final FieldCollector collector = new FieldCollector();
     private final GraphQLSchema graphQLSchema;
@@ -44,11 +48,20 @@ public class DocumentExecutor {
     public ExecutionResult execute(@Nonnull String documentStr,
                                    @Nullable String operationName,
                                    @Nonnull Map<String, Object> variables) {
+        DocumentContext document;
         try {
-            return execute(documentCache.get(documentStr), operationName, variables);
+            document = documentCache.get(documentStr);
         } catch (ExecutionException e) {
+            LOGGER.error(String.format("Failed to compile document for operation [%s]", operationName), e);
             DocumentExecutionException cause = (DocumentExecutionException) e.getCause();
             return new ExecutionResultImpl(cause.getValidationErrors());
+        }
+
+        try {
+            return execute(document, operationName, variables);
+        } catch (Exception e) {
+            LOGGER.error(String.format("Failed to execute operation [%s]", operationName), e);
+            return new ExecutionResultImpl(Collections.singletonList(new ExceptionWhileDataFetching(e)));
         }
     }
 
@@ -56,7 +69,6 @@ public class DocumentExecutor {
                                    @Nullable String operationName,
                                    @Nonnull Map<String, Object> variables) {
         OperationDefinition operation = document.getOperation(operationName);
-
         return operationExecutor.execute(document, operation, variables);
     }
 

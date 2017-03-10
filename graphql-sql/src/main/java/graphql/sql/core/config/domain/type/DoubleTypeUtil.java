@@ -3,7 +3,9 @@ package graphql.sql.core.config.domain.type;
 import com.healthmarketscience.sqlbuilder.QueryPreparer;
 import graphql.Scalars;
 import graphql.language.FloatValue;
+import graphql.language.IntValue;
 import graphql.language.Node;
+import graphql.language.Value;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,6 +21,14 @@ public class DoubleTypeUtil extends AbstractTypeUtil<Double> {
 
     @Override
     public Double getValue(Node value) {
+        return ((FloatValue) value).getValue().doubleValue();
+    }
+
+    @Override
+    protected Double getRawValue(Value value) {
+        if (value instanceof IntValue) {
+            return ((IntValue) value).getValue().doubleValue();
+        }
         return ((FloatValue) value).getValue().doubleValue();
     }
 
