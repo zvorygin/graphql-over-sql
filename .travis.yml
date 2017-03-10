@@ -7,7 +7,7 @@ addons:
     token:
       secure: "tyPUkWC14Z5arHre5+I2z8Ox6qHS7UKdtu+SLVMff8YmjghEhbvXHccdpIavg9wvJ4RKH6eCzIWm93WjiIIoLSfOOP0gx6dpuDQ8TioT/SjrkeUyYpvpqWGqIDKjKAaBNJYLJCU2mdBd4N4f02rdODEACG+5bcKaLhso6/1VXPwdmvwGnFfbEwsjJwrlu7EK+c1pDN/j1GxGgIG/xzVDFT6AgjghB7xoPkkLzq4ofzLhu0wW9ydiwHSl71sYuU5eyaxYTtxnhxLKhukO/TXul+nxvY9t+f0b6W/HYgnhSQmLEPe4aQTebJInX++PimDXRj72FeW3hLesQTlUxGS9q2GFLtZ4+TvBw9ADYJvqFulY5eWis/CLRDgpFYRR0dSR2ttsDRg09kkwxFrLec8i8tDkc7TCpj7tlt2cL9HKu9aflIpsCBTKI2vRmtzofZgQOHTOApD4F/LQEhpcrlwGEy0bmqXefSReG0UrU2Jzyjz4ihK5u5sDxfdPlgXBpuVgVVOryyZTK40IFqQJ4cMhjPH6BeQlIUXOuU+FQROblXku1ucEw9A0M/q8/pVBXBielc9WJX8eg8I/djmV2pf2ywpG3S1+A9n1YaoR1V0DFPjQ6XrY5KbRAtoT8OPx7SbPGyY0fztFcoJUIFb2k97+MwMmrYS5Z444PwlTzcQaWWo="
 jdk: oraclejdk8
-script: mvn clean verify
+script: mvn clean verify install
 after_success: mvn sonar:sonar
 cache:
   directories:
