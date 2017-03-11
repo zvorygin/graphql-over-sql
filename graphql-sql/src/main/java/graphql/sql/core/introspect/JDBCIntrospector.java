@@ -154,7 +154,7 @@ public class JDBCIntrospector implements DatabaseIntrospector {
             }
         } catch (SQLException e) {
             throw new IntrospectionException(
-                    String.format("Failed to list foreign key constraints of [%s]", table.getName()));
+                    String.format("Failed to list foreign key constraints of [%s]", table.getName()), e);
         }
 
         return result;
