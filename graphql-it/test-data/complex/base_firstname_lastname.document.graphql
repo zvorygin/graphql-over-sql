@@ -1,0 +1,26 @@
+{
+    personById(personNumbers: [10, 11, 12, 13, 14]) {
+        firstName
+        lastName
+        ... on Customer {
+            city
+            country
+            employee {
+                email
+            }
+            orders {
+                comments
+                orderDetails {
+                    productCode
+                    quantityOrdered
+                    product {
+                        buyPrice
+                        msrp
+                        productCode
+                        productLine
+                    }
+                }
+            }
+        }
+    }
+}
