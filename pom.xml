@@ -27,8 +27,11 @@
         <jacoco.out.it.file>jacoco-it.exec</jacoco.out.it.file>
         <sonar.jacoco.reportPath>${project.build.directory}/jacoco/${jacoco.out.ut.file}</sonar.jacoco.reportPath>
         <sonar.jacoco.itReportPath>${project.build.directory}/jacoco/${jacoco.out.it.file}</sonar.jacoco.itReportPath>
-    </properties>
 
+        <sonar.issue.ignore.multicriteria>e1</sonar.issue.ignore.multicriteria>
+        <sonar.issue.ignore.multicriteria.e1.ruleKey>squid:S3355</sonar.issue.ignore.multicriteria.e1.ruleKey>
+        <sonar.issue.ignore.multicriteria.e1.resourceKey>**/web.xml</sonar.issue.ignore.multicriteria.e1.resourceKey>
+    </properties>
 
     <build>
         <pluginManagement>
