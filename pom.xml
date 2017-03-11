@@ -28,9 +28,13 @@
         <sonar.jacoco.reportPath>${project.build.directory}/jacoco/${jacoco.out.ut.file}</sonar.jacoco.reportPath>
         <sonar.jacoco.itReportPath>${project.build.directory}/jacoco/${jacoco.out.it.file}</sonar.jacoco.itReportPath>
 
-        <sonar.issue.ignore.multicriteria>e1</sonar.issue.ignore.multicriteria>
+        <sonar.issue.ignore.multicriteria>e1, e2</sonar.issue.ignore.multicriteria>
+        <!-- Ignore web.xml security filter missing -->
         <sonar.issue.ignore.multicriteria.e1.ruleKey>squid:S3355</sonar.issue.ignore.multicriteria.e1.ruleKey>
         <sonar.issue.ignore.multicriteria.e1.resourceKey>**/web.xml</sonar.issue.ignore.multicriteria.e1.resourceKey>
+        <!-- Ignore serialization issues -->
+        <sonar.issue.ignore.multicriteria.e2.ruleKey>squid:S1948</sonar.issue.ignore.multicriteria.e2.ruleKey>
+        <sonar.issue.ignore.multicriteria.e2.resourceKey>**/*.java</sonar.issue.ignore.multicriteria.e2.resourceKey>
     </properties>
 
     <build>
