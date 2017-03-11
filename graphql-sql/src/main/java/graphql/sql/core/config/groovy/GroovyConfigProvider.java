@@ -1,8 +1,9 @@
 package graphql.sql.core.config.groovy;
 
+import graphql.sql.core.config.ConfigProvider;
+import graphql.sql.core.config.ConfigurationException;
 import graphql.sql.core.config.NameProvider;
 import graphql.sql.core.config.domain.Config;
-import graphql.sql.core.config.ConfigProvider;
 import graphql.sql.core.config.groovy.context.ExecutionContext;
 import graphql.sql.core.introspect.DatabaseIntrospector;
 import groovy.lang.Binding;
@@ -27,7 +28,6 @@ public class GroovyConfigProvider implements ConfigProvider {
         this.databaseIntrospector = databaseIntrospector;
     }
 
-
     @Override
     public Config getConfig() {
         Binding binding = new Binding();
@@ -43,7 +43,7 @@ public class GroovyConfigProvider implements ConfigProvider {
         try (InputStreamReader reader = new InputStreamReader(configResource.getInputStream())) {
             gs.evaluate(reader);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ConfigurationException(e);
         }
 
         return executionContext.buildConfig();

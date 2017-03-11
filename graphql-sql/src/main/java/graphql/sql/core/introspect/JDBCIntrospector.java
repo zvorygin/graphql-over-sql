@@ -1,25 +1,14 @@
 package graphql.sql.core.introspect;
 
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbConstraint;
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbForeignKeyConstraint;
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbJoin;
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbSchema;
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbSpec;
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.*;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
 
 public class JDBCIntrospector implements DatabaseIntrospector {
 
@@ -133,6 +122,8 @@ public class JDBCIntrospector implements DatabaseIntrospector {
                                 columns.toArray(new DbColumn[columns.size()]),
                                 referencedTable,
                                 referencedColumns.toArray(new DbColumn[referencedColumns.size()])));
+                        referencedColumns.clear();
+                        columns.clear();
                     }
                     constraintName = rs.getString("FK_NAME");
                     String foreignTableSchema = rs.getString("PKTABLE_SCHEM");
@@ -143,14 +134,14 @@ public class JDBCIntrospector implements DatabaseIntrospector {
                                             foreignTableSchema,
                                             foreignTableName,
                                             schema.getName(),
-                                            table.getName()))
-                    );
-                    referencedColumns.clear();
-                    columns.clear();
+                                            table.getName())));
                 }
 
                 keySec = nextKeySec;
-
+                if (referencedTable == null) {
+                    throw new IllegalStateException(
+                            String.format("Referenced table not found for constraint [%s]", constraintName));
+                }
                 columns.add(table.findColumn(rs.getString("FKCOLUMN_NAME")));
                 referencedColumns.add(referencedTable.findColumn(rs.getString("PKCOLUMN_NAME")));
             }
