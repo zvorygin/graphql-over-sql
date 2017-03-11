@@ -7,6 +7,8 @@
             country
             employee {
                 email
+                firstName
+                lastName
             }
             orders {
                 comments
@@ -22,5 +24,11 @@
                 }
             }
         }
+    }
+    employeeById(employeeNumbers:[1002]) {
+        firstName
+        lastName
+        email
+        jobTitle
     }
 }

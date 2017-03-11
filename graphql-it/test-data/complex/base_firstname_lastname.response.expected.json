@@ -1,318 +1,291 @@
 {
-  "data": {
-    "personById": [
-      {
-        "firstName": "Anthony",
-        "lastName": "Bow"
-      },
-      {
-        "firstName": "Armand",
-        "lastName": "Kuger",
-        "city": "Chempet",
-        "country": "South Africa",
-        "employee": {
-          "email": null
-        }
-      },
-      {
-        "firstName": "Arnold",
-        "lastName": "Cruz",
-        "city": "Makati City",
-        "country": "Philippines",
-        "employee": {
-          "email": "mnishi@classicmodelcars.com"
-        },
-        "orders": [
-          {
-            "comments": null,
-            "orderDetails": [
-              {
-                "productCode": "S12_1099",
-                "quantityOrdered": 33,
-                "product": {
-                  "buyPrice": 95.34,
-                  "msrp": 194.57,
-                  "productCode": "S12_1099",
-                  "productLine": "Classic Cars"
-                }
-              },
-              {
-                "productCode": "S12_3380",
-                "quantityOrdered": 45,
-                "product": {
-                  "buyPrice": 75.16,
-                  "msrp": 117.44,
-                  "productCode": "S12_3380",
-                  "productLine": "Classic Cars"
-                }
-              },
-              {
-                "productCode": "S12_3990",
-                "quantityOrdered": 39,
-                "product": {
-                  "buyPrice": 31.92,
-                  "msrp": 79.8,
-                  "productCode": "S12_3990",
-                  "productLine": "Classic Cars"
-                }
-              },
-              {
-                "productCode": "S12_4675",
-                "quantityOrdered": 36,
-                "product": {
-                  "buyPrice": 58.73,
-                  "msrp": 115.16,
-                  "productCode": "S12_4675",
-                  "productLine": "Classic Cars"
-                }
-              },
-              {
-                "productCode": "S18_1889",
-                "quantityOrdered": 38,
-                "product": {
-                  "buyPrice": 53.9,
-                  "msrp": 77.0,
-                  "productCode": "S18_1889",
-                  "productLine": "Classic Cars"
-                }
-              },
-              {
-                "productCode": "S18_3278",
-                "quantityOrdered": 26,
-                "product": {
-                  "buyPrice": 49.05,
-                  "msrp": 80.41,
-                  "productCode": "S18_3278",
-                  "productLine": "Classic Cars"
-                }
-              },
-              {
-                "productCode": "S18_3482",
-                "quantityOrdered": 29,
-                "product": {
-                  "buyPrice": 73.49,
-                  "msrp": 146.99,
-                  "productCode": "S18_3482",
-                  "productLine": "Classic Cars"
-                }
-              },
-              {
-                "productCode": "S18_3782",
-                "quantityOrdered": 43,
-                "product": {
-                  "buyPrice": 32.95,
-                  "msrp": 62.17,
-                  "productCode": "S18_3782",
-                  "productLine": "Motorcycles"
-                }
-              },
-              {
-                "productCode": "S18_4721",
-                "quantityOrdered": 44,
-                "product": {
-                  "buyPrice": 69.93,
-                  "msrp": 148.8,
-                  "productCode": "S18_4721",
-                  "productLine": "Classic Cars"
-                }
-              },
-              {
-                "productCode": "S24_2360",
-                "quantityOrdered": 35,
-                "product": {
-                  "buyPrice": 47.1,
-                  "msrp": 69.26,
-                  "productCode": "S24_2360",
-                  "productLine": "Motorcycles"
-                }
-              },
-              {
-                "productCode": "S24_3371",
-                "quantityOrdered": 30,
-                "product": {
-                  "buyPrice": 38.58,
-                  "msrp": 61.23,
-                  "productCode": "S24_3371",
-                  "productLine": "Classic Cars"
-                }
-              },
-              {
-                "productCode": "S24_3856",
-                "quantityOrdered": 40,
-                "product": {
-                  "buyPrice": 98.3,
-                  "msrp": 140.43,
-                  "productCode": "S24_3856",
-                  "productLine": "Classic Cars"
-                }
-              },
-              {
-                "productCode": "S24_4620",
-                "quantityOrdered": 31,
-                "product": {
-                  "buyPrice": 32.33,
-                  "msrp": 80.84,
-                  "productCode": "S24_4620",
-                  "productLine": "Classic Cars"
-                }
-              },
-              {
-                "productCode": "S32_2206",
-                "quantityOrdered": 27,
-                "product": {
-                  "buyPrice": 24.14,
-                  "msrp": 40.23,
-                  "productCode": "S32_2206",
-                  "productLine": "Motorcycles"
-                }
-              },
-              {
-                "productCode": "S32_4485",
-                "quantityOrdered": 31,
-                "product": {
-                  "buyPrice": 56.13,
-                  "msrp": 102.05,
-                  "productCode": "S32_4485",
-                  "productLine": "Motorcycles"
-                }
-              },
-              {
-                "productCode": "S50_4713",
-                "quantityOrdered": 34,
-                "product": {
-                  "buyPrice": 34.17,
-                  "msrp": 81.36,
-                  "productCode": "S50_4713",
-                  "productLine": "Motorcycles"
-                }
-              }
-            ]
-          },
-          {
-            "comments": null,
-            "orderDetails": [
-              {
-                "productCode": "S18_1662",
-                "quantityOrdered": 42,
-                "product": {
-                  "buyPrice": 77.27,
-                  "msrp": 157.69,
-                  "productCode": "S18_1662",
-                  "productLine": "Planes"
-                }
-              },
-              {
-                "productCode": "S24_2841",
-                "quantityOrdered": 48,
-                "product": {
-                  "buyPrice": 34.25,
-                  "msrp": 68.51,
-                  "productCode": "S24_2841",
-                  "productLine": "Planes"
-                }
-              },
-              {
-                "productCode": "S24_3420",
-                "quantityOrdered": 27,
-                "product": {
-                  "buyPrice": 26.3,
-                  "msrp": 65.75,
-                  "productCode": "S24_3420",
-                  "productLine": "Vintage Cars"
-                }
-              },
-              {
-                "productCode": "S24_3949",
-                "quantityOrdered": 43,
-                "product": {
-                  "buyPrice": 29.34,
-                  "msrp": 68.24,
-                  "productCode": "S24_3949",
-                  "productLine": "Planes"
-                }
-              },
-              {
-                "productCode": "S700_2466",
-                "quantityOrdered": 42,
-                "product": {
-                  "buyPrice": 68.8,
-                  "msrp": 99.72,
-                  "productCode": "S700_2466",
-                  "productLine": "Planes"
-                }
-              },
-              {
-                "productCode": "S700_4002",
-                "quantityOrdered": 40,
-                "product": {
-                  "buyPrice": 36.27,
-                  "msrp": 74.03,
-                  "productCode": "S700_4002",
-                  "productLine": "Planes"
-                }
-              }
-            ]
-          },
-          {
-            "comments": null,
-            "orderDetails": [
-              {
-                "productCode": "S18_3482",
-                "quantityOrdered": 37,
-                "product": {
-                  "buyPrice": 73.49,
-                  "msrp": 146.99,
-                  "productCode": "S18_3482",
-                  "productLine": "Classic Cars"
-                }
-              },
-              {
-                "productCode": "S18_3782",
-                "quantityOrdered": 29,
-                "product": {
-                  "buyPrice": 32.95,
-                  "msrp": 62.17,
-                  "productCode": "S18_3782",
-                  "productLine": "Motorcycles"
-                }
-              },
-              {
-                "productCode": "S18_4721",
-                "quantityOrdered": 50,
-                "product": {
-                  "buyPrice": 69.93,
-                  "msrp": 148.8,
-                  "productCode": "S18_4721",
-                  "productLine": "Classic Cars"
-                }
-              },
-              {
-                "productCode": "S24_2360",
-                "quantityOrdered": 42,
-                "product": {
-                  "buyPrice": 47.1,
-                  "msrp": 69.26,
-                  "productCode": "S24_2360",
-                  "productLine": "Motorcycles"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "firstName": "Barry",
-        "lastName": "Jones"
-      },
-      {
-        "firstName": "Bradley",
-        "lastName": "Schuyler",
-        "city": "Amsterdam",
-        "country": "Netherlands",
-        "employee": {
-          "email": null
-        }
+  "data" : {
+    "personById" : [ {
+      "firstName" : "Anthony",
+      "lastName" : "Bow"
+    }, {
+      "firstName" : "Armand",
+      "lastName" : "Kuger",
+      "city" : "Chempet",
+      "country" : "South Africa",
+      "employee" : {
+        "email" : null,
+        "firstName" : null,
+        "lastName" : null
       }
-    ]
+    }, {
+      "firstName" : "Arnold",
+      "lastName" : "Cruz",
+      "city" : "Makati City",
+      "country" : "Philippines",
+      "employee" : {
+        "email" : "mnishi@classicmodelcars.com",
+        "firstName" : "Mami",
+        "lastName" : "Nishi"
+      },
+      "orders" : [ {
+        "comments" : null,
+        "orderDetails" : [ {
+          "productCode" : "S12_1099",
+          "quantityOrdered" : 33,
+          "product" : {
+            "buyPrice" : 95.34,
+            "msrp" : 194.57,
+            "productCode" : "S12_1099",
+            "productLine" : "Classic Cars"
+          }
+        }, {
+          "productCode" : "S12_3380",
+          "quantityOrdered" : 45,
+          "product" : {
+            "buyPrice" : 75.16,
+            "msrp" : 117.44,
+            "productCode" : "S12_3380",
+            "productLine" : "Classic Cars"
+          }
+        }, {
+          "productCode" : "S12_3990",
+          "quantityOrdered" : 39,
+          "product" : {
+            "buyPrice" : 31.92,
+            "msrp" : 79.8,
+            "productCode" : "S12_3990",
+            "productLine" : "Classic Cars"
+          }
+        }, {
+          "productCode" : "S12_4675",
+          "quantityOrdered" : 36,
+          "product" : {
+            "buyPrice" : 58.73,
+            "msrp" : 115.16,
+            "productCode" : "S12_4675",
+            "productLine" : "Classic Cars"
+          }
+        }, {
+          "productCode" : "S18_1889",
+          "quantityOrdered" : 38,
+          "product" : {
+            "buyPrice" : 53.9,
+            "msrp" : 77.0,
+            "productCode" : "S18_1889",
+            "productLine" : "Classic Cars"
+          }
+        }, {
+          "productCode" : "S18_3278",
+          "quantityOrdered" : 26,
+          "product" : {
+            "buyPrice" : 49.05,
+            "msrp" : 80.41,
+            "productCode" : "S18_3278",
+            "productLine" : "Classic Cars"
+          }
+        }, {
+          "productCode" : "S18_3482",
+          "quantityOrdered" : 29,
+          "product" : {
+            "buyPrice" : 73.49,
+            "msrp" : 146.99,
+            "productCode" : "S18_3482",
+            "productLine" : "Classic Cars"
+          }
+        }, {
+          "productCode" : "S18_3782",
+          "quantityOrdered" : 43,
+          "product" : {
+            "buyPrice" : 32.95,
+            "msrp" : 62.17,
+            "productCode" : "S18_3782",
+            "productLine" : "Motorcycles"
+          }
+        }, {
+          "productCode" : "S18_4721",
+          "quantityOrdered" : 44,
+          "product" : {
+            "buyPrice" : 69.93,
+            "msrp" : 148.8,
+            "productCode" : "S18_4721",
+            "productLine" : "Classic Cars"
+          }
+        }, {
+          "productCode" : "S24_2360",
+          "quantityOrdered" : 35,
+          "product" : {
+            "buyPrice" : 47.1,
+            "msrp" : 69.26,
+            "productCode" : "S24_2360",
+            "productLine" : "Motorcycles"
+          }
+        }, {
+          "productCode" : "S24_3371",
+          "quantityOrdered" : 30,
+          "product" : {
+            "buyPrice" : 38.58,
+            "msrp" : 61.23,
+            "productCode" : "S24_3371",
+            "productLine" : "Classic Cars"
+          }
+        }, {
+          "productCode" : "S24_3856",
+          "quantityOrdered" : 40,
+          "product" : {
+            "buyPrice" : 98.3,
+            "msrp" : 140.43,
+            "productCode" : "S24_3856",
+            "productLine" : "Classic Cars"
+          }
+        }, {
+          "productCode" : "S24_4620",
+          "quantityOrdered" : 31,
+          "product" : {
+            "buyPrice" : 32.33,
+            "msrp" : 80.84,
+            "productCode" : "S24_4620",
+            "productLine" : "Classic Cars"
+          }
+        }, {
+          "productCode" : "S32_2206",
+          "quantityOrdered" : 27,
+          "product" : {
+            "buyPrice" : 24.14,
+            "msrp" : 40.23,
+            "productCode" : "S32_2206",
+            "productLine" : "Motorcycles"
+          }
+        }, {
+          "productCode" : "S32_4485",
+          "quantityOrdered" : 31,
+          "product" : {
+            "buyPrice" : 56.13,
+            "msrp" : 102.05,
+            "productCode" : "S32_4485",
+            "productLine" : "Motorcycles"
+          }
+        }, {
+          "productCode" : "S50_4713",
+          "quantityOrdered" : 34,
+          "product" : {
+            "buyPrice" : 34.17,
+            "msrp" : 81.36,
+            "productCode" : "S50_4713",
+            "productLine" : "Motorcycles"
+          }
+        } ]
+      }, {
+        "comments" : null,
+        "orderDetails" : [ {
+          "productCode" : "S18_1662",
+          "quantityOrdered" : 42,
+          "product" : {
+            "buyPrice" : 77.27,
+            "msrp" : 157.69,
+            "productCode" : "S18_1662",
+            "productLine" : "Planes"
+          }
+        }, {
+          "productCode" : "S24_2841",
+          "quantityOrdered" : 48,
+          "product" : {
+            "buyPrice" : 34.25,
+            "msrp" : 68.51,
+            "productCode" : "S24_2841",
+            "productLine" : "Planes"
+          }
+        }, {
+          "productCode" : "S24_3420",
+          "quantityOrdered" : 27,
+          "product" : {
+            "buyPrice" : 26.3,
+            "msrp" : 65.75,
+            "productCode" : "S24_3420",
+            "productLine" : "Vintage Cars"
+          }
+        }, {
+          "productCode" : "S24_3949",
+          "quantityOrdered" : 43,
+          "product" : {
+            "buyPrice" : 29.34,
+            "msrp" : 68.24,
+            "productCode" : "S24_3949",
+            "productLine" : "Planes"
+          }
+        }, {
+          "productCode" : "S700_2466",
+          "quantityOrdered" : 42,
+          "product" : {
+            "buyPrice" : 68.8,
+            "msrp" : 99.72,
+            "productCode" : "S700_2466",
+            "productLine" : "Planes"
+          }
+        }, {
+          "productCode" : "S700_4002",
+          "quantityOrdered" : 40,
+          "product" : {
+            "buyPrice" : 36.27,
+            "msrp" : 74.03,
+            "productCode" : "S700_4002",
+            "productLine" : "Planes"
+          }
+        } ]
+      }, {
+        "comments" : null,
+        "orderDetails" : [ {
+          "productCode" : "S18_3482",
+          "quantityOrdered" : 37,
+          "product" : {
+            "buyPrice" : 73.49,
+            "msrp" : 146.99,
+            "productCode" : "S18_3482",
+            "productLine" : "Classic Cars"
+          }
+        }, {
+          "productCode" : "S18_3782",
+          "quantityOrdered" : 29,
+          "product" : {
+            "buyPrice" : 32.95,
+            "msrp" : 62.17,
+            "productCode" : "S18_3782",
+            "productLine" : "Motorcycles"
+          }
+        }, {
+          "productCode" : "S18_4721",
+          "quantityOrdered" : 50,
+          "product" : {
+            "buyPrice" : 69.93,
+            "msrp" : 148.8,
+            "productCode" : "S18_4721",
+            "productLine" : "Classic Cars"
+          }
+        }, {
+          "productCode" : "S24_2360",
+          "quantityOrdered" : 42,
+          "product" : {
+            "buyPrice" : 47.1,
+            "msrp" : 69.26,
+            "productCode" : "S24_2360",
+            "productLine" : "Motorcycles"
+          }
+        } ]
+      } ]
+    }, {
+      "firstName" : "Barry",
+      "lastName" : "Jones"
+    }, {
+      "firstName" : "Bradley",
+      "lastName" : "Schuyler",
+      "city" : "Amsterdam",
+      "country" : "Netherlands",
+      "employee" : {
+        "email" : null,
+        "firstName" : null,
+        "lastName" : null
+      }
+    } ],
+    "employeeById" : [ {
+      "firstName" : "Diane",
+      "lastName" : "Murphy",
+      "email" : "dmurphy@classicmodelcars.com",
+      "jobTitle" : "President"
+    } ]
   }
 }
