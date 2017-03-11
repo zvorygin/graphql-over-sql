@@ -91,9 +91,12 @@ public class Entity implements Comparable<Entity> {
 
             @Override
             public Entity next() {
+                if (current == null) {
+                    throw new NoSuchElementException();
+                }
                 Entity result = current;
-                EntityReference parentReference = current.getParentReference();
-                current = parentReference == null ? null : parentReference.getTargetEntity();
+                EntityReference parent = current.getParentReference();
+                current = parent == null ? null : parent.getTargetEntity();
                 return result;
             }
         };
