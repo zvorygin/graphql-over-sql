@@ -3,11 +3,12 @@ package graphql.sql.core;
 import graphql.GraphQLError;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DocumentExecutionException extends RuntimeException {
     @Nonnull
-    private final List<? extends GraphQLError> validationErrors;
+    private final List<GraphQLError> validationErrors;
 
     public DocumentExecutionException(@Nonnull List<? extends GraphQLError> validationErrors) {
         this(validationErrors, null);
@@ -18,11 +19,11 @@ public class DocumentExecutionException extends RuntimeException {
         if (validationErrors.isEmpty()) {
             throw new IllegalStateException("Validation errors should not be empty");
         }
-        this.validationErrors = validationErrors;
+        this.validationErrors = new ArrayList<>(validationErrors);
     }
 
     @Nonnull
-    public List<? extends GraphQLError> getValidationErrors() {
+    public List<GraphQLError> getValidationErrors() {
         return validationErrors;
     }
 }

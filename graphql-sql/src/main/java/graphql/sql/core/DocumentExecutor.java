@@ -84,12 +84,12 @@ public class DocumentExecutor {
                     recognitionException.getOffendingToken().getLine(),
                     recognitionException.getOffendingToken().getCharPositionInLine());
             InvalidSyntaxError invalidSyntaxError = new InvalidSyntaxError(sourceLocation);
-            throw new DocumentExecutionException(Collections.singletonList(invalidSyntaxError));
+            throw new DocumentExecutionException(Collections.singletonList(invalidSyntaxError), e);
         }
 
         Validator validator = new Validator();
         List<ValidationError> validationErrors = validator.validateDocument(graphQLSchema, document);
-        if (validationErrors.size() > 0) {
+        if (!validationErrors.isEmpty()) {
             throw new DocumentExecutionException(validationErrors);
         }
 

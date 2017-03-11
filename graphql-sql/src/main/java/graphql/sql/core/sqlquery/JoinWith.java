@@ -17,8 +17,11 @@ public abstract class JoinWith<T> {
     private final List<? extends Column> toColumns;
 
     protected JoinWith(T with, List<? extends Column> fromColumns, List<? extends Column> toColumns) {
-        assert fromColumns.size() == toColumns.size() : "fromColumns size should match toColumn size.";
-
+        if (fromColumns.size() != toColumns.size()) {
+            throw new IllegalArgumentException(
+                    String.format("FromColumns size [%d] should match toColumn size [%d].",
+                            fromColumns.size(), toColumns.size()));
+        }
         this.with = with;
         this.fromColumns = fromColumns;
         this.toColumns = toColumns;
