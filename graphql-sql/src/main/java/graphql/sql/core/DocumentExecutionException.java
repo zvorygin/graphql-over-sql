@@ -10,7 +10,14 @@ public class DocumentExecutionException extends RuntimeException {
     private final List<? extends GraphQLError> validationErrors;
 
     public DocumentExecutionException(@Nonnull List<? extends GraphQLError> validationErrors) {
-        assert !validationErrors.isEmpty() : "Validation errors should not be empty";
+        this(validationErrors, null);
+    }
+
+    public DocumentExecutionException(@Nonnull List<? extends GraphQLError> validationErrors, Exception e) {
+        super(e);
+        if (validationErrors.isEmpty()) {
+            throw new IllegalStateException("Validation errors should not be empty");
+        }
         this.validationErrors = validationErrors;
     }
 

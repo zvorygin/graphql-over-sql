@@ -8,7 +8,6 @@ import graphql.ExceptionWhileDataFetching;
 import graphql.ExecutionResult;
 import graphql.ExecutionResultImpl;
 import graphql.InvalidSyntaxError;
-import graphql.execution.FieldCollector;
 import graphql.language.Document;
 import graphql.language.OperationDefinition;
 import graphql.language.SourceLocation;
@@ -31,7 +30,6 @@ import java.util.concurrent.ExecutionException;
 public class DocumentExecutor {
     private static final Logger LOGGER = LoggerFactory.getLogger(DocumentExecutor.class);
     private final Parser parser = new Parser();
-    private final FieldCollector collector = new FieldCollector();
     private final GraphQLSchema graphQLSchema;
     private final OperationExecutor operationExecutor;
     private final LoadingCache<String, DocumentContext> documentCache;

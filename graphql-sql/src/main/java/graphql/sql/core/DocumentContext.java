@@ -10,14 +10,12 @@ import javax.annotation.Nonnull;
 import java.util.*;
 
 public class DocumentContext {
-    private final Document document;
     private final Map<String, FragmentDefinition> fragmentsByName = new LinkedHashMap<>();
     private final Map<String, OperationDefinition> operationsByName = new LinkedHashMap<>();
     private final Map<OperationDefinition, Set<String>> queryAffectingFlags = new LinkedHashMap<>();
 
 
     public DocumentContext(Document document) {
-        this.document = document;
 
         for (Definition definition : document.getDefinitions()) {
             if (definition instanceof OperationDefinition) {
@@ -102,8 +100,7 @@ public class DocumentContext {
             if (argumentName.equals(Directives.IncludeDirective.getName()) ||
                     argumentName.equals(Directives.SkipDirective.getName())) {
                 List<Argument> arguments = directive.getArguments();
-                assert arguments.size() == 1;
-                Value value = arguments.get(0).getValue();
+                Value value = Iterables.getOnlyElement(arguments).getValue();
                 if (value instanceof VariableReference) {
                     flags.add(((VariableReference) value).getName());
                 }
