@@ -82,7 +82,7 @@ public class GroovyEntityBuilder {
                     .filter(constraint -> constraint.getReferencedTable().equals(parentTable))
                     .collect(Collectors.toList());
 
-            if (constraints.size() == 0) {
+            if (constraints.isEmpty()) {
                 throw new IllegalArgumentException(
                         String.format("Unable to find FK constraint from [%s] to [%s]",
                                 table.getAbsoluteName(), parentTable.getAbsoluteName()));

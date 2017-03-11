@@ -32,7 +32,7 @@ public class Controller {
         ExecutionResult executionResult = getExecutionResult(request);
 
         Map<String, Object> result = new LinkedHashMap<>();
-        if (executionResult.getErrors().size() > 0) {
+        if (!executionResult.getErrors().isEmpty()) {
             result.put("errors", executionResult.getErrors());
         }
         result.put("data", executionResult.getData());
