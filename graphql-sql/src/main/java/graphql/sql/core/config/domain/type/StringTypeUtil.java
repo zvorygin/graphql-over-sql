@@ -19,12 +19,12 @@ public class StringTypeUtil extends AbstractTypeUtil<String> {
 
     @Override
     public String getValue(Node value) {
-        return ((StringValue)value).getValue();
+        return ((StringValue) value).getValue();
     }
 
     @Override
     protected String getRawValue(Value value) {
-        return ((StringValue)value).getValue();
+        return ((StringValue) value).getValue();
     }
 
     @Override

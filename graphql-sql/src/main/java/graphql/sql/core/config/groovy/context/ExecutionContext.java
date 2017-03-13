@@ -1,12 +1,11 @@
 package graphql.sql.core.config.groovy.context;
 
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 import graphql.sql.core.config.NameProvider;
 import graphql.sql.core.config.domain.Config;
 import graphql.sql.core.config.domain.Entity;
 import graphql.sql.core.config.domain.EntityQuery;
 import graphql.sql.core.introspect.DatabaseIntrospector;
-
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 
 import java.util.Map;
 import java.util.Optional;

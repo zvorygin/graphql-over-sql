@@ -6,7 +6,6 @@ import graphql.language.ArrayValue;
 import graphql.language.Node;
 import graphql.language.Value;
 import graphql.language.VariableReference;
-import graphql.schema.GraphQLInputType;
 import graphql.schema.GraphQLScalarType;
 import graphql.sql.core.HsqldbArrayPlaceholder;
 

@@ -38,6 +38,7 @@ public class FragmentExtractor {
 
     /**
      * Checks if this fragment is applicable to current extraction type
+     *
      * @param node node to check type
      * @return <code>boolean</code> if this node matches fragment type, <code>false</code> otherwise.
      */

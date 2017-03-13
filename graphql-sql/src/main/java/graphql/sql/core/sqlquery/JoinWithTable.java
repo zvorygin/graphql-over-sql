@@ -1,7 +1,7 @@
 package graphql.sql.core.sqlquery;
 
 import com.healthmarketscience.common.util.AppendableExt;
-import com.healthmarketscience.sqlbuilder.*;
+import com.healthmarketscience.sqlbuilder.ValidationContext;
 import com.healthmarketscience.sqlbuilder.dbspec.Column;
 import com.healthmarketscience.sqlbuilder.dbspec.RejoinTable;
 
@@ -25,7 +25,7 @@ public class JoinWithTable extends JoinWith<RejoinTable> {
     protected void appendWith(AppendableExt app, RejoinTable with) throws IOException {
         app.append(with.getTableNameSQL());
         String alias = with.getAlias();
-        if(alias != null) {
+        if (alias != null) {
             app.append(" ").append(alias);
         }
     }

@@ -1,8 +1,8 @@
 package graphql.sql.core.config.domain;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Objects;
-import javax.annotation.Nonnull;
 
 public class Link {
     @Nonnull

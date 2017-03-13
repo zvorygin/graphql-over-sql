@@ -6,7 +6,6 @@ import graphql.sql.core.config.groovy.GroovyConfigProvider;
 import graphql.sql.core.config.impl.IdentityAbbreviationResolver;
 import graphql.sql.core.config.impl.UnderscoreToCamelcaseNameProvider;
 import graphql.sql.core.introspect.JDBCIntrospector;
-
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -49,7 +48,7 @@ public class GroovyConfigProviderTest {
         Config config = configProvider.getConfig();
         Map<String, Entity> entities = config.getEntities();
 
-        Assert.assertArrayEquals(new String[] {"Message", "Moderator", "Thread", "User"},
+        Assert.assertArrayEquals(new String[]{"Message", "Moderator", "Thread", "User"},
                 entities.values().stream().map(Entity::getEntityName).sorted().toArray(String[]::new));
     }
 }

@@ -146,8 +146,9 @@ public class Entity implements Comparable<Entity> {
     public EntityField findField(DbColumn column) {
         // TODO(dzvorygin) use HashMap here
         for (EntityField entityField : entityFields) {
-            if (entityField.getColumn().equals(column))
+            if (entityField.getColumn().equals(column)) {
                 return entityField;
+            }
         }
 
         throw new NoSuchElementException(String.format("Column [%s] not found in entity [%s]", column.getName(), getEntityName()));

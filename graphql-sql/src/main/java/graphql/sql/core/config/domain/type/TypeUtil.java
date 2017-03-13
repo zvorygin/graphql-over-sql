@@ -3,7 +3,6 @@ package graphql.sql.core.config.domain.type;
 import com.healthmarketscience.sqlbuilder.QueryPreparer;
 import graphql.language.Node;
 import graphql.language.Value;
-import graphql.schema.GraphQLInputType;
 import graphql.schema.GraphQLScalarType;
 
 import java.sql.ResultSet;

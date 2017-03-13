@@ -10,8 +10,8 @@ import java.util.List;
 public class JoinWithSqlQueryNode extends JoinWith<SqlQueryNode> {
 
     public JoinWithSqlQueryNode(SqlQueryNode with,
-                                   List<? extends Column> fromColumns,
-                                   List<? extends Column> toColumns) {
+                                List<? extends Column> fromColumns,
+                                List<? extends Column> toColumns) {
         super(with, fromColumns, toColumns);
     }
 

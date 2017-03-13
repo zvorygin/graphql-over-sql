@@ -41,13 +41,21 @@ public class Key {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Key key = (Key) o;
 
-        if (!fields.equals(key.fields)) return false;
-        if (name != null ? !name.equals(key.name) : key.name != null) return false;
+        if (!fields.equals(key.fields)) {
+            return false;
+        }
+        if (name != null ? !name.equals(key.name) : key.name != null) {
+            return false;
+        }
         return constraint != null ? constraint.equals(key.constraint) : key.constraint == null;
     }
 

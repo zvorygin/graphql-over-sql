@@ -1,20 +1,9 @@
 package graphql.sql.core.config.domain;
 
-import graphql.sql.core.config.domain.type.DateTypeUtil;
-import graphql.sql.core.config.domain.type.DoubleTypeUtil;
-import graphql.sql.core.config.domain.type.IntegerTypeUtil;
-import graphql.sql.core.config.domain.type.StringTypeUtil;
-import graphql.sql.core.config.domain.type.TimestampTypeUtil;
-import graphql.sql.core.config.domain.type.TypeUtil;
-
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
+import graphql.sql.core.config.domain.type.*;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 
 public enum ScalarType {
     STRING(StringTypeUtil.INSTANCE, "VARCHAR", "CLOB"),
@@ -53,11 +42,13 @@ public enum ScalarType {
         }
 
         if (NUMERIC_TYPES.contains(column.getTypeNameSQL())) {
-            if (column.getTypeQualifiers().size() < 2)
+            if (column.getTypeQualifiers().size() < 2) {
                 return DOUBLE;
+            }
             Object qualifier = column.getTypeQualifiers().get(1);
-            if (qualifier instanceof Integer && 0 == (Integer)qualifier)
+            if (qualifier instanceof Integer && 0 == (Integer) qualifier) {
                 return INTEGER;
+            }
             return DOUBLE;
         }
 

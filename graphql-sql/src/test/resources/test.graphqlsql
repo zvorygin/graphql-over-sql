@@ -1,9 +1,9 @@
 schema "PUBLIC"
 
-def user = entity table:"USER"
-entity table:"THREAD"
-entity table:"MESSAGE"
+def user = entity table: "USER"
+entity table: "THREAD"
+entity table: "MESSAGE"
 
-entity table:"MODERATOR", parent: user
+entity table: "MODERATOR", parent: user
 
-query name: "usersById", entity:user, fields: [user["id"]]
+query name: "usersById", entity: user, fields: [user["id"]]

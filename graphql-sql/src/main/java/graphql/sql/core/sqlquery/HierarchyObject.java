@@ -44,7 +44,7 @@ public class HierarchyObject extends SqlObject {
     public void appendTo(AppendableExt a) throws IOException {
         a.append(master.getTableNameSQL());
         String alias = master.getAlias();
-        if(alias != null) {
+        if (alias != null) {
             a.append(" ").append(alias);
         }
         for (JoinWithTable parent : parents) {

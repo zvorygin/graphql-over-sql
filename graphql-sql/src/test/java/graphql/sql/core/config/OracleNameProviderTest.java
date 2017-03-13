@@ -4,7 +4,7 @@ import graphql.sql.core.config.impl.IdentityAbbreviationResolver;
 import graphql.sql.core.config.impl.UnderscoreToCamelcaseNameProvider;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class OracleNameProviderTest {
 

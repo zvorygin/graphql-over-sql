@@ -2,7 +2,6 @@ package graphql.sql.core.config.impl;
 
 import com.google.common.base.Splitter;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbForeignKeyConstraint;
-
 import graphql.sql.core.config.AbbreviationResolver;
 import graphql.sql.core.config.NameProvider;
 import graphql.sql.core.config.domain.Entity;

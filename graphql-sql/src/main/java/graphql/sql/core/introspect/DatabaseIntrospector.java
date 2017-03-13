@@ -2,10 +2,10 @@ package graphql.sql.core.introspect;
 
 import com.healthmarketscience.sqlbuilder.dbspec.basic.*;
 
-import java.util.Collection;
-import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collection;
+import java.util.Optional;
 
 public interface DatabaseIntrospector {
 

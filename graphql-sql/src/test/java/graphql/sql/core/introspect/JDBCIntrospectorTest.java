@@ -1,11 +1,5 @@
 package graphql.sql.core.introspect;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbForeignKeyConstraint;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
@@ -21,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import static org.junit.Assert.*;
 
 public class JDBCIntrospectorTest {
 
@@ -67,10 +63,10 @@ public class JDBCIntrospectorTest {
                 INTROSPECTOR.getTable("PUBLIC", "MESSAGE").orElseThrow(NoSuchElementException::new).getColumns();
         assertEquals(5, tableFields.size());
         assertArrayEquals(tableFields.stream().map(DbColumn::getName).toArray(String[]::new),
-                new String[] {"ID", "BODY", "CREATED_AT", "AUTHOR", "THREAD"});
+                new String[]{"ID", "BODY", "CREATED_AT", "AUTHOR", "THREAD"});
 
         assertArrayEquals(tableFields.stream().map(DbColumn::getTypeNameSQL).toArray(String[]::new),
-                new String[] {"INTEGER", "VARCHAR", "TIMESTAMP", "INTEGER", "INTEGER"});
+                new String[]{"INTEGER", "VARCHAR", "TIMESTAMP", "INTEGER", "INTEGER"});
     }
 
     @Test
