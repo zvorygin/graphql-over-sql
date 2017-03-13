@@ -4,13 +4,14 @@ import com.healthmarketscience.sqlbuilder.QueryPreparer;
 import graphql.language.Node;
 import graphql.language.Value;
 import graphql.schema.GraphQLInputType;
+import graphql.schema.GraphQLScalarType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public interface TypeUtil<T> {
 
-    GraphQLInputType getGraphQLScalarType();
+    GraphQLScalarType getGraphQLScalarType();
 
     T getValue(Node child);
 

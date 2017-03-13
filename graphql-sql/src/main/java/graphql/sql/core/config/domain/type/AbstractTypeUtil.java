@@ -7,6 +7,7 @@ import graphql.language.Node;
 import graphql.language.Value;
 import graphql.language.VariableReference;
 import graphql.schema.GraphQLInputType;
+import graphql.schema.GraphQLScalarType;
 import graphql.sql.core.HsqldbArrayPlaceholder;
 
 import java.io.IOException;
@@ -16,14 +17,14 @@ import java.util.List;
 
 public abstract class AbstractTypeUtil<T> implements TypeUtil<T> {
 
-    private final GraphQLInputType graphQLScalarType;
+    private final GraphQLScalarType graphQLScalarType;
 
-    protected AbstractTypeUtil(GraphQLInputType graphQLScalarType) {
+    protected AbstractTypeUtil(GraphQLScalarType graphQLScalarType) {
         this.graphQLScalarType = graphQLScalarType;
     }
 
     @Override
-    public GraphQLInputType getGraphQLScalarType() {
+    public GraphQLScalarType getGraphQLScalarType() {
         return graphQLScalarType;
     }
 

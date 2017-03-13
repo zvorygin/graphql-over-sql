@@ -34,12 +34,7 @@
 
     <bean id="config" factory-bean="configProvider" factory-method="getConfig"/>
 
-    <bean id="graphQLBuilder" class="graphql.sql.core.GraphQLBuilder">
-        <constructor-arg ref="typesProvider"/>
-    </bean>
-
-    <bean id="graphQLSchema" class="graphql.schema.GraphQLSchema" factory-bean="typesProvider"
-          factory-method="getSchema"/>
+    <bean id="graphQLSchema" factory-bean="typesProvider" factory-method="getSchema"/>
 
     <bean id="documentExecutor" class="graphql.sql.core.DocumentExecutor">
         <constructor-arg index="0" ref="graphQLSchema"/>

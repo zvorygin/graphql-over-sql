@@ -20,16 +20,20 @@ public class EntityReference {
     @Nonnull
     private final ReferenceType referenceType;
 
+    private final boolean nullable;
+
     public EntityReference(@Nonnull String name,
                            @Nonnull DbJoin join,
                            @Nonnull DbJoin reverseJoin,
                            @Nonnull Entity targetEntity,
-                           @Nonnull ReferenceType referenceType) {
+                           @Nonnull ReferenceType referenceType,
+                           boolean nullable) {
         this.name = name;
         this.join = join;
         this.reverseJoin = reverseJoin;
         this.targetEntity = targetEntity;
         this.referenceType = referenceType;
+        this.nullable = nullable;
         if (!join.getToTable().equals(targetEntity.getTable())) {
             throw new IllegalStateException(String.format(
                     "Join [%s] doesn't point target table [%s] but instead points from [%s] to [%s]",
@@ -65,5 +69,7 @@ public class EntityReference {
         return referenceType;
     }
 
-
+    public boolean isNullable() {
+        return nullable;
+    }
 }

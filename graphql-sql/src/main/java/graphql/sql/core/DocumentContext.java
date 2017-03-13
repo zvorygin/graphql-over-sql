@@ -14,7 +14,6 @@ public class DocumentContext {
     private final Map<String, OperationDefinition> operationsByName = new LinkedHashMap<>();
     private final Map<OperationDefinition, Set<String>> queryAffectingFlags = new LinkedHashMap<>();
 
-
     public DocumentContext(Document document) {
 
         for (Definition definition : document.getDefinitions()) {

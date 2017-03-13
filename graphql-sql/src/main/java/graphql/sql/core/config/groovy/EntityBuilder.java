@@ -1,5 +1,9 @@
 package graphql.sql.core.config.groovy;
 
+import com.healthmarketscience.sqlbuilder.dbspec.Constraint;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbConstraint;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbForeignKeyConstraint;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbJoin;
 import graphql.sql.core.config.NameProvider;
 import graphql.sql.core.config.domain.Entity;
 import graphql.sql.core.config.domain.EntityReference;
@@ -8,11 +12,9 @@ import graphql.sql.core.config.groovy.context.ExecutionContext;
 import graphql.sql.core.config.groovy.context.GroovyEntityBuilder;
 import graphql.sql.core.introspect.DatabaseIntrospector;
 
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbForeignKeyConstraint;
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbJoin;
-
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class EntityBuilder {
 
@@ -50,8 +52,9 @@ public class EntityBuilder {
     private void processForeignKeyConstraint(Entity entity, DbForeignKeyConstraint constraint) {
         DatabaseIntrospector introspector = executionContext.getIntrospector();
         NameProvider nameProvider = executionContext.getNameProvider();
-        executionContext.findEntity(constraint.getReferencedTable()).ifPresent(referencedEntity -> {
-            Optional<EntityReference> parentReference = Optional.ofNullable(entity.getParentReference());
+        executionContext.findEntity(constraint.getReferencedTable()).ifPresent(referencedEntity ->
+                {
+                    Optional<EntityReference> parentReference = Optional.ofNullable(entity.getParentReference());
 
                     // Don't register parent/child references in field references
                     DbJoin join = introspector.getJoin(constraint);
@@ -60,20 +63,29 @@ public class EntityBuilder {
                     }
 
                     DbJoin reverseJoin = introspector.getReverseJoin(constraint);
+                    // If any column is missing NOT_NULL constraint, then this reference is nullable
+                    boolean nullable = join.getFromColumns().stream().map(
+                            dbColumn -> dbColumn.getConstraints().stream().map(DbConstraint::getType)
+                                    .anyMatch(Predicate.isEqual(Constraint.Type.NOT_NULL))
+                    ).anyMatch(Predicate.isEqual(false));
+
                     entity.addReference(
                             new EntityReference(nameProvider.getLinkName(constraint,
                                     entity, referencedEntity, ReferenceType.MANY_TO_ONE),
                                     join,
                                     reverseJoin,
                                     referencedEntity,
-                                    ReferenceType.MANY_TO_ONE));
+                                    ReferenceType.MANY_TO_ONE,
+                                    nullable
+                            ));
                     referencedEntity.addReference(
                             new EntityReference(nameProvider.getLinkName(
                                     constraint, referencedEntity, entity, ReferenceType.ONE_TO_MANY),
                                     reverseJoin,
                                     join,
                                     entity,
-                                    ReferenceType.ONE_TO_MANY)
+                                    ReferenceType.ONE_TO_MANY,
+                                    false)
                     );
                 }
         );

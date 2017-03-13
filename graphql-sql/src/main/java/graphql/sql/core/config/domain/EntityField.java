@@ -15,12 +15,16 @@ public class EntityField {
     @Nonnull
     private final ScalarType scalarType;
 
+    private final boolean nullable;
+
     public EntityField(@Nonnull String fieldName,
                        @Nonnull DbColumn column,
-                       @Nonnull ScalarType scalarType) {
+                       @Nonnull ScalarType scalarType,
+                       boolean nullable) {
         this.fieldName = fieldName;
         this.column = column;
         this.scalarType = scalarType;
+        this.nullable = nullable;
     }
 
     @Nonnull
@@ -36,6 +40,10 @@ public class EntityField {
     @Nonnull
     public ScalarType getScalarType() {
         return scalarType;
+    }
+
+    public boolean isNullable() {
+        return nullable;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package graphql.sql.core.config.groovy.context;
 
+import com.healthmarketscience.sqlbuilder.dbspec.Constraint;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbConstraint;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbForeignKeyConstraint;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 import graphql.sql.core.config.NameProvider;
@@ -9,6 +11,7 @@ import graphql.sql.core.introspect.DatabaseIntrospector;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class GroovyEntityBuilder {
@@ -70,7 +73,9 @@ public class GroovyEntityBuilder {
                 .map(column -> new EntityField(
                         nameProvider.getFieldName(column.getName()),
                         column,
-                        ScalarType.getByColumn(column)))
+                        ScalarType.getByColumn(column),
+                        column.getConstraints().stream().map(DbConstraint::getType)
+                                .anyMatch(Predicate.isEqual(Constraint.Type.UNIQUE))))
                 .collect(Collectors.toList());
 
         EntityReference parentReference = null;
@@ -94,11 +99,18 @@ public class GroovyEntityBuilder {
                                 table.getAbsoluteName(), parentTable.getAbsoluteName()));
             }
 
+
             DbForeignKeyConstraint constraint = constraints.get(0);
+
+            // If any column is missing NOT_NULL constraint, then this reference is nullable
+            boolean nullable = constraint.getColumns().stream().map(
+                    dbColumn -> dbColumn.getConstraints().stream().map(DbConstraint::getType)
+                            .anyMatch(Predicate.isEqual(Constraint.Type.NOT_NULL))
+            ).anyMatch(Predicate.isEqual(false));
 
             parentReference = new EntityReference(constraint.getName(),
                     introspector.getJoin(constraint),
-                    introspector.getReverseJoin(constraint), parent, ReferenceType.MANY_TO_ONE);
+                    introspector.getReverseJoin(constraint), parent, ReferenceType.MANY_TO_ONE, nullable);
         }
 
         return new Entity(entityName, table, entityFields, parentReference, introspector.getPrimaryKeyConstraint(table));

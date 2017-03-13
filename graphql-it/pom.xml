@@ -43,6 +43,7 @@
         <dependency>
             <groupId>com.graphql-over-sql</groupId>
             <artifactId>graphql-web</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>

@@ -1,13 +1,9 @@
 package graphql.sql.core.config;
 
 import graphql.schema.*;
-import graphql.sql.core.config.domain.Config;
-import graphql.sql.core.config.domain.Entity;
-import graphql.sql.core.config.domain.EntityField;
-import graphql.sql.core.config.domain.EntityQuery;
+import graphql.sql.core.config.domain.*;
 
-import graphql.Scalars;
-
+import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -15,19 +11,15 @@ import java.util.stream.StreamSupport;
 
 public class GraphQLTypesProvider {
 
-    private final Config config;
-
     private final NameProvider nameProvider;
 
     private final Map<Entity, GraphQLObjectType> objectCache = new HashMap<>();
 
     private final Map<Entity, GraphQLInterfaceType> interfaceCache = new HashMap<>();
 
-    private final GraphQLObjectType queryType;
     private final GraphQLSchema schema;
 
     public GraphQLTypesProvider(Config config, NameProvider nameProvider) {
-        this.config = config;
         this.nameProvider = nameProvider;
 
         // TODO(dzvorygin) use GraphQL builders everywhere.
@@ -43,14 +35,14 @@ public class GraphQLTypesProvider {
             queryTypeBuilder.field(fieldBuilder);
         });
 
-        queryType = queryTypeBuilder.build();
+        GraphQLObjectType queryType = queryTypeBuilder.build();
 
 
-        Collection<GraphQLInterfaceType> interfaceTypes = this.config.getEntities().values().stream()
+        Collection<GraphQLInterfaceType> interfaceTypes = config.getEntities().values().stream()
                 .map(this::getInterfaceType)
                 .collect(Collectors.toList());
 
-        Collection<GraphQLObjectType> objectTypes = this.config.getEntities().values().stream()
+        Collection<GraphQLObjectType> objectTypes = config.getEntities().values().stream()
                 .map(this::getObjectType)
                 .collect(Collectors.toList());
 
@@ -126,28 +118,46 @@ public class GraphQLTypesProvider {
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(entity.hierarchyIterator(), 0), false)
                         .flatMap(e -> e.getEntityFields().stream())
                         .distinct()
-                        .map(field -> new GraphQLFieldDefinition(
-                                field.getFieldName(),
-                                String.format("Field for column [%s]", field.getColumn().getName()),
-                                Scalars.GraphQLString,
-                                new StaticDataFetcher(null),
-                                Collections.emptyList(),
-                                null));
+                        .map(this::getFieldDefinition);
 
         Stream<GraphQLFieldDefinition> compositeFields =
                 StreamSupport.stream(Spliterators.spliteratorUnknownSize(entity.hierarchyIterator(), 0), false)
                         .flatMap(e -> e.getEntityReferences().stream())
-                        .map(reference -> new GraphQLFieldDefinition(
-                                reference.getName(),
-                                String.format("Reference to [%s] via FK [%s]",
-                                        reference.getTargetEntity().getTable(),
-                                        reference.getJoin().getName()),
-                                GraphQLInterfaceType.reference(getInterfaceName(reference.getTargetEntity())),
-                                new StaticDataFetcher(null),
-                                Collections.emptyList(),
-                                null));
+                        .map(this::getFieldDefinition);
 
         return Stream.concat(scalarFields, compositeFields).collect(Collectors.toList());
+    }
+
+    @Nonnull
+    private GraphQLFieldDefinition getFieldDefinition(EntityReference reference) {
+        GraphQLInterfaceType fieldType = GraphQLInterfaceType.reference(getInterfaceName(reference.getTargetEntity()));
+
+        return new GraphQLFieldDefinition(
+                reference.getName(),
+                String.format("Reference to [%s] via FK [%s]",
+                        reference.getTargetEntity().getTable(),
+                        reference.getJoin().getName()),
+                fieldType,
+                new StaticDataFetcher(null),
+                Collections.emptyList(),
+                null);
+    }
+
+    @Nonnull
+    private GraphQLFieldDefinition getFieldDefinition(EntityField field) {
+        GraphQLOutputType fieldType = field.getScalarType().getTypeUtil().getGraphQLScalarType();
+
+        if (!field.isNullable()) {
+            fieldType = new GraphQLNonNull(fieldType);
+        }
+
+        return new GraphQLFieldDefinition(
+                field.getFieldName(),
+                String.format("Field for column [%s]", field.getColumn().getName()),
+                fieldType,
+                new StaticDataFetcher(null),
+                Collections.emptyList(),
+                null);
     }
 
     public boolean isInterfaceType(String typeConditionName) {
