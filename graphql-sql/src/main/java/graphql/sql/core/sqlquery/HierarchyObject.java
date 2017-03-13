@@ -38,6 +38,7 @@ public class HierarchyObject extends SqlObject {
         vContext.addTable(master);
         parents.forEach(joinWithTable -> joinWithTable.collectSchemaObjects(vContext));
         children.forEach(joinWithTable -> joinWithTable.collectSchemaObjects(vContext));
+
     }
 
     @Override

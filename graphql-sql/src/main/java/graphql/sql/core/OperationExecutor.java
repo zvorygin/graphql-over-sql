@@ -8,6 +8,7 @@ import com.google.common.collect.Iterables;
 import com.healthmarketscience.sqlbuilder.InCondition;
 import com.healthmarketscience.sqlbuilder.QueryPreparer;
 import com.healthmarketscience.sqlbuilder.SelectQuery;
+import com.healthmarketscience.sqlbuilder.ValidationException;
 import com.healthmarketscience.sqlbuilder.dbspec.RejoinTable;
 import graphql.ExceptionWhileDataFetching;
 import graphql.ExecutionResult;
@@ -177,12 +178,10 @@ public class OperationExecutor {
             throw new IllegalArgumentException("Not yet implemented");
         }
 
-
         Map<String, QueryPreparer.PlaceHolder> placeholders = new LinkedHashMap<>();
         Collection<QueryPreparer.StaticPlaceHolder> staticPlaceHolders = new ArrayList<>();
 
         Value argumentValue = argument.getValue();
-
 
         ScalarType scalarType = entityField.getScalarType();
         QueryNode queryFieldOwner = queryGraph.fetchFieldOwner(entityField);
@@ -205,6 +204,11 @@ public class OperationExecutor {
 
         selectQuery.addCondition(new InCondition(queryFieldTable.findColumn(entityField.getColumn()), placeHolder));
 
+        try {
+            selectQuery.validate();
+        } catch (ValidationException ve) {
+            throw new IllegalStateException(String.format("Failed to validate query [%s]", selectQuery.toString()), ve);
+        }
 
         fieldExecutor = new SqlFieldExecutor(selectQuery.toString(), executor.getNodeExtractor(), placeholders, staticPlaceHolders);
         return fieldExecutor;

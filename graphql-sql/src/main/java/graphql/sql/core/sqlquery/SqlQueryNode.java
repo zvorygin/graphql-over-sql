@@ -2,6 +2,7 @@ package graphql.sql.core.sqlquery;
 
 import com.healthmarketscience.common.util.AppendableExt;
 import com.healthmarketscience.sqlbuilder.SelectQuery;
+import com.healthmarketscience.sqlbuilder.ValidationContext;
 import com.healthmarketscience.sqlbuilder.dbspec.RejoinTable;
 
 import java.io.IOException;
@@ -22,6 +23,12 @@ public class SqlQueryNode extends HierarchyObject {
     @Override
     protected boolean requiresParentheses() {
         return !nestedNodes.isEmpty() || super.requiresParentheses();
+    }
+
+    @Override
+    protected void collectSchemaObjects(ValidationContext vContext) {
+        super.collectSchemaObjects(vContext);
+        nestedNodes.forEach(node -> node.collectSchemaObjects(vContext));
     }
 
     @Override
