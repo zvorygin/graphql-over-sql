@@ -204,13 +204,17 @@ public class OperationExecutor {
 
         selectQuery.addCondition(new InCondition(queryFieldTable.findColumn(entityField.getColumn()), placeHolder));
 
+        String queryString = selectQuery.toString();
+
         try {
             selectQuery.validate();
         } catch (ValidationException ve) {
-            throw new IllegalStateException(String.format("Failed to validate query [%s]", selectQuery.toString()), ve);
+            throw new IllegalStateException(String.format("Failed to validate query [%s]", queryString), ve);
         }
 
-        fieldExecutor = new SqlFieldExecutor(selectQuery.toString(), executor.getNodeExtractor(), placeholders, staticPlaceHolders);
+        LOGGER.info("Created query {}", queryString);
+
+        fieldExecutor = new SqlFieldExecutor(queryString, executor.getNodeExtractor(), placeholders, staticPlaceHolders);
         return fieldExecutor;
     }
 
