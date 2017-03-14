@@ -3,14 +3,24 @@ package graphql.sql.core.config.groovy.context;
 import com.healthmarketscience.sqlbuilder.dbspec.Constraint;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbConstraint;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbForeignKeyConstraint;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbObject;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
+import graphql.sql.core.config.ConfigurationException;
 import graphql.sql.core.config.NameProvider;
-import graphql.sql.core.config.domain.*;
+import graphql.sql.core.config.domain.Entity;
+import graphql.sql.core.config.domain.EntityField;
+import graphql.sql.core.config.domain.EntityReference;
+import graphql.sql.core.config.domain.Key;
+import graphql.sql.core.config.domain.ReferenceType;
+import graphql.sql.core.config.domain.ScalarType;
 import graphql.sql.core.introspect.DatabaseIntrospector;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -113,6 +123,23 @@ public class GroovyEntityBuilder {
                     introspector.getReverseJoin(constraint), parent, ReferenceType.MANY_TO_ONE, nullable);
         }
 
-        return new Entity(entityName, table, entityFields, parentReference, introspector.getPrimaryKeyConstraint(table));
+        table.getConstraints().stream().filter(dbConstraint -> dbConstraint.getType() == Constraint.Type.PRIMARY_KEY).findAny().orElseThrow(() -> new ConfigurationException(String.format("Primary constraint not found for table [%s]", table.getAbsoluteName())));
+
+        Key primaryKey = buildPrimaryKey(introspector, table, entityFields);
+        return new Entity(entityName, table, entityFields, parentReference, primaryKey);
+    }
+
+    @Nullable
+    private Key buildPrimaryKey(DatabaseIntrospector introspector, DbTable table, List<EntityField> entityFields) {
+        DbConstraint constraint = introspector.getPrimaryKeyConstraint(table);
+
+        if (constraint == null) {
+            return null;
+        }
+        Map<String, EntityField> columnNameToEntity = entityFields.stream().collect(Collectors.toMap(field -> field.getColumn().getName(), Function.identity()));
+
+        List<EntityField> keyFields = constraint.getColumns().stream().map(DbObject::getName).map(columnNameToEntity::get).collect(Collectors.toList());
+
+        return new Key(keyFields, constraint.getName(), constraint);
     }
 }

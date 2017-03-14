@@ -2,12 +2,15 @@ package graphql.sql.core.config.domain;
 
 import com.google.common.collect.Iterators;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbConstraint;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 public class Entity implements Comparable<Entity> {
 
@@ -27,18 +30,18 @@ public class Entity implements Comparable<Entity> {
     private final EntityReference parentReference;
 
     @Nullable
-    private final DbConstraint primaryKeyConstraint;
+    private final Key primaryKey;
 
     public Entity(@Nonnull String entityName,
                   @Nonnull DbTable table,
                   @Nonnull List<EntityField> entityFields,
                   @Nullable EntityReference parentReference,
-                  @Nullable DbConstraint primaryKeyConstraint) {
+                  @Nullable Key primaryKey) {
         this.entityName = entityName;
         this.table = table;
         this.entityFields.addAll(entityFields);
         this.parentReference = parentReference;
-        this.primaryKeyConstraint = primaryKeyConstraint;
+        this.primaryKey = primaryKey;
     }
 
     @Nonnull
@@ -62,8 +65,8 @@ public class Entity implements Comparable<Entity> {
     }
 
     @Nullable
-    public DbConstraint getPrimaryKeyConstraint() {
-        return primaryKeyConstraint;
+    public Key getPrimaryKey() {
+        return primaryKey;
     }
 
     @Override

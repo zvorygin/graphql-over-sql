@@ -1,11 +1,20 @@
 package graphql.sql.core;
 
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
-import com.healthmarketscience.sqlbuilder.dbspec.basic.DbConstraint;
 import graphql.execution.ExecutionContext;
-import graphql.language.*;
+import graphql.language.Field;
+import graphql.language.FragmentDefinition;
+import graphql.language.FragmentSpread;
+import graphql.language.InlineFragment;
+import graphql.language.Selection;
+import graphql.language.SelectionSet;
+import graphql.language.TypeName;
 import graphql.sql.core.config.GraphQLTypesProvider;
-import graphql.sql.core.config.domain.*;
+import graphql.sql.core.config.domain.Config;
+import graphql.sql.core.config.domain.Entity;
+import graphql.sql.core.config.domain.EntityField;
+import graphql.sql.core.config.domain.EntityReference;
+import graphql.sql.core.config.domain.Key;
+import graphql.sql.core.config.domain.ReferenceType;
 import graphql.sql.core.extractor.FragmentExtractor;
 import graphql.sql.core.extractor.NodeExtractor;
 import graphql.sql.core.extractor.ScalarExtractor;
@@ -13,6 +22,7 @@ import graphql.sql.core.querygraph.QueryBuilderException;
 import graphql.sql.core.querygraph.QueryNode;
 import graphql.sql.core.querygraph.QueryRoot;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Optional;
 
@@ -99,15 +109,25 @@ public class GraphQLQueryExecutorBuilder {
     }
 
     private void addPrimaryKeysToExtractor(QueryNode node, NodeExtractor extractor) {
-        Entity entity = node.getEntity();
-        // Get primary key constraint of referenced table to use as key
-        DbConstraint primaryKeyConstraint = entity.getPrimaryKeyConstraint();
-        for (DbColumn column : primaryKeyConstraint.getColumns()) {
-            EntityField primaryKeyField = entity.findField(column);
-            ScalarExtractor keyExtractor = new ScalarExtractor<>(node.fetchField(primaryKeyField),
-                    primaryKeyField.getScalarType().getTypeUtil());
+        for (EntityField field : getEntityKeyFields(node.getEntity())) {
+            ScalarExtractor keyExtractor = new ScalarExtractor<>(
+                    node.fetchField(field),
+                    field.getScalarType().getTypeUtil());
             extractor.addKeyExtractor(keyExtractor);
         }
+    }
+
+    @Nonnull
+    private List<EntityField> getEntityKeyFields(Entity entity) {
+        List<EntityField> keyFields;
+        Key primaryKey = entity.getPrimaryKey();
+
+        if (primaryKey != null) {
+            keyFields = primaryKey.getFields();
+        } else {
+            keyFields = entity.getEntityFields();
+        }
+        return keyFields;
     }
 
     private void processFragment(ExecutionContext executionContext,
@@ -125,14 +145,14 @@ public class GraphQLQueryExecutorBuilder {
         Entity referencedEntity = config.getEntity(entityName);
         QueryNode referencedNode = node.fetchEntityAtHierarchy(referencedEntity);
 
-        List<DbColumn> columns = referencedEntity.getPrimaryKeyConstraint().getColumns();
-        int[] primaryKeyIndices = new int[columns.size()];
+        List<EntityField> fields = getEntityKeyFields(referencedEntity);
+        int[] primaryKeyIndices = new int[fields.size()];
         int i = 0;
-        for (DbColumn column : columns) {
-            EntityField referencedEntityPrimaryField = referencedEntity.findField(column);
-            int referencedEntityPrimaryColumnPosition = referencedNode.fetchField(referencedEntityPrimaryField);
-            int relativePosition = extractor.addKeyExtractor(new ScalarExtractor<>(referencedEntityPrimaryColumnPosition,
-                    referencedEntityPrimaryField.getScalarType().getTypeUtil()));
+        for (EntityField field : fields) {
+            int fieldPosition = referencedNode.fetchField(field);
+            int relativePosition = extractor.addKeyExtractor(
+                    new ScalarExtractor<>(fieldPosition,
+                            field.getScalarType().getTypeUtil()));
             primaryKeyIndices[i++] = relativePosition;
         }
 

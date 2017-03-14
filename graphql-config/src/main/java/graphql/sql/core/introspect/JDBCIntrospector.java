@@ -1,6 +1,12 @@
 package graphql.sql.core.introspect;
 
-import com.healthmarketscience.sqlbuilder.dbspec.basic.*;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbConstraint;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbForeignKeyConstraint;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbJoin;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbSchema;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbSpec;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -8,7 +14,12 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class JDBCIntrospector implements DatabaseIntrospector {
 
@@ -188,9 +199,10 @@ public class JDBCIntrospector implements DatabaseIntrospector {
                     }
                     primaryKeyColumns.add(column);
                 }
-
-                tableToPrimaryKeyConstraint.put(table, table.primaryKey(primaryKeyName,
-                        primaryKeyColumns.stream().map(DbColumn::getName).toArray(String[]::new)));
+                if (!primaryKeyColumns.isEmpty()) {
+                    tableToPrimaryKeyConstraint.put(table, table.primaryKey(primaryKeyName,
+                            primaryKeyColumns.stream().map(DbColumn::getName).toArray(String[]::new)));
+                }
             }
         } catch (SQLException e) {
             throw new IntrospectionException(String.format("Failed to list columns of table [%s]", table), e);
