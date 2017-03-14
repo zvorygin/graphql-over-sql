@@ -50,13 +50,9 @@ public class Key {
 
         Key key = (Key) o;
 
-        if (!fields.equals(key.fields)) {
-            return false;
-        }
-        if (name != null ? !name.equals(key.name) : key.name != null) {
-            return false;
-        }
-        return constraint != null ? constraint.equals(key.constraint) : key.constraint == null;
+        return fields.equals(key.fields) &&
+                (name != null ? name.equals(key.name) : key.name == null) &&
+                (constraint != null ? constraint.equals(key.constraint) : key.constraint == null);
     }
 
     @Override

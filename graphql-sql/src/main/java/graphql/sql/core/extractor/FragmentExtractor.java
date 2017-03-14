@@ -42,7 +42,7 @@ public class FragmentExtractor {
      * @param node node to check type
      * @return <code>boolean</code> if this node matches fragment type, <code>false</code> otherwise.
      */
-    protected boolean isApplicable(ResultNode node) {
+    private boolean isApplicable(ResultNode node) {
         ArrayKey key = node.getKey();
 
         for (int position : fragmentTypePrimaryKeyRelativePositions) {

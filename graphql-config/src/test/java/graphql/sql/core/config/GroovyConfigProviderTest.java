@@ -10,7 +10,6 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -41,7 +40,8 @@ public class GroovyConfigProviderTest {
     @Test
     public void testEntityCreated() {
         GroovyConfigProvider configProvider =
-                new GroovyConfigProvider(new ClassPathResource("test.graphqlsql"),
+                new GroovyConfigProvider(
+                        Thread.currentThread().getContextClassLoader().getResourceAsStream("test.graphqlsql"),
                         new UnderscoreToCamelcaseNameProvider(new IdentityAbbreviationResolver()),
                         INTROSPECTOR);
 

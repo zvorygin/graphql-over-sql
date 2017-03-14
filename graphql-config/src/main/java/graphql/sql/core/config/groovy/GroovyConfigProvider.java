@@ -8,19 +8,19 @@ import graphql.sql.core.config.groovy.context.ExecutionContext;
 import graphql.sql.core.introspect.DatabaseIntrospector;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
-import org.springframework.core.io.Resource;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class GroovyConfigProvider implements ConfigProvider {
 
     public static final String DEFAULT_CATALOG_NAME = "PUBLIC";
-    private final Resource configResource;
+    private final InputStream configResource;
     private final NameProvider nameProvider;
     private final DatabaseIntrospector databaseIntrospector;
 
-    public GroovyConfigProvider(Resource configResource,
+    public GroovyConfigProvider(InputStream configResource,
                                 NameProvider nameProvider,
                                 DatabaseIntrospector databaseIntrospector) {
         this.configResource = configResource;
@@ -40,7 +40,7 @@ public class GroovyConfigProvider implements ConfigProvider {
         binding.setProperty("schema", new SchemaSetter(executionContext));
         binding.setProperty("query", new QueryBuilder(executionContext));
 
-        try (InputStreamReader reader = new InputStreamReader(configResource.getInputStream())) {
+        try (InputStreamReader reader = new InputStreamReader(configResource)) {
             gs.evaluate(reader);
         } catch (IOException e) {
             throw new ConfigurationException(e);

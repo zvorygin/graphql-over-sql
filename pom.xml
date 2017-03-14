@@ -12,6 +12,7 @@
 
     <modules>
         <module>graphql-common</module>
+        <module>graphql-config</module>
         <module>graphql-sql</module>
         <module>graphql-web</module>
         <module>graphql-it</module>
@@ -134,6 +135,16 @@
                 <groupId>com.graphql-over-sql</groupId>
                 <artifactId>graphql-web</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.graphql-over-sql</groupId>
+                <artifactId>graphql-config</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.healthmarketscience.sqlbuilder</groupId>
+                <artifactId>sqlbuilder</artifactId>
+                <version>2.1.6</version>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>

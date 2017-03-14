@@ -63,7 +63,7 @@ public class DocumentExecutor {
         }
     }
 
-    public ExecutionResult execute(@Nonnull DocumentContext document,
+    private ExecutionResult execute(@Nonnull DocumentContext document,
                                    @Nullable String operationName,
                                    @Nonnull Map<String, Object> variables) {
         OperationDefinition operation = document.getOperation(operationName);
