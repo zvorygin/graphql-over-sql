@@ -5,6 +5,9 @@ import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import graphql.sql.core.config.domain.Entity;
 import graphql.sql.core.config.domain.EntityField;
 import graphql.sql.core.config.domain.EntityReference;
+import graphql.sql.core.config.domain.impl.SqlEntityReference;
+import graphql.sql.core.config.domain.impl.SqlEntityField;
+import graphql.sql.core.config.domain.impl.SqlEntity;
 import graphql.sql.core.sqlquery.JoinWithSqlQueryNode;
 import graphql.sql.core.sqlquery.JoinWithTable;
 import graphql.sql.core.sqlquery.SqlQueryNode;
@@ -22,19 +25,19 @@ public class QueryNode<T extends SqlQueryNode> {
 
     private final T sqlQueryNode;
 
-    private final Entity entity;
+    private final SqlEntity entity;
 
     private final RejoinTable table;
 
-    private HashMap<EntityField, Integer> fieldsToQuery = new LinkedHashMap<>();
+    private final HashMap<EntityField, Integer> fieldsToQuery = new LinkedHashMap<>();
 
-    private Map<String, QueryNode<SqlQueryNode>> references = new LinkedHashMap<>();
+    private final Map<String, QueryNode<SqlQueryNode>> references = new LinkedHashMap<>();
 
     private QueryNode<SqlQueryNode> parent;
 
-    private Map<Entity, QueryNode<? extends SqlQueryNode>> children = new LinkedHashMap<>();
+    private final Map<Entity, QueryNode<? extends SqlQueryNode>> children = new LinkedHashMap<>();
 
-    protected QueryNode(Entity entity, T sqlQueryNode, QueryNode<? extends SqlQueryNode> hierarchyMaster, QueryRoot graph, RejoinTable table) {
+    protected QueryNode(SqlEntity entity, T sqlQueryNode, QueryNode<? extends SqlQueryNode> hierarchyMaster, QueryRoot graph, RejoinTable table) {
         this.entity = entity;
         this.sqlQueryNode = sqlQueryNode;
         this.hierarchyMaster = hierarchyMaster == null ? this : hierarchyMaster;
@@ -89,7 +92,7 @@ public class QueryNode<T extends SqlQueryNode> {
             if (entity.getParentReference() == null) {
                 throw new QueryBuilderException(String.format("Entity [%s] doesn't have parent", entity.getEntityName()));
             }
-            EntityReference ref = entity.getParentReference();
+            SqlEntityReference ref = entity.getParentReference();
 
             RejoinTable parentTable = rejoin(ref.getTargetEntity(), graph.nextNodeNumber());
             parent = new QueryNode<>(ref.getTargetEntity(), sqlQueryNode, this, graph, parentTable);
@@ -102,13 +105,15 @@ public class QueryNode<T extends SqlQueryNode> {
         return parent;
     }
 
-    public QueryNode fetchChild(Entity child) {
-        EntityReference parentReference = child.getParentReference();
+    public QueryNode fetchChild(Entity e) {
+        // TODO(dzvorygin) remove cast below.
+        SqlEntity child = (SqlEntity) e;
+        SqlEntityReference parentReference = child.getParentReference();
         if (parentReference == null) {
             throw new QueryBuilderException(
                     String.format("Entity [%s] doesn't have parent", child.getEntityName()));
         }
-        Entity childParent = parentReference.getTargetEntity();
+        SqlEntity childParent = parentReference.getTargetEntity();
 
         if (!childParent.equals(entity)) {
             throw new QueryBuilderException(
@@ -119,7 +124,7 @@ public class QueryNode<T extends SqlQueryNode> {
         }
 
         return children.computeIfAbsent(child, entity -> {
-            RejoinTable table = entity.getTable().rejoin("t" + graph.nextNodeNumber());
+            RejoinTable table = child.getTable().rejoin("t" + graph.nextNodeNumber());
             QueryNode result = new QueryNode<>(child, sqlQueryNode, this, graph, table);
             result.parent = this;
             sqlQueryNode.addChild(new JoinWithTable(table,
@@ -130,9 +135,11 @@ public class QueryNode<T extends SqlQueryNode> {
         });
     }
 
-    public QueryNode fetchReference(EntityReference reference) {
+    public QueryNode fetchReference(EntityReference ref) {
+        // TODO(dzvorygin) remove cast below
+        SqlEntityReference reference = (SqlEntityReference) ref;
         return references.computeIfAbsent(reference.getName(),
-                (ref) -> {
+                (name) -> {
                     RejoinTable referencedTable = rejoin(reference.getTargetEntity(), graph.nextNodeNumber());
                     SqlQueryNode referencedNode = new SqlQueryNode(referencedTable);
                     QueryNode<SqlQueryNode> result = new QueryNode<>(reference.getTargetEntity(), referencedNode, null, graph, referencedTable);
@@ -143,12 +150,13 @@ public class QueryNode<T extends SqlQueryNode> {
                 });
     }
 
-    public int fetchField(EntityField entityField) {
+    public int fetchField(EntityField f) {
+        SqlEntityField entityField = (SqlEntityField) f;
         return fieldsToQuery.computeIfAbsent(entityField,
                 (field) -> graph.getSqlQueryNode().addColumn(table.findColumn(entityField.getColumn())));
     }
 
-    public Entity getEntity() {
+    public SqlEntity getEntity() {
         return entity;
     }
 
@@ -170,7 +178,7 @@ public class QueryNode<T extends SqlQueryNode> {
         }
     }
 
-    private static RejoinTable rejoin(Entity entity, int i) {
+    private static RejoinTable rejoin(SqlEntity entity, int i) {
         return entity.getTable().rejoin("t" + i);
     }
 

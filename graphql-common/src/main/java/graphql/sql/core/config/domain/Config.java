@@ -1,31 +1,16 @@
 package graphql.sql.core.config.domain;
 
-import com.google.common.collect.ImmutableMap;
+import graphql.sql.core.config.domain.impl.SqlEntity;
+import graphql.sql.core.config.domain.impl.SqlEntityQuery;
 
-import java.util.Map;
+import java.util.Collection;
 
-public class Config {
-    private final Map<String, Entity> entities;
-    private final Map<String, EntityQuery> queries;
+public interface Config {
+    Collection<Entity> getEntities();
 
-    public Config(Map<String, Entity> entities, Map<String, EntityQuery> queries) {
-        this.entities = ImmutableMap.copyOf(entities);
-        this.queries = ImmutableMap.copyOf(queries);
-    }
+    SqlEntity getEntity(String entityName);
 
-    public Map<String, Entity> getEntities() {
-        return entities;
-    }
+    Collection<EntityQuery> getQueries();
 
-    public Entity getEntity(String entityName) {
-        return entities.get(entityName);
-    }
-
-    public Map<String, EntityQuery> getQueries() {
-        return queries;
-    }
-
-    public EntityQuery getQuery(String queryName) {
-        return queries.get(queryName);
-    }
+    SqlEntityQuery getQuery(String queryName);
 }

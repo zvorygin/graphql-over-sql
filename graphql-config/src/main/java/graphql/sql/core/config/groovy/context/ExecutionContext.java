@@ -1,21 +1,26 @@
 package graphql.sql.core.config.groovy.context;
 
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbObject;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 import graphql.sql.core.config.NameProvider;
 import graphql.sql.core.config.domain.Config;
-import graphql.sql.core.config.domain.Entity;
-import graphql.sql.core.config.domain.EntityQuery;
+import graphql.sql.core.config.domain.impl.SqlConfig;
+import graphql.sql.core.config.domain.impl.SqlEntity;
+import graphql.sql.core.config.domain.impl.SqlEntityQuery;
 import graphql.sql.core.introspect.DatabaseIntrospector;
 
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ExecutionContext {
 
-    private final Map<String, Entity> entities = new TreeMap<>();
+    private final Map<DbTable, SqlEntity> entities = new TreeMap<>(Comparator.comparing(DbObject::getAbsoluteName));
 
-    private final Map<String, EntityQuery> queries = new TreeMap<>();
+    private final Map<String, SqlEntityQuery> queries = new TreeMap<>();
 
     private final NameProvider nameProvider;
 
@@ -36,15 +41,17 @@ public class ExecutionContext {
         return introspector;
     }
 
-    public void registerEntity(Entity entity) {
-        if (entities.putIfAbsent(entity.getEntityName(), entity) != null) {
+    public void registerEntity(SqlEntity entity) {
+        if (entities.putIfAbsent(entity.getTable(), entity) != null) {
             throw new IllegalArgumentException(
-                    String.format("Entity with name [%s] is already registered", entity.getEntityName()));
+                    String.format("Entity for table [%s] is already registered", entity.getTable().getAbsoluteName()));
         }
     }
 
     public Config buildConfig() {
-        return new Config(entities, queries);
+        Map<String, SqlEntity> entityMap =
+                entities.values().stream().collect(Collectors.toMap(SqlEntity::getEntityName, Function.identity()));
+        return new SqlConfig(entityMap, queries);
     }
 
     public String getSchemaName() {
@@ -63,11 +70,11 @@ public class ExecutionContext {
         this.catalogName = catalogName;
     }
 
-    public Optional<Entity> findEntity(DbTable referencedTable) {
-        return entities.values().stream().filter(entity -> entity.getTable().equals(referencedTable)).findAny();
+    public Optional<SqlEntity> findEntity(DbTable referencedTable) {
+        return Optional.ofNullable(entities.get(referencedTable));
     }
 
-    public void registerQuery(EntityQuery entityQuery) {
+    public void registerQuery(SqlEntityQuery entityQuery) {
         if (queries.putIfAbsent(entityQuery.getName(), entityQuery) != null) {
             throw new IllegalStateException(
                     String.format("Query with name [%s] is already registered", entityQuery.getName()));

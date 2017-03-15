@@ -10,11 +10,13 @@ import graphql.language.SelectionSet;
 import graphql.language.TypeName;
 import graphql.sql.core.config.GraphQLTypesProvider;
 import graphql.sql.core.config.domain.Config;
-import graphql.sql.core.config.domain.Entity;
 import graphql.sql.core.config.domain.EntityField;
 import graphql.sql.core.config.domain.EntityReference;
-import graphql.sql.core.config.domain.Key;
+import graphql.sql.core.config.domain.impl.Key;
 import graphql.sql.core.config.domain.ReferenceType;
+import graphql.sql.core.config.domain.impl.SqlEntityReference;
+import graphql.sql.core.config.domain.impl.SqlEntityField;
+import graphql.sql.core.config.domain.impl.SqlEntity;
 import graphql.sql.core.extractor.FragmentExtractor;
 import graphql.sql.core.extractor.NodeExtractor;
 import graphql.sql.core.extractor.ScalarExtractor;
@@ -36,7 +38,7 @@ public class GraphQLQueryExecutorBuilder {
         this.typesProvider = typesProvider;
     }
 
-    public GraphQLQueryExecutor build(Entity rootEntity, Field rootField, ExecutionContext executionContext) {
+    public GraphQLQueryExecutor build(SqlEntity rootEntity, Field rootField, ExecutionContext executionContext) {
         QueryRoot graph = new QueryRoot(rootEntity);
         NodeExtractor extractor = new NodeExtractor();
         addPrimaryKeysToExtractor(graph, extractor);
@@ -72,8 +74,8 @@ public class GraphQLQueryExecutorBuilder {
         String alias = field.getAlias() == null ? field.getName() : field.getAlias();
 
         while (true) {
-            Entity currentEntity = current.getEntity();
-            Optional<EntityField> entityField = currentEntity.findField(field.getName());
+            SqlEntity currentEntity = current.getEntity();
+            Optional<? extends EntityField> entityField = currentEntity.findField(field.getName());
             if (entityField.isPresent()) {
                 int position = current.fetchField(entityField.get());
                 extractor.addScalarField(alias,
@@ -81,7 +83,7 @@ public class GraphQLQueryExecutorBuilder {
                 return;
             }
 
-            Optional<EntityReference> reference = currentEntity.findReference(field.getName());
+            Optional<SqlEntityReference> reference = currentEntity.findReference(field.getName());
             if (reference.isPresent()) {
                 EntityReference entityReference = reference.get();
                 QueryNode referencedNode = current.fetchReference(entityReference);
@@ -118,8 +120,8 @@ public class GraphQLQueryExecutorBuilder {
     }
 
     @Nonnull
-    private List<EntityField> getEntityKeyFields(Entity entity) {
-        List<EntityField> keyFields;
+    private List<SqlEntityField> getEntityKeyFields(SqlEntity entity) {
+        List<SqlEntityField> keyFields;
         Key primaryKey = entity.getPrimaryKey();
 
         if (primaryKey != null) {
@@ -142,10 +144,10 @@ public class GraphQLQueryExecutorBuilder {
             entityName = typeConditionName;
         }
 
-        Entity referencedEntity = config.getEntity(entityName);
+        SqlEntity referencedEntity = config.getEntity(entityName);
         QueryNode referencedNode = node.fetchEntityAtHierarchy(referencedEntity);
 
-        List<EntityField> fields = getEntityKeyFields(referencedEntity);
+        List<SqlEntityField> fields = getEntityKeyFields(referencedEntity);
         int[] primaryKeyIndices = new int[fields.size()];
         int i = 0;
         for (EntityField field : fields) {

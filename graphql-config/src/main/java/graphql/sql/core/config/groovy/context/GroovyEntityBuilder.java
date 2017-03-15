@@ -7,12 +7,12 @@ import com.healthmarketscience.sqlbuilder.dbspec.basic.DbObject;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 import graphql.sql.core.config.ConfigurationException;
 import graphql.sql.core.config.NameProvider;
-import graphql.sql.core.config.domain.Entity;
-import graphql.sql.core.config.domain.EntityField;
-import graphql.sql.core.config.domain.EntityReference;
-import graphql.sql.core.config.domain.Key;
+import graphql.sql.core.config.domain.impl.Key;
 import graphql.sql.core.config.domain.ReferenceType;
 import graphql.sql.core.config.domain.ScalarType;
+import graphql.sql.core.config.domain.impl.SqlEntityReference;
+import graphql.sql.core.config.domain.impl.SqlEntityField;
+import graphql.sql.core.config.domain.impl.SqlEntity;
 import graphql.sql.core.introspect.DatabaseIntrospector;
 
 import javax.annotation.Nonnull;
@@ -27,14 +27,11 @@ import java.util.stream.Collectors;
 public class GroovyEntityBuilder {
 
     private String entityName;
-    private String catalogName;
     private String schemaName;
     private String tableName;
-    private boolean isAbstract;
-    private Entity parent;
+    private SqlEntity parent;
 
-    public GroovyEntityBuilder(String catalogName, String schemaName) {
-        this.catalogName = catalogName;
+    public GroovyEntityBuilder(String schemaName) {
         this.schemaName = schemaName;
     }
 
@@ -53,17 +50,16 @@ public class GroovyEntityBuilder {
         return this;
     }
 
-    public GroovyEntityBuilder parent(Entity parent) {
+    public GroovyEntityBuilder parent(SqlEntity parent) {
         this.parent = parent;
         return this;
     }
 
     public GroovyEntityBuilder isAbstract(boolean isAbstract) {
-        this.isAbstract = isAbstract;
         return this;
     }
 
-    public Entity build(DatabaseIntrospector introspector, NameProvider nameProvider) {
+    public SqlEntity build(DatabaseIntrospector introspector, NameProvider nameProvider) {
 
         if (tableName == null) {
             throw new IllegalArgumentException("Mandatory parameter \"table\" not found");
@@ -78,9 +74,9 @@ public class GroovyEntityBuilder {
                         () -> new IllegalArgumentException(
                                 String.format("Table [%s] wasn't found in schema [%s]", tableName, schemaName)));
 
-        List<EntityField> entityFields = table.getColumns()
+        List<SqlEntityField> entityFields = table.getColumns()
                 .stream()
-                .map(column -> new EntityField(
+                .map(column -> new SqlEntityField(
                         nameProvider.getFieldName(column.getName()),
                         column,
                         ScalarType.getByColumn(column),
@@ -88,7 +84,7 @@ public class GroovyEntityBuilder {
                                 .anyMatch(Predicate.isEqual(Constraint.Type.UNIQUE))))
                 .collect(Collectors.toList());
 
-        EntityReference parentReference = null;
+        SqlEntityReference parentReference = null;
 
         if (parent != null) {
             DbTable parentTable = parent.getTable();
@@ -118,27 +114,26 @@ public class GroovyEntityBuilder {
                             .anyMatch(Predicate.isEqual(Constraint.Type.NOT_NULL))
             ).anyMatch(Predicate.isEqual(false));
 
-            parentReference = new EntityReference(constraint.getName(),
-                    introspector.getJoin(constraint),
-                    introspector.getReverseJoin(constraint), parent, ReferenceType.MANY_TO_ONE, nullable);
+            parentReference = new SqlEntityReference(constraint.getName(),
+                    introspector.getJoin(constraint), parent, ReferenceType.MANY_TO_ONE, nullable);
         }
 
         table.getConstraints().stream().filter(dbConstraint -> dbConstraint.getType() == Constraint.Type.PRIMARY_KEY).findAny().orElseThrow(() -> new ConfigurationException(String.format("Primary constraint not found for table [%s]", table.getAbsoluteName())));
 
         Key primaryKey = buildPrimaryKey(introspector, table, entityFields);
-        return new Entity(entityName, table, entityFields, parentReference, primaryKey);
+        return new SqlEntity(entityName, table, entityFields, parentReference, primaryKey);
     }
 
     @Nullable
-    private Key buildPrimaryKey(DatabaseIntrospector introspector, DbTable table, List<EntityField> entityFields) {
+    private Key buildPrimaryKey(DatabaseIntrospector introspector, DbTable table, List<SqlEntityField> entityFields) {
         DbConstraint constraint = introspector.getPrimaryKeyConstraint(table);
 
         if (constraint == null) {
             return null;
         }
-        Map<String, EntityField> columnNameToEntity = entityFields.stream().collect(Collectors.toMap(field -> field.getColumn().getName(), Function.identity()));
+        Map<String, SqlEntityField> columnNameToEntity = entityFields.stream().collect(Collectors.toMap(field -> field.getColumn().getName(), Function.identity()));
 
-        List<EntityField> keyFields = constraint.getColumns().stream().map(DbObject::getName).map(columnNameToEntity::get).collect(Collectors.toList());
+        List<SqlEntityField> keyFields = constraint.getColumns().stream().map(DbObject::getName).map(columnNameToEntity::get).collect(Collectors.toList());
 
         return new Key(keyFields, constraint.getName(), constraint);
     }

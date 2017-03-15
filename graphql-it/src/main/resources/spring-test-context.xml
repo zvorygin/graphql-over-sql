@@ -53,7 +53,6 @@
 
     <bean id="typesProvider" class="graphql.sql.core.config.GraphQLTypesProvider">
         <constructor-arg index="0" ref="config"/>
-        <constructor-arg index="1" ref="nameProvider"/>
     </bean>
 
     <bean id="queryExecutorBuilder" class="graphql.sql.core.GraphQLQueryExecutorBuilder">

@@ -1,17 +1,36 @@
 package graphql.sql.core.config;
 
-import graphql.schema.*;
-import graphql.sql.core.config.domain.*;
+import graphql.schema.GraphQLArgument;
+import graphql.schema.GraphQLFieldDefinition;
+import graphql.schema.GraphQLInterfaceType;
+import graphql.schema.GraphQLList;
+import graphql.schema.GraphQLNonNull;
+import graphql.schema.GraphQLObjectType;
+import graphql.schema.GraphQLOutputType;
+import graphql.schema.GraphQLSchema;
+import graphql.schema.GraphQLType;
+import graphql.schema.StaticDataFetcher;
+import graphql.schema.TypeResolverProxy;
+import graphql.sql.core.config.domain.Config;
+import graphql.sql.core.config.domain.Entity;
+import graphql.sql.core.config.domain.EntityField;
+import graphql.sql.core.config.domain.EntityQuery;
+import graphql.sql.core.config.domain.EntityReference;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Spliterators;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class GraphQLTypesProvider {
-
-    private final NameProvider nameProvider;
 
     private final Map<Entity, GraphQLObjectType> objectCache = new HashMap<>();
 
@@ -19,14 +38,12 @@ public class GraphQLTypesProvider {
 
     private final GraphQLSchema schema;
 
-    public GraphQLTypesProvider(Config config, NameProvider nameProvider) {
-        this.nameProvider = nameProvider;
-
+    public GraphQLTypesProvider(Config config) {
         // TODO(dzvorygin) use GraphQL builders everywhere.
         GraphQLObjectType.Builder queryTypeBuilder =
                 GraphQLObjectType.newObject().name("query").description("Root query object");
 
-        config.getQueries().values().forEach(query -> {
+        config.getQueries().forEach(query -> {
             GraphQLFieldDefinition.Builder fieldBuilder = GraphQLFieldDefinition.newFieldDefinition()
                     .name(getQueryName(query))
                     .type(new GraphQLList(getInterfaceType(query.getEntity())))
@@ -38,11 +55,11 @@ public class GraphQLTypesProvider {
         GraphQLObjectType queryType = queryTypeBuilder.build();
 
 
-        Collection<GraphQLInterfaceType> interfaceTypes = config.getEntities().values().stream()
+        Collection<GraphQLInterfaceType> interfaceTypes = config.getEntities().stream()
                 .map(this::getInterfaceType)
                 .collect(Collectors.toList());
 
-        Collection<GraphQLObjectType> objectTypes = config.getEntities().values().stream()
+        Collection<GraphQLObjectType> objectTypes = config.getEntities().stream()
                 .map(this::getObjectType)
                 .collect(Collectors.toList());
 
@@ -57,29 +74,8 @@ public class GraphQLTypesProvider {
         return schema;
     }
 
-    private GraphQLArgument getQueryArgument(EntityQuery query) {
-        if (query.getEntityFields().size() <= 1) {
-            EntityField entityField = query.getEntityFields().get(0);
-
-            return GraphQLArgument.newArgument()
-                    .name(nameProvider.getFieldListName(entityField))
-                    .type(new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(
-                            entityField.getScalarType().getTypeUtil().getGraphQLScalarType()))))
-                    .build();
-        }
-        GraphQLInputObjectType.Builder elementTypeBuilder = GraphQLInputObjectType.newInputObject()
-                .name(query.getName() + "Query")
-                .description("Query parameters for " + query.getName());
-
-        query.getEntityFields()
-                .stream()
-                .map(field -> GraphQLInputObjectField.newInputObjectField()
-                        .name(field.getFieldName())
-                        .type(new GraphQLNonNull(field.getScalarType().getTypeUtil().getGraphQLScalarType()))
-                )
-                .forEach(elementTypeBuilder::field);
-        return new GraphQLArgument("query",
-                new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(elementTypeBuilder.build()))));
+    private List<GraphQLArgument> getQueryArgument(EntityQuery query) {
+        return query.getArguments();
     }
 
     private String getQueryName(EntityQuery entity) {
@@ -90,7 +86,7 @@ public class GraphQLTypesProvider {
     private GraphQLObjectType getObjectType(Entity entity) {
         return objectCache.computeIfAbsent(entity, k -> new GraphQLObjectType(
                 entity.getEntityName(),
-                String.format("Object type for table [%s]", entity.getTable()),
+                entity.getDescription(),
                 getFieldDefinitions(entity),
                 getInterfaces(entity)));
     }
@@ -108,7 +104,7 @@ public class GraphQLTypesProvider {
     private GraphQLInterfaceType getInterfaceType(Entity entity) {
         return interfaceCache.computeIfAbsent(entity, k -> new GraphQLInterfaceType(
                 getInterfaceName(entity),
-                String.format("Interface type for table [%s]", entity.getTable()),
+                String.format("Primary interface type for entity [%s]", entity.getEntityName()),
                 getFieldDefinitions(entity),
                 new TypeResolverProxy()));
     }
@@ -134,9 +130,7 @@ public class GraphQLTypesProvider {
 
         return new GraphQLFieldDefinition(
                 reference.getName(),
-                String.format("Reference to [%s] via FK [%s]",
-                        reference.getTargetEntity().getTable(),
-                        reference.getJoin().getName()),
+                reference.getDescription(),
                 fieldType,
                 new StaticDataFetcher(null),
                 Collections.emptyList(),
@@ -153,7 +147,7 @@ public class GraphQLTypesProvider {
 
         return new GraphQLFieldDefinition(
                 field.getFieldName(),
-                String.format("Field for column [%s]", field.getColumn().getName()),
+                field.getDescription(),
                 fieldType,
                 new StaticDataFetcher(null),
                 Collections.emptyList(),

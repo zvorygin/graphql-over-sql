@@ -14,7 +14,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
-import java.util.Map;
+import java.util.Collection;
 
 public class GroovyConfigProviderTest {
 
@@ -46,9 +46,9 @@ public class GroovyConfigProviderTest {
                         INTROSPECTOR);
 
         Config config = configProvider.getConfig();
-        Map<String, Entity> entities = config.getEntities();
+        Collection<Entity> entities = config.getEntities();
 
         Assert.assertArrayEquals(new String[]{"Message", "Moderator", "Thread", "User"},
-                entities.values().stream().map(Entity::getEntityName).sorted().toArray(String[]::new));
+                entities.stream().map(Entity::getEntityName).sorted().toArray(String[]::new));
     }
 }

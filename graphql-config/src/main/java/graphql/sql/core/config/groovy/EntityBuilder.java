@@ -6,8 +6,9 @@ import com.healthmarketscience.sqlbuilder.dbspec.basic.DbForeignKeyConstraint;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbJoin;
 import graphql.sql.core.config.NameProvider;
 import graphql.sql.core.config.domain.Entity;
-import graphql.sql.core.config.domain.EntityReference;
 import graphql.sql.core.config.domain.ReferenceType;
+import graphql.sql.core.config.domain.impl.SqlEntityReference;
+import graphql.sql.core.config.domain.impl.SqlEntity;
 import graphql.sql.core.config.groovy.context.ExecutionContext;
 import graphql.sql.core.config.groovy.context.GroovyEntityBuilder;
 import graphql.sql.core.introspect.DatabaseIntrospector;
@@ -27,7 +28,7 @@ public class EntityBuilder {
     @SuppressWarnings("unused")
     public Entity call(Map<String, Object> parameters) {
         GroovyEntityBuilder delegate =
-                new GroovyEntityBuilder(executionContext.getCatalogName(), executionContext.getSchemaName());
+                new GroovyEntityBuilder(executionContext.getSchemaName());
         String name = (String) parameters.get("name");
         if (name != null) {
             delegate.name(name);
@@ -37,9 +38,9 @@ public class EntityBuilder {
             delegate.schema(schemaName);
         }
         delegate.table((String) parameters.get("table"));
-        delegate.parent((Entity) parameters.get("parent"));
+        delegate.parent((SqlEntity) parameters.get("parent"));
         DatabaseIntrospector introspector = executionContext.getIntrospector();
-        Entity entity = delegate.build(introspector, executionContext.getNameProvider());
+        SqlEntity entity = delegate.build(introspector, executionContext.getNameProvider());
 
         executionContext.registerEntity(entity);
 
@@ -49,12 +50,13 @@ public class EntityBuilder {
         return entity;
     }
 
-    private void processForeignKeyConstraint(Entity entity, DbForeignKeyConstraint constraint) {
+    private void processForeignKeyConstraint(SqlEntity entity, DbForeignKeyConstraint constraint) {
         DatabaseIntrospector introspector = executionContext.getIntrospector();
         NameProvider nameProvider = executionContext.getNameProvider();
         executionContext.findEntity(constraint.getReferencedTable()).ifPresent(referencedEntity ->
                 {
-                    Optional<EntityReference> parentReference = Optional.ofNullable(entity.getParentReference());
+                    //TODO(dzvorygin) remove cast below
+                    Optional<SqlEntityReference> parentReference = Optional.ofNullable(entity.getParentReference());
 
                     // Don't register parent/child references in field references
                     DbJoin join = introspector.getJoin(constraint);
@@ -70,19 +72,17 @@ public class EntityBuilder {
                     ).anyMatch(Predicate.isEqual(false));
 
                     entity.addReference(
-                            new EntityReference(nameProvider.getLinkName(constraint,
+                            new SqlEntityReference(nameProvider.getLinkName(constraint,
                                     entity, referencedEntity, ReferenceType.MANY_TO_ONE),
                                     join,
-                                    reverseJoin,
                                     referencedEntity,
                                     ReferenceType.MANY_TO_ONE,
                                     nullable
                             ));
                     referencedEntity.addReference(
-                            new EntityReference(nameProvider.getLinkName(
+                            new SqlEntityReference(nameProvider.getLinkName(
                                     constraint, referencedEntity, entity, ReferenceType.ONE_TO_MANY),
                                     reverseJoin,
-                                    join,
                                     entity,
                                     ReferenceType.ONE_TO_MANY,
                                     false)

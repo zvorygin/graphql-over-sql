@@ -116,11 +116,11 @@
         {
           "kind": "INTERFACE",
           "name": "ICustomer",
-          "description": "Interface type for table [PUBLIC.CUSTOMER(t3)]",
+          "description": "Primary interface type for entity [Customer]",
           "fields": [
             {
               "name": "addressLine1",
-              "description": "Field for column [ADDRESS_LINE_1]",
+              "description": "Field for column [PUBLIC.CUSTOMER.ADDRESS_LINE_1]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -136,7 +136,7 @@
             },
             {
               "name": "addressLine2",
-              "description": "Field for column [ADDRESS_LINE_2]",
+              "description": "Field for column [PUBLIC.CUSTOMER.ADDRESS_LINE_2]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -152,7 +152,7 @@
             },
             {
               "name": "city",
-              "description": "Field for column [CITY]",
+              "description": "Field for column [PUBLIC.CUSTOMER.CITY]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -168,7 +168,7 @@
             },
             {
               "name": "country",
-              "description": "Field for column [COUNTRY]",
+              "description": "Field for column [PUBLIC.CUSTOMER.COUNTRY]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -184,7 +184,7 @@
             },
             {
               "name": "creditlimit",
-              "description": "Field for column [CREDITLIMIT]",
+              "description": "Field for column [PUBLIC.CUSTOMER.CREDITLIMIT]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -200,7 +200,7 @@
             },
             {
               "name": "customerNumber",
-              "description": "Field for column [CUSTOMER_NUMBER]",
+              "description": "Field for column [PUBLIC.CUSTOMER.CUSTOMER_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -216,7 +216,7 @@
             },
             {
               "name": "employee",
-              "description": "Reference to [PUBLIC.EMPLOYEE(t2)] via FK [null]",
+              "description": "Reference [employee] from to entity [Employee]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -228,7 +228,7 @@
             },
             {
               "name": "firstName",
-              "description": "Field for column [FIRST_NAME]",
+              "description": "Field for column [PUBLIC.PERSON.FIRST_NAME]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -244,7 +244,7 @@
             },
             {
               "name": "lastName",
-              "description": "Field for column [LAST_NAME]",
+              "description": "Field for column [PUBLIC.PERSON.LAST_NAME]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -260,7 +260,7 @@
             },
             {
               "name": "orders",
-              "description": "Reference to [PUBLIC.ORDER(t5)] via FK [null]",
+              "description": "Reference [orders] from to entity [Order]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -272,7 +272,7 @@
             },
             {
               "name": "payments",
-              "description": "Reference to [PUBLIC.PAYMENT(t7)] via FK [null]",
+              "description": "Reference [payments] from to entity [Payment]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -284,7 +284,7 @@
             },
             {
               "name": "personNumber",
-              "description": "Field for column [PERSON_NUMBER]",
+              "description": "Field for column [PUBLIC.CUSTOMER.PERSON_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -300,7 +300,7 @@
             },
             {
               "name": "phone",
-              "description": "Field for column [PHONE]",
+              "description": "Field for column [PUBLIC.CUSTOMER.PHONE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -316,7 +316,7 @@
             },
             {
               "name": "postalCode",
-              "description": "Field for column [POSTAL_CODE]",
+              "description": "Field for column [PUBLIC.CUSTOMER.POSTAL_CODE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -332,7 +332,7 @@
             },
             {
               "name": "salesRepEmployeeNumber",
-              "description": "Field for column [SALES_REP_EMPLOYEE_NUMBER]",
+              "description": "Field for column [PUBLIC.CUSTOMER.SALES_REP_EMPLOYEE_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -348,7 +348,7 @@
             },
             {
               "name": "state",
-              "description": "Field for column [STATE]",
+              "description": "Field for column [PUBLIC.CUSTOMER.STATE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -377,11 +377,11 @@
         {
           "kind": "INTERFACE",
           "name": "IEmployee",
-          "description": "Interface type for table [PUBLIC.EMPLOYEE(t2)]",
+          "description": "Primary interface type for entity [Employee]",
           "fields": [
             {
               "name": "customers",
-              "description": "Reference to [PUBLIC.CUSTOMER(t3)] via FK [null]",
+              "description": "Reference [customers] from to entity [Customer]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -393,7 +393,7 @@
             },
             {
               "name": "email",
-              "description": "Field for column [EMAIL]",
+              "description": "Field for column [PUBLIC.EMPLOYEE.EMAIL]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -409,7 +409,7 @@
             },
             {
               "name": "employee",
-              "description": "Reference to [PUBLIC.EMPLOYEE(t2)] via FK [null]",
+              "description": "Reference [employee] from to entity [Employee]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -421,7 +421,7 @@
             },
             {
               "name": "employeeNumber",
-              "description": "Field for column [EMPLOYEE_NUMBER]",
+              "description": "Field for column [PUBLIC.EMPLOYEE.EMPLOYEE_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -437,7 +437,7 @@
             },
             {
               "name": "employees",
-              "description": "Reference to [PUBLIC.EMPLOYEE(t2)] via FK [null]",
+              "description": "Reference [employees] from to entity [Employee]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -449,7 +449,7 @@
             },
             {
               "name": "extension",
-              "description": "Field for column [EXTENSION]",
+              "description": "Field for column [PUBLIC.EMPLOYEE.EXTENSION]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -465,7 +465,7 @@
             },
             {
               "name": "firstName",
-              "description": "Field for column [FIRST_NAME]",
+              "description": "Field for column [PUBLIC.PERSON.FIRST_NAME]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -481,7 +481,7 @@
             },
             {
               "name": "jobTitle",
-              "description": "Field for column [JOB_TITLE]",
+              "description": "Field for column [PUBLIC.EMPLOYEE.JOB_TITLE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -497,7 +497,7 @@
             },
             {
               "name": "lastName",
-              "description": "Field for column [LAST_NAME]",
+              "description": "Field for column [PUBLIC.PERSON.LAST_NAME]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -513,7 +513,7 @@
             },
             {
               "name": "office",
-              "description": "Reference to [PUBLIC.OFFICE(t0)] via FK [null]",
+              "description": "Reference [office] from to entity [Office]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -525,7 +525,7 @@
             },
             {
               "name": "officeCode",
-              "description": "Field for column [OFFICE_CODE]",
+              "description": "Field for column [PUBLIC.EMPLOYEE.OFFICE_CODE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -541,7 +541,7 @@
             },
             {
               "name": "personNumber",
-              "description": "Field for column [PERSON_NUMBER]",
+              "description": "Field for column [PUBLIC.EMPLOYEE.PERSON_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -557,7 +557,7 @@
             },
             {
               "name": "reportsTo",
-              "description": "Field for column [REPORTS_TO]",
+              "description": "Field for column [PUBLIC.EMPLOYEE.REPORTS_TO]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -586,11 +586,11 @@
         {
           "kind": "INTERFACE",
           "name": "IOffice",
-          "description": "Interface type for table [PUBLIC.OFFICE(t0)]",
+          "description": "Primary interface type for entity [Office]",
           "fields": [
             {
               "name": "addressLine1",
-              "description": "Field for column [ADDRESS_LINE1]",
+              "description": "Field for column [PUBLIC.OFFICE.ADDRESS_LINE1]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -606,7 +606,7 @@
             },
             {
               "name": "addressLine2",
-              "description": "Field for column [ADDRESS_LINE2]",
+              "description": "Field for column [PUBLIC.OFFICE.ADDRESS_LINE2]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -622,7 +622,7 @@
             },
             {
               "name": "city",
-              "description": "Field for column [CITY]",
+              "description": "Field for column [PUBLIC.OFFICE.CITY]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -638,7 +638,7 @@
             },
             {
               "name": "country",
-              "description": "Field for column [COUNTRY]",
+              "description": "Field for column [PUBLIC.OFFICE.COUNTRY]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -654,7 +654,7 @@
             },
             {
               "name": "employees",
-              "description": "Reference to [PUBLIC.EMPLOYEE(t2)] via FK [null]",
+              "description": "Reference [employees] from to entity [Employee]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -666,7 +666,7 @@
             },
             {
               "name": "officeCode",
-              "description": "Field for column [OFFICE_CODE]",
+              "description": "Field for column [PUBLIC.OFFICE.OFFICE_CODE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -682,7 +682,7 @@
             },
             {
               "name": "phone",
-              "description": "Field for column [PHONE]",
+              "description": "Field for column [PUBLIC.OFFICE.PHONE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -698,7 +698,7 @@
             },
             {
               "name": "postalCode",
-              "description": "Field for column [POSTAL_CODE]",
+              "description": "Field for column [PUBLIC.OFFICE.POSTAL_CODE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -714,7 +714,7 @@
             },
             {
               "name": "state",
-              "description": "Field for column [STATE]",
+              "description": "Field for column [PUBLIC.OFFICE.STATE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -730,7 +730,7 @@
             },
             {
               "name": "territory",
-              "description": "Field for column [TERRITORY]",
+              "description": "Field for column [PUBLIC.OFFICE.TERRITORY]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -759,11 +759,11 @@
         {
           "kind": "INTERFACE",
           "name": "IOrder",
-          "description": "Interface type for table [PUBLIC.ORDER(t5)]",
+          "description": "Primary interface type for entity [Order]",
           "fields": [
             {
               "name": "comments",
-              "description": "Field for column [COMMENTS]",
+              "description": "Field for column [PUBLIC.ORDER.COMMENTS]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -779,7 +779,7 @@
             },
             {
               "name": "customer",
-              "description": "Reference to [PUBLIC.CUSTOMER(t3)] via FK [null]",
+              "description": "Reference [customer] from to entity [Customer]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -791,7 +791,7 @@
             },
             {
               "name": "customerNumber",
-              "description": "Field for column [CUSTOMER_NUMBER]",
+              "description": "Field for column [PUBLIC.ORDER.CUSTOMER_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -807,7 +807,7 @@
             },
             {
               "name": "orderDate",
-              "description": "Field for column [ORDER_DATE]",
+              "description": "Field for column [PUBLIC.ORDER.ORDER_DATE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -823,7 +823,7 @@
             },
             {
               "name": "orderDetails",
-              "description": "Reference to [PUBLIC.ORDER_DETAIL(t6)] via FK [null]",
+              "description": "Reference [orderDetails] from to entity [OrderDetail]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -835,7 +835,7 @@
             },
             {
               "name": "orderNumber",
-              "description": "Field for column [ORDER_NUMBER]",
+              "description": "Field for column [PUBLIC.ORDER.ORDER_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -851,7 +851,7 @@
             },
             {
               "name": "requiredDate",
-              "description": "Field for column [REQUIRED_DATE]",
+              "description": "Field for column [PUBLIC.ORDER.REQUIRED_DATE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -867,7 +867,7 @@
             },
             {
               "name": "shippedDate",
-              "description": "Field for column [SHIPPED_DATE]",
+              "description": "Field for column [PUBLIC.ORDER.SHIPPED_DATE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -883,7 +883,7 @@
             },
             {
               "name": "status",
-              "description": "Field for column [STATUS]",
+              "description": "Field for column [PUBLIC.ORDER.STATUS]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -912,11 +912,11 @@
         {
           "kind": "INTERFACE",
           "name": "IOrderDetail",
-          "description": "Interface type for table [PUBLIC.ORDER_DETAIL(t6)]",
+          "description": "Primary interface type for entity [OrderDetail]",
           "fields": [
             {
               "name": "order",
-              "description": "Reference to [PUBLIC.ORDER(t5)] via FK [null]",
+              "description": "Reference [order] from to entity [Order]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -928,7 +928,7 @@
             },
             {
               "name": "orderLineNumber",
-              "description": "Field for column [ORDER_LINE_NUMBER]",
+              "description": "Field for column [PUBLIC.ORDER_DETAIL.ORDER_LINE_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -944,7 +944,7 @@
             },
             {
               "name": "orderNumber",
-              "description": "Field for column [ORDER_NUMBER]",
+              "description": "Field for column [PUBLIC.ORDER_DETAIL.ORDER_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -960,7 +960,7 @@
             },
             {
               "name": "priceEach",
-              "description": "Field for column [PRICE_EACH]",
+              "description": "Field for column [PUBLIC.ORDER_DETAIL.PRICE_EACH]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -976,7 +976,7 @@
             },
             {
               "name": "product",
-              "description": "Reference to [PUBLIC.PRODUCT(t4)] via FK [null]",
+              "description": "Reference [product] from to entity [Product]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -988,7 +988,7 @@
             },
             {
               "name": "productCode",
-              "description": "Field for column [PRODUCT_CODE]",
+              "description": "Field for column [PUBLIC.ORDER_DETAIL.PRODUCT_CODE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1004,7 +1004,7 @@
             },
             {
               "name": "quantityOrdered",
-              "description": "Field for column [QUANTITY_ORDERED]",
+              "description": "Field for column [PUBLIC.ORDER_DETAIL.QUANTITY_ORDERED]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1033,11 +1033,11 @@
         {
           "kind": "INTERFACE",
           "name": "IPayment",
-          "description": "Interface type for table [PUBLIC.PAYMENT(t7)]",
+          "description": "Primary interface type for entity [Payment]",
           "fields": [
             {
               "name": "amount",
-              "description": "Field for column [AMOUNT]",
+              "description": "Field for column [PUBLIC.PAYMENT.AMOUNT]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1053,7 +1053,7 @@
             },
             {
               "name": "checkNumber",
-              "description": "Field for column [CHECK_NUMBER]",
+              "description": "Field for column [PUBLIC.PAYMENT.CHECK_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1069,7 +1069,7 @@
             },
             {
               "name": "customer",
-              "description": "Reference to [PUBLIC.CUSTOMER(t3)] via FK [null]",
+              "description": "Reference [customer] from to entity [Customer]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -1081,7 +1081,7 @@
             },
             {
               "name": "customerNumber",
-              "description": "Field for column [CUSTOMER_NUMBER]",
+              "description": "Field for column [PUBLIC.PAYMENT.CUSTOMER_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1097,7 +1097,7 @@
             },
             {
               "name": "paymentDate",
-              "description": "Field for column [PAYMENT_DATE]",
+              "description": "Field for column [PUBLIC.PAYMENT.PAYMENT_DATE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1126,11 +1126,11 @@
         {
           "kind": "INTERFACE",
           "name": "IPerson",
-          "description": "Interface type for table [PUBLIC.PERSON(t1)]",
+          "description": "Primary interface type for entity [Person]",
           "fields": [
             {
               "name": "firstName",
-              "description": "Field for column [FIRST_NAME]",
+              "description": "Field for column [PUBLIC.PERSON.FIRST_NAME]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1146,7 +1146,7 @@
             },
             {
               "name": "lastName",
-              "description": "Field for column [LAST_NAME]",
+              "description": "Field for column [PUBLIC.PERSON.LAST_NAME]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1162,7 +1162,7 @@
             },
             {
               "name": "personNumber",
-              "description": "Field for column [PERSON_NUMBER]",
+              "description": "Field for column [PUBLIC.PERSON.PERSON_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1201,11 +1201,11 @@
         {
           "kind": "INTERFACE",
           "name": "IProduct",
-          "description": "Interface type for table [PUBLIC.PRODUCT(t4)]",
+          "description": "Primary interface type for entity [Product]",
           "fields": [
             {
               "name": "buyPrice",
-              "description": "Field for column [BUY_PRICE]",
+              "description": "Field for column [PUBLIC.PRODUCT.BUY_PRICE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1221,7 +1221,7 @@
             },
             {
               "name": "msrp",
-              "description": "Field for column [MSRP]",
+              "description": "Field for column [PUBLIC.PRODUCT.MSRP]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1237,7 +1237,7 @@
             },
             {
               "name": "orderDetails",
-              "description": "Reference to [PUBLIC.ORDER_DETAIL(t6)] via FK [null]",
+              "description": "Reference [orderDetails] from to entity [OrderDetail]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -1249,7 +1249,7 @@
             },
             {
               "name": "productCode",
-              "description": "Field for column [PRODUCT_CODE]",
+              "description": "Field for column [PUBLIC.PRODUCT.PRODUCT_CODE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1265,7 +1265,7 @@
             },
             {
               "name": "productDescription",
-              "description": "Field for column [PRODUCT_DESCRIPTION]",
+              "description": "Field for column [PUBLIC.PRODUCT.PRODUCT_DESCRIPTION]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1281,7 +1281,7 @@
             },
             {
               "name": "productLine",
-              "description": "Field for column [PRODUCT_LINE]",
+              "description": "Field for column [PUBLIC.PRODUCT.PRODUCT_LINE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1297,7 +1297,7 @@
             },
             {
               "name": "productName",
-              "description": "Field for column [PRODUCT_NAME]",
+              "description": "Field for column [PUBLIC.PRODUCT.PRODUCT_NAME]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1313,7 +1313,7 @@
             },
             {
               "name": "productScale",
-              "description": "Field for column [PRODUCT_SCALE]",
+              "description": "Field for column [PUBLIC.PRODUCT.PRODUCT_SCALE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1329,7 +1329,7 @@
             },
             {
               "name": "productVendor",
-              "description": "Field for column [PRODUCT_VENDOR]",
+              "description": "Field for column [PUBLIC.PRODUCT.PRODUCT_VENDOR]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1345,7 +1345,7 @@
             },
             {
               "name": "quantityInStock",
-              "description": "Field for column [QUANTITY_IN_STOCK]",
+              "description": "Field for column [PUBLIC.PRODUCT.QUANTITY_IN_STOCK]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1374,11 +1374,11 @@
         {
           "kind": "OBJECT",
           "name": "Customer",
-          "description": "Object type for table [PUBLIC.CUSTOMER(t3)]",
+          "description": "Entity [Customer] for table [PUBLIC.CUSTOMER]",
           "fields": [
             {
               "name": "addressLine1",
-              "description": "Field for column [ADDRESS_LINE_1]",
+              "description": "Field for column [PUBLIC.CUSTOMER.ADDRESS_LINE_1]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1394,7 +1394,7 @@
             },
             {
               "name": "addressLine2",
-              "description": "Field for column [ADDRESS_LINE_2]",
+              "description": "Field for column [PUBLIC.CUSTOMER.ADDRESS_LINE_2]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1410,7 +1410,7 @@
             },
             {
               "name": "city",
-              "description": "Field for column [CITY]",
+              "description": "Field for column [PUBLIC.CUSTOMER.CITY]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1426,7 +1426,7 @@
             },
             {
               "name": "country",
-              "description": "Field for column [COUNTRY]",
+              "description": "Field for column [PUBLIC.CUSTOMER.COUNTRY]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1442,7 +1442,7 @@
             },
             {
               "name": "creditlimit",
-              "description": "Field for column [CREDITLIMIT]",
+              "description": "Field for column [PUBLIC.CUSTOMER.CREDITLIMIT]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1458,7 +1458,7 @@
             },
             {
               "name": "customerNumber",
-              "description": "Field for column [CUSTOMER_NUMBER]",
+              "description": "Field for column [PUBLIC.CUSTOMER.CUSTOMER_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1474,7 +1474,7 @@
             },
             {
               "name": "employee",
-              "description": "Reference to [PUBLIC.EMPLOYEE(t2)] via FK [null]",
+              "description": "Reference [employee] from to entity [Employee]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -1486,7 +1486,7 @@
             },
             {
               "name": "firstName",
-              "description": "Field for column [FIRST_NAME]",
+              "description": "Field for column [PUBLIC.PERSON.FIRST_NAME]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1502,7 +1502,7 @@
             },
             {
               "name": "lastName",
-              "description": "Field for column [LAST_NAME]",
+              "description": "Field for column [PUBLIC.PERSON.LAST_NAME]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1518,7 +1518,7 @@
             },
             {
               "name": "orders",
-              "description": "Reference to [PUBLIC.ORDER(t5)] via FK [null]",
+              "description": "Reference [orders] from to entity [Order]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -1530,7 +1530,7 @@
             },
             {
               "name": "payments",
-              "description": "Reference to [PUBLIC.PAYMENT(t7)] via FK [null]",
+              "description": "Reference [payments] from to entity [Payment]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -1542,7 +1542,7 @@
             },
             {
               "name": "personNumber",
-              "description": "Field for column [PERSON_NUMBER]",
+              "description": "Field for column [PUBLIC.CUSTOMER.PERSON_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1558,7 +1558,7 @@
             },
             {
               "name": "phone",
-              "description": "Field for column [PHONE]",
+              "description": "Field for column [PUBLIC.CUSTOMER.PHONE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1574,7 +1574,7 @@
             },
             {
               "name": "postalCode",
-              "description": "Field for column [POSTAL_CODE]",
+              "description": "Field for column [PUBLIC.CUSTOMER.POSTAL_CODE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1590,7 +1590,7 @@
             },
             {
               "name": "salesRepEmployeeNumber",
-              "description": "Field for column [SALES_REP_EMPLOYEE_NUMBER]",
+              "description": "Field for column [PUBLIC.CUSTOMER.SALES_REP_EMPLOYEE_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1606,7 +1606,7 @@
             },
             {
               "name": "state",
-              "description": "Field for column [STATE]",
+              "description": "Field for column [PUBLIC.CUSTOMER.STATE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1640,11 +1640,11 @@
         {
           "kind": "OBJECT",
           "name": "Employee",
-          "description": "Object type for table [PUBLIC.EMPLOYEE(t2)]",
+          "description": "Entity [Employee] for table [PUBLIC.EMPLOYEE]",
           "fields": [
             {
               "name": "customers",
-              "description": "Reference to [PUBLIC.CUSTOMER(t3)] via FK [null]",
+              "description": "Reference [customers] from to entity [Customer]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -1656,7 +1656,7 @@
             },
             {
               "name": "email",
-              "description": "Field for column [EMAIL]",
+              "description": "Field for column [PUBLIC.EMPLOYEE.EMAIL]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1672,7 +1672,7 @@
             },
             {
               "name": "employee",
-              "description": "Reference to [PUBLIC.EMPLOYEE(t2)] via FK [null]",
+              "description": "Reference [employee] from to entity [Employee]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -1684,7 +1684,7 @@
             },
             {
               "name": "employeeNumber",
-              "description": "Field for column [EMPLOYEE_NUMBER]",
+              "description": "Field for column [PUBLIC.EMPLOYEE.EMPLOYEE_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1700,7 +1700,7 @@
             },
             {
               "name": "employees",
-              "description": "Reference to [PUBLIC.EMPLOYEE(t2)] via FK [null]",
+              "description": "Reference [employees] from to entity [Employee]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -1712,7 +1712,7 @@
             },
             {
               "name": "extension",
-              "description": "Field for column [EXTENSION]",
+              "description": "Field for column [PUBLIC.EMPLOYEE.EXTENSION]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1728,7 +1728,7 @@
             },
             {
               "name": "firstName",
-              "description": "Field for column [FIRST_NAME]",
+              "description": "Field for column [PUBLIC.PERSON.FIRST_NAME]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1744,7 +1744,7 @@
             },
             {
               "name": "jobTitle",
-              "description": "Field for column [JOB_TITLE]",
+              "description": "Field for column [PUBLIC.EMPLOYEE.JOB_TITLE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1760,7 +1760,7 @@
             },
             {
               "name": "lastName",
-              "description": "Field for column [LAST_NAME]",
+              "description": "Field for column [PUBLIC.PERSON.LAST_NAME]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1776,7 +1776,7 @@
             },
             {
               "name": "office",
-              "description": "Reference to [PUBLIC.OFFICE(t0)] via FK [null]",
+              "description": "Reference [office] from to entity [Office]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -1788,7 +1788,7 @@
             },
             {
               "name": "officeCode",
-              "description": "Field for column [OFFICE_CODE]",
+              "description": "Field for column [PUBLIC.EMPLOYEE.OFFICE_CODE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1804,7 +1804,7 @@
             },
             {
               "name": "personNumber",
-              "description": "Field for column [PERSON_NUMBER]",
+              "description": "Field for column [PUBLIC.EMPLOYEE.PERSON_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1820,7 +1820,7 @@
             },
             {
               "name": "reportsTo",
-              "description": "Field for column [REPORTS_TO]",
+              "description": "Field for column [PUBLIC.EMPLOYEE.REPORTS_TO]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1854,11 +1854,11 @@
         {
           "kind": "OBJECT",
           "name": "Office",
-          "description": "Object type for table [PUBLIC.OFFICE(t0)]",
+          "description": "Entity [Office] for table [PUBLIC.OFFICE]",
           "fields": [
             {
               "name": "addressLine1",
-              "description": "Field for column [ADDRESS_LINE1]",
+              "description": "Field for column [PUBLIC.OFFICE.ADDRESS_LINE1]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1874,7 +1874,7 @@
             },
             {
               "name": "addressLine2",
-              "description": "Field for column [ADDRESS_LINE2]",
+              "description": "Field for column [PUBLIC.OFFICE.ADDRESS_LINE2]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1890,7 +1890,7 @@
             },
             {
               "name": "city",
-              "description": "Field for column [CITY]",
+              "description": "Field for column [PUBLIC.OFFICE.CITY]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1906,7 +1906,7 @@
             },
             {
               "name": "country",
-              "description": "Field for column [COUNTRY]",
+              "description": "Field for column [PUBLIC.OFFICE.COUNTRY]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1922,7 +1922,7 @@
             },
             {
               "name": "employees",
-              "description": "Reference to [PUBLIC.EMPLOYEE(t2)] via FK [null]",
+              "description": "Reference [employees] from to entity [Employee]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -1934,7 +1934,7 @@
             },
             {
               "name": "officeCode",
-              "description": "Field for column [OFFICE_CODE]",
+              "description": "Field for column [PUBLIC.OFFICE.OFFICE_CODE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1950,7 +1950,7 @@
             },
             {
               "name": "phone",
-              "description": "Field for column [PHONE]",
+              "description": "Field for column [PUBLIC.OFFICE.PHONE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1966,7 +1966,7 @@
             },
             {
               "name": "postalCode",
-              "description": "Field for column [POSTAL_CODE]",
+              "description": "Field for column [PUBLIC.OFFICE.POSTAL_CODE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1982,7 +1982,7 @@
             },
             {
               "name": "state",
-              "description": "Field for column [STATE]",
+              "description": "Field for column [PUBLIC.OFFICE.STATE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -1998,7 +1998,7 @@
             },
             {
               "name": "territory",
-              "description": "Field for column [TERRITORY]",
+              "description": "Field for column [PUBLIC.OFFICE.TERRITORY]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2027,11 +2027,11 @@
         {
           "kind": "OBJECT",
           "name": "Order",
-          "description": "Object type for table [PUBLIC.ORDER(t5)]",
+          "description": "Entity [Order] for table [PUBLIC.ORDER]",
           "fields": [
             {
               "name": "comments",
-              "description": "Field for column [COMMENTS]",
+              "description": "Field for column [PUBLIC.ORDER.COMMENTS]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2047,7 +2047,7 @@
             },
             {
               "name": "customer",
-              "description": "Reference to [PUBLIC.CUSTOMER(t3)] via FK [null]",
+              "description": "Reference [customer] from to entity [Customer]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -2059,7 +2059,7 @@
             },
             {
               "name": "customerNumber",
-              "description": "Field for column [CUSTOMER_NUMBER]",
+              "description": "Field for column [PUBLIC.ORDER.CUSTOMER_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2075,7 +2075,7 @@
             },
             {
               "name": "orderDate",
-              "description": "Field for column [ORDER_DATE]",
+              "description": "Field for column [PUBLIC.ORDER.ORDER_DATE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2091,7 +2091,7 @@
             },
             {
               "name": "orderDetails",
-              "description": "Reference to [PUBLIC.ORDER_DETAIL(t6)] via FK [null]",
+              "description": "Reference [orderDetails] from to entity [OrderDetail]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -2103,7 +2103,7 @@
             },
             {
               "name": "orderNumber",
-              "description": "Field for column [ORDER_NUMBER]",
+              "description": "Field for column [PUBLIC.ORDER.ORDER_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2119,7 +2119,7 @@
             },
             {
               "name": "requiredDate",
-              "description": "Field for column [REQUIRED_DATE]",
+              "description": "Field for column [PUBLIC.ORDER.REQUIRED_DATE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2135,7 +2135,7 @@
             },
             {
               "name": "shippedDate",
-              "description": "Field for column [SHIPPED_DATE]",
+              "description": "Field for column [PUBLIC.ORDER.SHIPPED_DATE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2151,7 +2151,7 @@
             },
             {
               "name": "status",
-              "description": "Field for column [STATUS]",
+              "description": "Field for column [PUBLIC.ORDER.STATUS]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2180,11 +2180,11 @@
         {
           "kind": "OBJECT",
           "name": "OrderDetail",
-          "description": "Object type for table [PUBLIC.ORDER_DETAIL(t6)]",
+          "description": "Entity [OrderDetail] for table [PUBLIC.ORDER_DETAIL]",
           "fields": [
             {
               "name": "order",
-              "description": "Reference to [PUBLIC.ORDER(t5)] via FK [null]",
+              "description": "Reference [order] from to entity [Order]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -2196,7 +2196,7 @@
             },
             {
               "name": "orderLineNumber",
-              "description": "Field for column [ORDER_LINE_NUMBER]",
+              "description": "Field for column [PUBLIC.ORDER_DETAIL.ORDER_LINE_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2212,7 +2212,7 @@
             },
             {
               "name": "orderNumber",
-              "description": "Field for column [ORDER_NUMBER]",
+              "description": "Field for column [PUBLIC.ORDER_DETAIL.ORDER_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2228,7 +2228,7 @@
             },
             {
               "name": "priceEach",
-              "description": "Field for column [PRICE_EACH]",
+              "description": "Field for column [PUBLIC.ORDER_DETAIL.PRICE_EACH]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2244,7 +2244,7 @@
             },
             {
               "name": "product",
-              "description": "Reference to [PUBLIC.PRODUCT(t4)] via FK [null]",
+              "description": "Reference [product] from to entity [Product]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -2256,7 +2256,7 @@
             },
             {
               "name": "productCode",
-              "description": "Field for column [PRODUCT_CODE]",
+              "description": "Field for column [PUBLIC.ORDER_DETAIL.PRODUCT_CODE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2272,7 +2272,7 @@
             },
             {
               "name": "quantityOrdered",
-              "description": "Field for column [QUANTITY_ORDERED]",
+              "description": "Field for column [PUBLIC.ORDER_DETAIL.QUANTITY_ORDERED]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2301,11 +2301,11 @@
         {
           "kind": "OBJECT",
           "name": "Payment",
-          "description": "Object type for table [PUBLIC.PAYMENT(t7)]",
+          "description": "Entity [Payment] for table [PUBLIC.PAYMENT]",
           "fields": [
             {
               "name": "amount",
-              "description": "Field for column [AMOUNT]",
+              "description": "Field for column [PUBLIC.PAYMENT.AMOUNT]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2321,7 +2321,7 @@
             },
             {
               "name": "checkNumber",
-              "description": "Field for column [CHECK_NUMBER]",
+              "description": "Field for column [PUBLIC.PAYMENT.CHECK_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2337,7 +2337,7 @@
             },
             {
               "name": "customer",
-              "description": "Reference to [PUBLIC.CUSTOMER(t3)] via FK [null]",
+              "description": "Reference [customer] from to entity [Customer]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -2349,7 +2349,7 @@
             },
             {
               "name": "customerNumber",
-              "description": "Field for column [CUSTOMER_NUMBER]",
+              "description": "Field for column [PUBLIC.PAYMENT.CUSTOMER_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2365,7 +2365,7 @@
             },
             {
               "name": "paymentDate",
-              "description": "Field for column [PAYMENT_DATE]",
+              "description": "Field for column [PUBLIC.PAYMENT.PAYMENT_DATE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2394,11 +2394,11 @@
         {
           "kind": "OBJECT",
           "name": "Person",
-          "description": "Object type for table [PUBLIC.PERSON(t1)]",
+          "description": "Entity [Person] for table [PUBLIC.PERSON]",
           "fields": [
             {
               "name": "firstName",
-              "description": "Field for column [FIRST_NAME]",
+              "description": "Field for column [PUBLIC.PERSON.FIRST_NAME]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2414,7 +2414,7 @@
             },
             {
               "name": "lastName",
-              "description": "Field for column [LAST_NAME]",
+              "description": "Field for column [PUBLIC.PERSON.LAST_NAME]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2430,7 +2430,7 @@
             },
             {
               "name": "personNumber",
-              "description": "Field for column [PERSON_NUMBER]",
+              "description": "Field for column [PUBLIC.PERSON.PERSON_NUMBER]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2459,11 +2459,11 @@
         {
           "kind": "OBJECT",
           "name": "Product",
-          "description": "Object type for table [PUBLIC.PRODUCT(t4)]",
+          "description": "Entity [Product] for table [PUBLIC.PRODUCT]",
           "fields": [
             {
               "name": "buyPrice",
-              "description": "Field for column [BUY_PRICE]",
+              "description": "Field for column [PUBLIC.PRODUCT.BUY_PRICE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2479,7 +2479,7 @@
             },
             {
               "name": "msrp",
-              "description": "Field for column [MSRP]",
+              "description": "Field for column [PUBLIC.PRODUCT.MSRP]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2495,7 +2495,7 @@
             },
             {
               "name": "orderDetails",
-              "description": "Reference to [PUBLIC.ORDER_DETAIL(t6)] via FK [null]",
+              "description": "Reference [orderDetails] from to entity [OrderDetail]",
               "args": [],
               "type": {
                 "kind": "INTERFACE",
@@ -2507,7 +2507,7 @@
             },
             {
               "name": "productCode",
-              "description": "Field for column [PRODUCT_CODE]",
+              "description": "Field for column [PUBLIC.PRODUCT.PRODUCT_CODE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2523,7 +2523,7 @@
             },
             {
               "name": "productDescription",
-              "description": "Field for column [PRODUCT_DESCRIPTION]",
+              "description": "Field for column [PUBLIC.PRODUCT.PRODUCT_DESCRIPTION]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2539,7 +2539,7 @@
             },
             {
               "name": "productLine",
-              "description": "Field for column [PRODUCT_LINE]",
+              "description": "Field for column [PUBLIC.PRODUCT.PRODUCT_LINE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2555,7 +2555,7 @@
             },
             {
               "name": "productName",
-              "description": "Field for column [PRODUCT_NAME]",
+              "description": "Field for column [PUBLIC.PRODUCT.PRODUCT_NAME]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2571,7 +2571,7 @@
             },
             {
               "name": "productScale",
-              "description": "Field for column [PRODUCT_SCALE]",
+              "description": "Field for column [PUBLIC.PRODUCT.PRODUCT_SCALE]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2587,7 +2587,7 @@
             },
             {
               "name": "productVendor",
-              "description": "Field for column [PRODUCT_VENDOR]",
+              "description": "Field for column [PUBLIC.PRODUCT.PRODUCT_VENDOR]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -2603,7 +2603,7 @@
             },
             {
               "name": "quantityInStock",
-              "description": "Field for column [QUANTITY_IN_STOCK]",
+              "description": "Field for column [PUBLIC.PRODUCT.QUANTITY_IN_STOCK]",
               "args": [],
               "type": {
                 "kind": "NON_NULL",

@@ -15,13 +15,24 @@ import graphql.ExecutionResult;
 import graphql.ExecutionResultImpl;
 import graphql.execution.ExecutionContext;
 import graphql.execution.FieldCollector;
-import graphql.language.*;
-import graphql.schema.*;
+import graphql.language.Argument;
+import graphql.language.Field;
+import graphql.language.OperationDefinition;
+import graphql.language.Value;
+import graphql.language.VariableReference;
+import graphql.schema.GraphQLArgument;
+import graphql.schema.GraphQLFieldDefinition;
+import graphql.schema.GraphQLInputType;
+import graphql.schema.GraphQLList;
+import graphql.schema.GraphQLNonNull;
+import graphql.schema.GraphQLSchema;
+import graphql.schema.GraphQLType;
 import graphql.sql.core.config.GraphQLTypesProvider;
 import graphql.sql.core.config.domain.Config;
 import graphql.sql.core.config.domain.EntityField;
-import graphql.sql.core.config.domain.EntityQuery;
 import graphql.sql.core.config.domain.ScalarType;
+import graphql.sql.core.config.domain.impl.SqlEntityField;
+import graphql.sql.core.config.domain.impl.SqlEntityQuery;
 import graphql.sql.core.config.domain.type.TypeUtil;
 import graphql.sql.core.querygraph.QueryNode;
 import graphql.sql.core.querygraph.QueryRoot;
@@ -32,7 +43,13 @@ import javax.annotation.Nonnull;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import static graphql.introspection.Introspection.SchemaMetaFieldDef;
@@ -152,7 +169,7 @@ public class OperationExecutor {
     @Nonnull
     private SqlFieldExecutor getSqlFieldExecutor(GraphQLSchema schema, ExecutionContext executionContext, Field queryField) {
         SqlFieldExecutor fieldExecutor;
-        EntityQuery entityQuery = config.getQuery(queryField.getName());
+        SqlEntityQuery entityQuery = config.getQuery(queryField.getName());
         GraphQLQueryExecutor executor = graphQLQueryExecutorBuilder.build(entityQuery.getEntity(), queryField, executionContext);
 
         QueryRoot queryGraph = executor.getQueryGraph();
@@ -201,8 +218,8 @@ public class OperationExecutor {
             placeHolder = staticArrayPlaceholder;
         }
 
-
-        selectQuery.addCondition(new InCondition(queryFieldTable.findColumn(entityField.getColumn()), placeHolder));
+        // TODO(dzvorygin) eliminate class cast below!
+        selectQuery.addCondition(new InCondition(queryFieldTable.findColumn(((SqlEntityField)entityField).getColumn()), placeHolder));
 
         String queryString = selectQuery.toString();
 

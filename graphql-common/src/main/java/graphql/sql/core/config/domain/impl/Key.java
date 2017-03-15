@@ -1,4 +1,4 @@
-package graphql.sql.core.config.domain;
+package graphql.sql.core.config.domain.impl;
 
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbConstraint;
 
@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Key {
     @Nonnull
-    private final List<EntityField> fields;
+    private final List<SqlEntityField> fields;
 
     @Nullable
     private final String name;
@@ -16,7 +16,7 @@ public class Key {
     @Nullable
     private final DbConstraint constraint;
 
-    public Key(@Nonnull List<EntityField> fields,
+    public Key(@Nonnull List<SqlEntityField> fields,
                @Nullable String name,
                @Nullable DbConstraint constraint) {
         this.fields = fields;
@@ -25,7 +25,7 @@ public class Key {
     }
 
     @Nonnull
-    public List<EntityField> getFields() {
+    public List<SqlEntityField> getFields() {
         return fields;
     }
 

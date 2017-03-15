@@ -18,8 +18,8 @@ entity table: "ORDER_DETAIL"
 
 entity table: "PAYMENT"
 
-query name: "employeeById", entity: employee, fields: [employee["employeeNumber"]]
+query name: "employeeById", entity: employee, fields: ["employeeNumber"]
 
-query name: "personById", entity: person, fields: [person["personNumber"]]
+query name: "personById", entity: person, fields: ["personNumber"]
 
-query name: "order", entity: order, fields: [order["orderNumber"]]
+query name: "order", entity: order, fields: ["orderNumber"]
