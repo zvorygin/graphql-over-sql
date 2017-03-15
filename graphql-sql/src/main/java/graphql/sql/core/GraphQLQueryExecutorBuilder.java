@@ -75,11 +75,11 @@ public class GraphQLQueryExecutorBuilder {
 
         while (true) {
             SqlEntity currentEntity = current.getEntity();
-            Optional<? extends EntityField> entityField = currentEntity.findField(field.getName());
-            if (entityField.isPresent()) {
-                int position = current.fetchField(entityField.get());
+            EntityField entityField = currentEntity.findField(field.getName());
+            if (entityField != null) {
+                int position = current.fetchField(entityField);
                 extractor.addScalarField(alias,
-                        new ScalarExtractor<>(position, entityField.get().getScalarType().getTypeUtil()));
+                        new ScalarExtractor<>(position, entityField.getScalarType().getTypeUtil()));
                 return;
             }
 

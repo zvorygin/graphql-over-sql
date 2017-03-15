@@ -28,6 +28,7 @@ public class SqlConfig implements Config {
         return entities.get(entityName);
     }
 
+    @Override
     public Collection<EntityQuery> getQueries() {
         return Collections.unmodifiableCollection(queries.values());
     }

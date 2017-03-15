@@ -73,8 +73,8 @@ public interface Entity extends Comparable<Entity> {
      * @param name field name to look for
      * @return field with specified name
      */
-    default Optional<? extends EntityField> findField(String name) {
-        return getEntityFields().stream().filter(f -> f.getFieldName().equals(name)).findAny();
+    default EntityField findField(String name) {
+        return getEntityFields().stream().filter(f -> f.getFieldName().equals(name)).findAny().orElse(null);
     }
 
     /**
@@ -89,6 +89,7 @@ public interface Entity extends Comparable<Entity> {
      * @param other entity to compare with
      * @return result of entity name comparison
      */
+    @Override
     default int compareTo(@Nonnull Entity other) {
         return getEntityName().compareTo(other.getEntityName());
     }

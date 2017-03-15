@@ -55,10 +55,6 @@ public class GroovyEntityBuilder {
         return this;
     }
 
-    public GroovyEntityBuilder isAbstract(boolean isAbstract) {
-        return this;
-    }
-
     public SqlEntity build(DatabaseIntrospector introspector, NameProvider nameProvider) {
 
         if (tableName == null) {
