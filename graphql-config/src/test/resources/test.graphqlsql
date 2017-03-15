@@ -6,4 +6,4 @@ entity table: "MESSAGE"
 
 entity table: "MODERATOR", parent: user
 
-query name: "usersById", entity: user, fields: [user["id"]]
+query name: "usersById", entity: user, fields: ["id"]
