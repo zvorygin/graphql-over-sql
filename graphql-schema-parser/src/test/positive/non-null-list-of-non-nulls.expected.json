@@ -1,0 +1,55 @@
+{
+  "schema": {
+    "queryType": {
+      "collection": false,
+      "nonNull": false,
+      "typeName": "Query"
+    }
+  },
+  "types": {
+    "Query": {
+      "fields": [
+        {
+          "name": "url",
+          "type": {
+            "collection": false,
+            "nonNull": true,
+            "wrappedType": {
+              "collection": true,
+              "nonNull": false,
+              "wrappedType": {
+                "collection": false,
+                "nonNull": true,
+                "wrappedType": {
+                  "collection": false,
+                  "nonNull": false,
+                  "typeName": "Url"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "name": "Query"
+    }
+  },
+  "interfaces": {},
+  "scalars": {
+    "Float": {
+      "name": "Float"
+    },
+    "String": {
+      "name": "String"
+    },
+    "Boolean": {
+      "name": "Boolean"
+    },
+    "Int": {
+      "name": "Int"
+    },
+    "Url": {
+      "name": "Url"
+    }
+  },
+  "inputs": {}
+}

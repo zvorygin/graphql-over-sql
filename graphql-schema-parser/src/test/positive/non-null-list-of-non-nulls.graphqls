@@ -1,0 +1,9 @@
+schema {
+    query: Query
+}
+
+scalar Url
+
+type Query {
+    url : [Url!]!
+}

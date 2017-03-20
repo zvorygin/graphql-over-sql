@@ -1,0 +1,10 @@
+schema {
+    query: Query
+}
+
+type Query {
+    field: Int
+    field: String
+}
+
+scalar Url

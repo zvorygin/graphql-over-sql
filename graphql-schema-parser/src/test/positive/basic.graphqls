@@ -1,0 +1,18 @@
+schema {
+    query: Query
+}
+
+type Query {
+    someIntField(arg:Input): Int
+    someStringField: String
+}
+
+input Input {
+    first : Int
+    second: Float
+}
+
+interface Interface {
+    first : Int
+    second : Float
+}

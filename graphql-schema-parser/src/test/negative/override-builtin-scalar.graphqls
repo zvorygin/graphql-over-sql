@@ -1,0 +1,10 @@
+schema {
+    query: Query
+}
+
+scalar String
+
+type Query {
+    someIntField: Int
+    someStringField: String
+}

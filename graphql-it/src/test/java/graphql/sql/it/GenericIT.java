@@ -1,13 +1,8 @@
 package graphql.sql.it;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.collect.Lists;
-import graphql.sql.web.RelayRequest;
+import graphql.sql.core.TestUtil;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -34,18 +29,16 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RunWith(Parameterized.class)
 public class GenericIT {
 
     private static final Path TEST_DATA = Paths.get("test-data");
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final RestTemplate REST_TEMPLATE = new RestTemplate();
-    private static final ObjectWriter WRITER = OBJECT_MAPPER.writerWithDefaultPrettyPrinter();
-    private static final JsonComparator JSON_COMPARATOR = new JsonComparator(WRITER);
     private static URI URI;
     private static Server SERVER;
 
@@ -104,41 +97,26 @@ public class GenericIT {
 
     @Test
     public void testExecution() throws IOException {
-        RelayRequest request = buildRequest();
-        request.setQuery(new String(Files.readAllBytes(documentPath)));
+        Map<String, Object> request = buildRequest();
+        request.put("query", new String(Files.readAllBytes(documentPath)));
         ResponseEntity<JsonNode> entity = REST_TEMPLATE
                 .exchange(URI, HttpMethod.POST, new HttpEntity<>(request), JsonNode.class);
 
         Assert.assertEquals(entity.getStatusCode(), HttpStatus.OK);
 
         JsonNode response = entity.getBody();
-        JsonNode expected = OBJECT_MAPPER.readTree(expectedResponsePath.toFile());
-        sortArrays(response);
-        compareNodes(expected, response);
+        JsonNode expected = TestUtil.readResource(expectedResponsePath.toFile());
+        TestUtil.sortArrays(response);
+        TestUtil.assertEquals(expected, response);
     }
 
-    private void sortArrays(JsonNode node) {
-        if (node instanceof ArrayNode) {
-            ArrayNode arrayNode = (ArrayNode) node;
-            ArrayList<JsonNode> children = Lists.newArrayList(arrayNode.iterator());
-            children.iterator().forEachRemaining(this::sortArrays);
-            children.sort(JSON_COMPARATOR);
-            for (int i = 0; i < children.size(); i++) {
-                arrayNode.set(i, children.get(i));
-            }
-        } else if (node instanceof ObjectNode) {
-            node.iterator().forEachRemaining(this::sortArrays);
-        }
-    }
-
-    private static void compareNodes(JsonNode expected, JsonNode response) throws JsonProcessingException {
-        Assert.assertEquals(WRITER.writeValueAsString(expected), WRITER.writeValueAsString(response));
-    }
-
-    private RelayRequest buildRequest() throws IOException {
+    private Map<String, Object> buildRequest() throws IOException {
         if (Files.isRegularFile(requestPath)) {
-            return OBJECT_MAPPER.readValue(Files.readAllBytes(requestPath), RelayRequest.class);
+            TypeReference<Map<String, Object>> typeReference =
+                    new TypeReference<Map<String, Object>>() {
+                    };
+            return TestUtil.readResource(requestPath.toFile(), typeReference);
         }
-        return new RelayRequest();
+        return new HashMap<>();
     }
 }

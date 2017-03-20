@@ -1,0 +1,92 @@
+{
+  "schema": {
+    "queryType": {
+      "collection": false,
+      "nonNull": false,
+      "typeName": "Query"
+    }
+  },
+  "types": {
+    "Query": {
+      "fields": [
+        {
+          "name": "someIntField",
+          "type": {
+            "collection": false,
+            "nonNull": false,
+            "typeName": "Int"
+          }
+        },
+        {
+          "name": "someStringField",
+          "type": {
+            "collection": false,
+            "nonNull": false,
+            "typeName": "String"
+          }
+        }
+      ],
+      "name": "Query"
+    }
+  },
+  "interfaces": {
+    "Interface": {
+      "fields": [
+        {
+          "name": "first",
+          "type": {
+            "collection": false,
+            "nonNull": false,
+            "typeName": "Int"
+          }
+        },
+        {
+          "name": "second",
+          "type": {
+            "collection": false,
+            "nonNull": false,
+            "typeName": "Float"
+          }
+        }
+      ],
+      "name": "Interface"
+    }
+  },
+  "scalars": {
+    "Float": {
+      "name": "Float"
+    },
+    "String": {
+      "name": "String"
+    },
+    "Boolean": {
+      "name": "Boolean"
+    },
+    "Int": {
+      "name": "Int"
+    }
+  },
+  "inputs": {
+    "Input": {
+      "fields": [
+        {
+          "name": "first",
+          "type": {
+            "collection": false,
+            "nonNull": false,
+            "typeName": "Int"
+          }
+        },
+        {
+          "name": "second",
+          "type": {
+            "collection": false,
+            "nonNull": false,
+            "typeName": "Float"
+          }
+        }
+      ],
+      "name": "Input"
+    }
+  }
+}
