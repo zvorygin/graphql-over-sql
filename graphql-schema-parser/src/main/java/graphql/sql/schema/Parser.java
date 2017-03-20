@@ -6,8 +6,6 @@ import graphql.sql.schema.impl.SchemaDocumentVisitor;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.UnbufferedCharStream;
-import org.antlr.v4.runtime.UnbufferedTokenStream;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -27,6 +27,7 @@ public abstract class AbstractTypeUtil<T> implements TypeUtil<T> {
         return graphQLScalarType;
     }
 
+    @Override
     public T getValue(Node value) {
         throw new IllegalStateException("Not implemented yet");
     }

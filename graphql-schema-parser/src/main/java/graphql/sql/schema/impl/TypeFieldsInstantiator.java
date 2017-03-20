@@ -12,7 +12,7 @@ class TypeFieldsInstantiator extends GraphqlSchemaBaseVisitor<Void> {
 
     public TypeFieldsInstantiator(TypesInstantiator typesInstantiator) {
         this.typesInstantiator = typesInstantiator;
-        fieldInstantiator = new FieldInstantiator(typesInstantiator.getExistingNodes());
+        fieldInstantiator = new FieldInstantiator();
     }
 
     @Override

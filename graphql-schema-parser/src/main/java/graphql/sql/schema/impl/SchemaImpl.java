@@ -1,7 +1,6 @@
 package graphql.sql.schema.impl;
 
 import graphql.sql.schema.Schema;
-import graphql.sql.schema.TypeReference;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -22,11 +21,13 @@ class SchemaImpl extends Node implements Schema {
         this.mutationType = mutationType;
     }
 
+    @Override
     @Nonnull
     public TypeReferenceImpl getQueryType() {
         return queryType;
     }
 
+    @Override
     @Nullable
     public TypeReferenceImpl getMutationType() {
         return mutationType;

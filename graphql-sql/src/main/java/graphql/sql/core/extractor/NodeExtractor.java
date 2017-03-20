@@ -15,6 +15,7 @@ public class NodeExtractor extends FragmentExtractor {
         super(null, EMPTY);
     }
 
+    @Override
     public int addKeyExtractor(ScalarExtractor keyExtractor) {
         // If this extractor already exists in key
         for (int i = 0; i < keyExtractors.size(); i++) {

@@ -1,7 +1,6 @@
 package graphql.sql.schema.impl;
 
 import graphql.sql.schema.Field;
-import graphql.sql.schema.Type;
 import graphql.sql.schema.TypeReference;
 
 class FieldImpl extends NamedNode implements Field {

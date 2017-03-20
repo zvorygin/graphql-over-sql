@@ -1,20 +1,11 @@
 package graphql.sql.schema.impl;
 
-import graphql.sql.schema.Type;
 import graphql.sql.schema.TypeReference;
 import graphql.sql.schema.antlr.GraphqlSchemaBaseVisitor;
 import graphql.sql.schema.antlr.GraphqlSchemaParser;
 import org.antlr.v4.runtime.Token;
 
-import java.util.Map;
-
 class FieldInstantiator extends GraphqlSchemaBaseVisitor<TypeReference> {
-    private final Map<String, ? extends Type> typeMap;
-
-    public FieldInstantiator(Map<String, ? extends Type> typeMap) {
-        this.typeMap = typeMap;
-    }
-
     @Override
     public TypeReference visitFieldTypeNameReference(GraphqlSchemaParser.FieldTypeNameReferenceContext ctx) {
         Token symbol = ctx.TYPE_NAME().getSymbol();

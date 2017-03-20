@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 /**
  * {@link graphql.schema.GraphQLCompositeType GraphQLCompositeType} type implementation
