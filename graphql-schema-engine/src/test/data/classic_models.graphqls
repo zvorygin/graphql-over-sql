@@ -1,0 +1,51 @@
+schema {
+    query: Query
+}
+
+type Query {
+    personById(id: [Int!]!): [IPerson!]!
+    customerById(id: [Int!]!): [ICustomer!]!
+    employeeById(id: [Int!]!): [IEmployee!]!
+}
+
+#@Provider("sql")
+#@Table(name="PERSON", discover=true)
+interface IPerson {
+    #@Column("PERSON_NUMBER")
+    #@Id
+    id: Int!
+}
+
+#@Provider("sql")
+#@Table("CUSTOMER", discover=true)
+#@Parent("IPerson")
+interface ICustomer {
+    #@Column("PERSON_NUMBER")
+    #@Id
+    id: Int!
+}
+
+#@Provider("sql")
+#@Table("EMPLOYEE", discover=true)
+#@Parent("IPerson")
+interface IEmployee {
+    #@Column("PERSON_NUMBER")
+    #@Id
+    id: Int!
+    email: String!
+}
+
+interface IUser {
+    #@Id
+    email: String!
+    ldap: String
+    hiredAt: String
+}
+
+type Customer implements ICustomer, IUser {
+
+}
+
+type Employee implements IEmployee {
+
+}

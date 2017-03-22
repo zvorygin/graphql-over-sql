@@ -17,6 +17,7 @@
         <module>graphql-sql</module>
         <module>graphql-web</module>
         <module>graphql-it</module>
+        <module>graphql-schema-engine</module>
     </modules>
 
     <properties>
@@ -130,6 +131,11 @@
             <dependency>
                 <groupId>com.graphql-over-sql</groupId>
                 <artifactId>graphql-schema-parser</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.graphql-over-sql</groupId>
+                <artifactId>graphql-schema-engine</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

@@ -12,9 +12,9 @@ definition
 
 scalarDefinition : 'scalar' TYPE_NAME ;
 
-interfaceDefinition : 'interface' TYPE_NAME LCURLY fieldDefinition+ RCURLY ;
+interfaceDefinition : 'interface' TYPE_NAME LCURLY fieldDefinition* RCURLY ;
 
-typeDefinition : 'type' TYPE_NAME LCURLY fieldDefinition+ RCURLY ;
+typeDefinition : 'type' TYPE_NAME implementsList? LCURLY fieldDefinition* RCURLY ;
 
 inputDefinition : 'input' TYPE_NAME LCURLY fieldDefinition+ RCURLY ;
 
@@ -22,13 +22,15 @@ query : 'query' COLON TYPE_NAME ;
 
 mutation : 'mutation' COLON TYPE_NAME ;
 
-fieldDefinition : FIELD_NAME fieldArguments? ':' fieldType ;
+fieldDefinition : FIELD_NAME fieldArguments? COLON fieldType ;
 
 schema : SCHEMA LCURLY query? mutation? RCURLY ;
 
-fieldArguments: LPAREN fieldArgument (',' fieldArgument)* RPAREN ;
+implementsList : 'implements' TYPE_NAME (COMMA TYPE_NAME)* ;
 
-fieldArgument: FIELD_NAME COLON TYPE_NAME defaultValue? ;
+fieldArguments: LPAREN fieldArgument (COMMA fieldArgument)* RPAREN ;
+
+fieldArgument: FIELD_NAME COLON fieldType defaultValue? ;
 
 defaultValue: EQ value ;
 
@@ -54,6 +56,7 @@ LBRACKET : '[' ;
 RBRACKET : ']' ;
 COLON : ':' ;
 EXCLM : '!';
+COMMA : ',';
 SCHEMA : 'schema';
 
 TYPE_NAME : [A-Z][0-9A-Za-z]* ;

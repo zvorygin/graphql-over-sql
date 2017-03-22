@@ -8,10 +8,10 @@
         <artifactId>parent</artifactId>
         <version>1.0</version>
     </parent>
-    <artifactId>graphql-common</artifactId>
+    <artifactId>graphql-schema-engine</artifactId>
     <packaging>jar</packaging>
 
-    <name>GraphQL Common Project</name>
+    <name>GraphQL Schema Engine</name>
 
     <properties>
         <sonar.jacoco.itReportPath>${project.basedir}/../target/jacoco/${jacoco.out.it.file}</sonar.jacoco.itReportPath>
@@ -28,6 +28,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.graphql-over-sql</groupId>
+            <artifactId>graphql-common</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
         </dependency>
@@ -36,8 +40,8 @@
             <artifactId>sqlbuilder</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.graphql-java</groupId>
-            <artifactId>graphql-java</artifactId>
+            <groupId>com.graphql-over-sql</groupId>
+            <artifactId>graphql-schema-parser</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -49,9 +53,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.21</version>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.7</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
