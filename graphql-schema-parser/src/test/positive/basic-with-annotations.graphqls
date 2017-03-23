@@ -3,7 +3,7 @@ schema {
 }
 
 #Some comment
-#@QueryAnnotation(intValue=10, floatValue=1.5, stringValue="Query")
+#@QueryAnnotation(intValue=10, floatValue=1.5, stringValue="Query", bool=true)
 type Query {
     someIntField(arg:Input): Int
     someStringField: String
@@ -11,7 +11,7 @@ type Query {
 
 #Some comment
 #@FirstInputAnnotation(stringValue="InputValue")
-#@SecondInputAnnotation(floatValue=1.5)
+#@SecondInputAnnotation(floatValue=1.5, something=false)
 input Input {
     first : Int
     second: Float

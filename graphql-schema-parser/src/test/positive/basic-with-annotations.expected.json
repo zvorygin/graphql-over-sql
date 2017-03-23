@@ -12,6 +12,7 @@
         "QueryAnnotation": {
           "attributes": {
             "stringValue": "Query",
+            "bool": true,
             "intValue": 10.0,
             "floatValue": 1.5
           },
@@ -86,7 +87,8 @@
       "annotations": {
         "SecondInputAnnotation": {
           "attributes": {
-            "floatValue": 1.5
+            "floatValue": 1.5,
+            "something": false
           },
           "name": "SecondInputAnnotation"
         },

@@ -66,10 +66,6 @@ COMMA : ',' ;
 SCHEMA : 'schema' ;
 ANNOTATION_START : '#@' ;
 
-TYPE_NAME : [A-Z][0-9A-Za-z]* ;
-
-FIELD_NAME : [a-z][0-9A-Za-z]* ;
-
 STRING_VALUE : '"' ~["]* '"' ;
 
 FLOAT_VALUE : '-'? INT '.' [0-9]+ EXP? | '-'? INT EXP | '-'? INT;
@@ -81,6 +77,10 @@ fragment INT : '0' | ('-' ? [1-9] [0-9]*);
 fragment EXP : [Ee] [+\-]? INT ;
 
 BOOLEAN_VALUE : 'true' | 'false' ;
+
+TYPE_NAME : [A-Z][0-9A-Za-z]* ;
+
+FIELD_NAME : [a-z][0-9A-Za-z]* ;
 
 IGNORED
 	: (WHITESPACE|LINE_TERMINATOR|COMMENT) -> skip ;

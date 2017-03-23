@@ -8,35 +8,30 @@ type Query {
     employeeById(id: [Int!]!): [IEmployee!]!
 }
 
-#@Provider("sql")
+#@Provider(name="sql")
 #@Table(name="PERSON", discover=true)
 interface IPerson {
-    #@Column("PERSON_NUMBER")
-    #@Id
+#    #@Column("PERSON_NUMBER")
+#    #@Id
     id: Int!
 }
 
-#@Provider("sql")
-#@Table("CUSTOMER", discover=true)
-#@Parent("IPerson")
+#@Provider(name="sql")
+#@Table(name="CUSTOMER", discover=true)
+#@Parent(name="IPerson")
 interface ICustomer {
-    #@Column("PERSON_NUMBER")
-    #@Id
     id: Int!
 }
 
-#@Provider("sql")
-#@Table("EMPLOYEE", discover=true)
-#@Parent("IPerson")
+#@Provider(name="sql")
+#@Table(name="EMPLOYEE", discover=true)
+#@Parent(name="IPerson")
 interface IEmployee {
-    #@Column("PERSON_NUMBER")
-    #@Id
     id: Int!
     email: String!
 }
 
 interface IUser {
-    #@Id
     email: String!
     ldap: String
     hiredAt: String
