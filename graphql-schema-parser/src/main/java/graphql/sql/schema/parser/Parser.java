@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class Parser {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Parser.class);
     private final SchemaDocumentVisitor visitor = new SchemaDocumentVisitor();
 
     public SchemaDocument parse(InputStream inputStream) throws IOException {
@@ -34,12 +33,13 @@ public class Parser {
                 Vocabulary vocabulary = ime.getRecognizer().getVocabulary();
                 Token offendingToken = ime.getOffendingToken();
                 String offendingDisplayName = vocabulary.getDisplayName(offendingToken.getType());
-                LOGGER.error("Unexpected token [{}] of type [{}] at position [{}:{}]. Expected any of [{}].",
+                String message = String.format("Unexpected token [%s] of type [%s] at position [%d:%d]. Expected any of [%s].",
                         offendingToken.getText(),
                         offendingDisplayName,
                         offendingToken.getLine(),
                         offendingToken.getCharPositionInLine(),
                         ime.getExpectedTokens().toString(vocabulary));
+                throw new SchemaParserException(message, pce);
             }
             throw pce;
         }

@@ -1,0 +1,9 @@
+schema {
+    query: Query
+}
+
+scalar String
+
+    someIntField: Int
+    someStringField: String
+}
