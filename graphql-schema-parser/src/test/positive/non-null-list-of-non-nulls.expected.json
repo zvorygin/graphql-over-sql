@@ -8,6 +8,7 @@
   },
   "types": {
     "Query": {
+      "annotations": {},
       "fields": [
         {
           "name": "url",
@@ -36,18 +37,23 @@
   "interfaces": {},
   "scalars": {
     "Float": {
+      "annotations": {},
       "name": "Float"
     },
     "String": {
+      "annotations": {},
       "name": "String"
     },
     "Boolean": {
+      "annotations": {},
       "name": "Boolean"
     },
     "Int": {
+      "annotations": {},
       "name": "Int"
     },
     "Url": {
+      "annotations": {},
       "name": "Url"
     }
   },

@@ -1,0 +1,25 @@
+schema {
+    query: Query
+}
+
+#Some comment
+#@QueryAnnotation(intValue=10, floatValue=1.5, stringValue="Query")
+type Query {
+    someIntField(arg:Input): Int
+    someStringField: String
+}
+
+#Some comment
+#@FirstInputAnnotation(stringValue="InputValue")
+#@SecondInputAnnotation(floatValue=1.5)
+input Input {
+    first : Int
+    second: Float
+}
+
+#Some comment
+#No annotations here
+interface Interface {
+    first : Int
+    second : Float
+}

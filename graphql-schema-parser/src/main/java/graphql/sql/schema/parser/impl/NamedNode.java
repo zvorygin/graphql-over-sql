@@ -1,8 +1,6 @@
 package graphql.sql.schema.parser.impl;
 
-import graphql.sql.schema.parser.Type;
-
-abstract class NamedNode extends Node implements Type {
+abstract class NamedNode extends Node {
     private final String name;
 
     public NamedNode(String name, Location location) {

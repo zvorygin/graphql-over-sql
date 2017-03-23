@@ -10,13 +10,13 @@ definition
 	| inputDefinition
 	;
 
-scalarDefinition : 'scalar' TYPE_NAME ;
+scalarDefinition : annotation* 'scalar' TYPE_NAME ;
 
-interfaceDefinition : 'interface' TYPE_NAME LCURLY fieldDefinition* RCURLY ;
+interfaceDefinition : annotation* 'interface' TYPE_NAME LCURLY fieldDefinition* RCURLY ;
 
-typeDefinition : 'type' TYPE_NAME implementsList? LCURLY fieldDefinition* RCURLY ;
+typeDefinition : annotation* 'type' TYPE_NAME implementsList? LCURLY fieldDefinition* RCURLY ;
 
-inputDefinition : 'input' TYPE_NAME LCURLY fieldDefinition+ RCURLY ;
+inputDefinition : annotation* 'input' TYPE_NAME LCURLY fieldDefinition+ RCURLY ;
 
 query : 'query' COLON TYPE_NAME ;
 
@@ -33,6 +33,12 @@ fieldArguments: LPAREN fieldArgument (COMMA fieldArgument)* RPAREN ;
 fieldArgument: FIELD_NAME COLON fieldType defaultValue? ;
 
 defaultValue: EQ value ;
+
+annotation: ANNOTATION_START TYPE_NAME annotationArguments? ;
+
+annotationArguments: LPAREN annotationArgument (COMMA annotationArgument)* RPAREN ;
+
+annotationArgument: FIELD_NAME EQ value ;
 
 value
 	: INT_VALUE
@@ -55,9 +61,10 @@ RPAREN : ')' ;
 LBRACKET : '[' ;
 RBRACKET : ']' ;
 COLON : ':' ;
-EXCLM : '!';
-COMMA : ',';
-SCHEMA : 'schema';
+EXCLM : '!' ;
+COMMA : ',' ;
+SCHEMA : 'schema' ;
+ANNOTATION_START : '#@' ;
 
 TYPE_NAME : [A-Z][0-9A-Za-z]* ;
 
@@ -79,7 +86,9 @@ IGNORED
 	: (WHITESPACE|LINE_TERMINATOR|COMMENT) -> skip ;
 
 fragment COMMENT
-	: '#' ~[\n\r\u2028\u2029]* ;
+	: '#'
+	| '#' ~[@\n\r\u2028\u2029] ~[\n\r\u2028\u2029]*
+	;
 
 fragment LINE_TERMINATOR
 	: [\n\r\u2028\u2029] ;

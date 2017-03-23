@@ -8,7 +8,16 @@
   },
   "types": {
     "Query": {
-      "annotations": {},
+      "annotations": {
+        "QueryAnnotation": {
+          "attributes": {
+            "stringValue": "Query",
+            "intValue": 10.0,
+            "floatValue": 1.5
+          },
+          "name": "QueryAnnotation"
+        }
+      },
       "fields": [
         {
           "name": "someIntField",
@@ -74,7 +83,20 @@
   },
   "inputs": {
     "Input": {
-      "annotations": {},
+      "annotations": {
+        "SecondInputAnnotation": {
+          "attributes": {
+            "floatValue": 1.5
+          },
+          "name": "SecondInputAnnotation"
+        },
+        "FirstInputAnnotation": {
+          "attributes": {
+            "stringValue": "InputValue"
+          },
+          "name": "FirstInputAnnotation"
+        }
+      },
       "fields": [
         {
           "name": "first",

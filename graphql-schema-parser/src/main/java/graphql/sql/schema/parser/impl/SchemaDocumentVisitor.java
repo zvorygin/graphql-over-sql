@@ -1,8 +1,8 @@
 package graphql.sql.schema.parser.impl;
 
-import graphql.sql.schema.parser.SchemaDocument;
 import graphql.sql.schema.antlr.GraphqlSchemaBaseVisitor;
 import graphql.sql.schema.antlr.GraphqlSchemaParser;
+import graphql.sql.schema.parser.SchemaDocument;
 import org.antlr.v4.runtime.Token;
 
 import java.util.Map;
@@ -13,8 +13,6 @@ public class SchemaDocumentVisitor extends GraphqlSchemaBaseVisitor<SchemaDocume
     public SchemaDocument visitSchemaDocument(GraphqlSchemaParser.SchemaDocumentContext ctx) {
         TypesInstantiator typesVisitor = new TypesInstantiator();
         ctx.definition().forEach(typesVisitor::visitDefinition);
-        TypeFieldsInstantiator typeFieldsInstantiator = new TypeFieldsInstantiator(typesVisitor);
-        ctx.definition().forEach(typeFieldsInstantiator::visitDefinition);
         Map<String, ObjectTypeImpl> objectTypes = typesVisitor.getObjectTypes();
         Map<String, InterfaceImpl> interfaces = typesVisitor.getInterfaces();
         Map<String, ScalarImpl> scalars = typesVisitor.getScalars();
