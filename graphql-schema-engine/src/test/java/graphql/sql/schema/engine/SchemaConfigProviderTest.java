@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class SchemaConfigProviderTest {
@@ -26,7 +27,9 @@ public class SchemaConfigProviderTest {
             return new Interface() {
                 @Override
                 public Map<String, Field> getFields() {
-                    return schemaInterface.getFields().stream().collect(Collectors.toMap(SchemaField::getName, f -> new Field(f.getName(), f.getType())));
+                    Function<SchemaField, String> getName = SchemaField::getName;
+                    Function<SchemaField, Field> buildField = f -> new Field(f.getName(), f.getType());
+                    return schemaInterface.getFields().stream().collect(Collectors.toMap(getName, buildField));
                 }
 
                 @Override
