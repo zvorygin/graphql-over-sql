@@ -7,6 +7,8 @@ import org.junit.Test;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -29,7 +31,8 @@ public class SchemaConfigProviderTest {
                 public Map<String, Field> getFields() {
                     Function<SchemaField, String> getName = SchemaField::getName;
                     Function<SchemaField, Field> buildField = f -> new Field(f.getName(), f.getType());
-                    return schemaInterface.getFields().stream().collect(Collectors.toMap(getName, buildField));
+                    Collection<SchemaField> fields = Collections.unmodifiableCollection(schemaInterface.getFields());
+                    return fields.stream().collect(Collectors.toMap(getName, buildField));
                 }
 
                 @Override
