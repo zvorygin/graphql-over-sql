@@ -18,23 +18,23 @@ public interface SchemaDocument {
      * @return all GraphQL types defined in this document
      */
     @Nonnull
-    Map<String, ? extends ObjectType> getTypes();
+    Map<String, ? extends SchemaObjectType> getTypes();
 
     /**
      * @return all GraphQL interfaces defined in this document
      */
     @Nonnull
-    Map<String, ? extends Interface> getInterfaces();
+    Map<String, ? extends SchemaInterface> getInterfaces();
 
     /**
      * @return all scalars defined in this document
      */
     @Nonnull
-    Map<String, ? extends Scalar> getScalars();
+    Map<String, ? extends SchemaScalar> getScalars();
 
     /**
      * @return all input types defined in this document
      */
     @Nonnull
-    Map<String, ? extends Input> getInputs();
+    Map<String, ? extends SchemaInput> getInputs();
 }

@@ -1,13 +1,13 @@
 package graphql.sql.schema.parser.impl;
 
-import graphql.sql.schema.parser.Annotation;
+import graphql.sql.schema.parser.SchemaAnnotation;
 
 import java.util.Map;
 
-public class AnnotationImpl extends NamedNode implements Annotation {
+public class SchemaAnnotationImpl extends NamedSchemaNode implements SchemaAnnotation {
     private final Map<String, Object> attributes;
 
-    public AnnotationImpl(Map<String, Object> attributes, String name, Location location) {
+    public SchemaAnnotationImpl(Map<String, Object> attributes, String name, Location location) {
         super(name, location);
         this.attributes = attributes;
     }

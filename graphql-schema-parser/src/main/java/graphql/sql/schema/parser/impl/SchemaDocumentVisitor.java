@@ -13,11 +13,11 @@ public class SchemaDocumentVisitor extends GraphqlSchemaBaseVisitor<SchemaDocume
     public SchemaDocument visitSchemaDocument(GraphqlSchemaParser.SchemaDocumentContext ctx) {
         TypesInstantiator typesVisitor = new TypesInstantiator();
         ctx.definition().forEach(typesVisitor::visitDefinition);
-        Map<String, ObjectTypeImpl> objectTypes = typesVisitor.getObjectTypes();
-        Map<String, InterfaceImpl> interfaces = typesVisitor.getInterfaces();
-        Map<String, ScalarImpl> scalars = typesVisitor.getScalars();
+        Map<String, SchemaObjectTypeImpl> objectTypes = typesVisitor.getObjectTypes();
+        Map<String, SchemaInterfaceImpl> interfaces = typesVisitor.getInterfaces();
+        Map<String, SchemaScalarImpl> scalars = typesVisitor.getScalars();
 
-        Map<String, InputImpl> inputs = typesVisitor.getInputs();
+        Map<String, SchemaInputImpl> inputs = typesVisitor.getInputs();
         Token queryTypeNameSymbol = ctx.schema().query().TYPE_NAME().getSymbol();
         String queryTypeName = queryTypeNameSymbol.getText();
         TypeReferenceImpl queryType =  new TypeReferenceImpl(queryTypeName, new Location(queryTypeNameSymbol));

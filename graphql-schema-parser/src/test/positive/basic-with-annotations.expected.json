@@ -42,7 +42,6 @@
   },
   "interfaces": {
     "Interface": {
-      "annotations": {},
       "fields": [
         {
           "name": "first",
@@ -66,19 +65,15 @@
   },
   "scalars": {
     "Float": {
-      "annotations": {},
       "name": "Float"
     },
     "String": {
-      "annotations": {},
       "name": "String"
     },
     "Boolean": {
-      "annotations": {},
       "name": "Boolean"
     },
     "Int": {
-      "annotations": {},
       "name": "Int"
     }
   },

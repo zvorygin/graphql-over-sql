@@ -1,12 +1,11 @@
 package graphql.sql.schema.parser.impl;
 
 import graphql.sql.schema.parser.Schema;
-import graphql.sql.schema.parser.Schema;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-class SchemaImpl extends Node implements Schema {
+class SchemaImpl extends SchemaNode implements Schema {
     @Nonnull
     private final TypeReferenceImpl queryType;
 

@@ -1,0 +1,259 @@
+{
+  "schema": {
+    "queryType": {
+      "collection": false,
+      "nonNull": false,
+      "typeName": "Query"
+    }
+  },
+  "types": {
+    "Employee": {
+      "interfaces": [
+        "IEmployee"
+      ],
+      "name": "Employee"
+    },
+    "Query": {
+      "fields": [
+        {
+          "name": "customerById",
+          "type": {
+            "collection": false,
+            "nonNull": true,
+            "wrappedType": {
+              "collection": true,
+              "nonNull": false,
+              "wrappedType": {
+                "collection": false,
+                "nonNull": true,
+                "wrappedType": {
+                  "collection": false,
+                  "nonNull": false,
+                  "typeName": "ICustomer"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "employeeById",
+          "type": {
+            "collection": false,
+            "nonNull": true,
+            "wrappedType": {
+              "collection": true,
+              "nonNull": false,
+              "wrappedType": {
+                "collection": false,
+                "nonNull": true,
+                "wrappedType": {
+                  "collection": false,
+                  "nonNull": false,
+                  "typeName": "IEmployee"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "personById",
+          "type": {
+            "collection": false,
+            "nonNull": true,
+            "wrappedType": {
+              "collection": true,
+              "nonNull": false,
+              "wrappedType": {
+                "collection": false,
+                "nonNull": true,
+                "wrappedType": {
+                  "collection": false,
+                  "nonNull": false,
+                  "typeName": "IPerson"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "name": "Query"
+    },
+    "Customer": {
+      "interfaces": [
+        "ICustomer",
+        "IUser"
+      ],
+      "name": "Customer"
+    }
+  },
+  "interfaces": {
+    "IPerson": {
+      "annotations": {
+        "Table": {
+          "attributes": {
+            "discover": true,
+            "name": "PERSON"
+          },
+          "name": "Table"
+        },
+        "Provider": {
+          "attributes": {
+            "name": "sql"
+          },
+          "name": "Provider"
+        }
+      },
+      "fields": [
+        {
+          "name": "id",
+          "type": {
+            "collection": false,
+            "nonNull": true,
+            "wrappedType": {
+              "collection": false,
+              "nonNull": false,
+              "typeName": "Int"
+            }
+          }
+        }
+      ],
+      "name": "IPerson"
+    },
+    "IEmployee": {
+      "annotations": {
+        "Table": {
+          "attributes": {
+            "discover": true,
+            "name": "EMPLOYEE"
+          },
+          "name": "Table"
+        },
+        "Parent": {
+          "attributes": {
+            "name": "IPerson"
+          },
+          "name": "Parent"
+        },
+        "Provider": {
+          "attributes": {
+            "name": "sql"
+          },
+          "name": "Provider"
+        }
+      },
+      "fields": [
+        {
+          "name": "id",
+          "type": {
+            "collection": false,
+            "nonNull": true,
+            "wrappedType": {
+              "collection": false,
+              "nonNull": false,
+              "typeName": "Int"
+            }
+          }
+        },
+        {
+          "name": "email",
+          "type": {
+            "collection": false,
+            "nonNull": true,
+            "wrappedType": {
+              "collection": false,
+              "nonNull": false,
+              "typeName": "String"
+            }
+          }
+        }
+      ],
+      "name": "IEmployee"
+    },
+    "ICustomer": {
+      "annotations": {
+        "Table": {
+          "attributes": {
+            "discover": true,
+            "name": "CUSTOMER"
+          },
+          "name": "Table"
+        },
+        "Parent": {
+          "attributes": {
+            "name": "IPerson"
+          },
+          "name": "Parent"
+        },
+        "Provider": {
+          "attributes": {
+            "name": "sql"
+          },
+          "name": "Provider"
+        }
+      },
+      "fields": [
+        {
+          "name": "id",
+          "type": {
+            "collection": false,
+            "nonNull": true,
+            "wrappedType": {
+              "collection": false,
+              "nonNull": false,
+              "typeName": "Int"
+            }
+          }
+        }
+      ],
+      "name": "ICustomer"
+    },
+    "IUser": {
+      "fields": [
+        {
+          "name": "ldap",
+          "type": {
+            "collection": false,
+            "nonNull": false,
+            "typeName": "String"
+          }
+        },
+        {
+          "name": "hiredAt",
+          "type": {
+            "collection": false,
+            "nonNull": false,
+            "typeName": "String"
+          }
+        },
+        {
+          "name": "email",
+          "type": {
+            "collection": false,
+            "nonNull": true,
+            "wrappedType": {
+              "collection": false,
+              "nonNull": false,
+              "typeName": "String"
+            }
+          }
+        }
+      ],
+      "name": "IUser"
+    }
+  },
+  "scalars": {
+    "Float": {
+      "name": "Float"
+    },
+    "String": {
+      "name": "String"
+    },
+    "Boolean": {
+      "name": "Boolean"
+    },
+    "Int": {
+      "name": "Int"
+    }
+  },
+  "inputs": {}
+}

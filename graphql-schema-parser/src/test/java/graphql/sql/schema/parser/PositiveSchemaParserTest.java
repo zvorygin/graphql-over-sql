@@ -18,28 +18,30 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RunWith(Parameterized.class)
-public class PositiveParserTest {
+public class PositiveSchemaParserTest {
     private static final Path TEST_DATA = Paths.get("src/test/positive");
     private static final String SCHEMA_SUFFIX = ".graphqls";
     private static final String EXPECTED_SUFFIX = ".expected.json";
     private final File input;
     private final File expected;
 
-    public PositiveParserTest(String resourcePath) {
+    public PositiveSchemaParserTest(String resourcePath) {
         input = TEST_DATA.resolve(resourcePath + SCHEMA_SUFFIX).toFile();
         expected = TEST_DATA.resolve(resourcePath + EXPECTED_SUFFIX).toFile();
     }
 
     @BeforeClass
     public static void beforeClass() {
-        TestUtil.addMixIn(Type.class, NoLocationMixIn.class);
-        TestUtil.addMixIn(TypeReference.class, NoLocationMixIn.class);
+        TestUtil.addMixIn(SchemaType.class, NoLocationMixIn.class);
+        TestUtil.addMixIn(SchemaTypeReference.class, NoLocationMixIn.class);
         TestUtil.addMixIn(Schema.class, NoLocationMixIn.class);
-        TestUtil.addMixIn(Field.class, NoLocationMixIn.class);
-        TestUtil.addMixIn(Annotation.class, NoLocationMixIn.class);
+        TestUtil.addMixIn(SchemaField.class, NoLocationMixIn.class);
+        TestUtil.addMixIn(SchemaAnnotation.class, NoLocationMixIn.class);
     }
 
     @Parameterized.Parameters(name = "{0}")
@@ -54,7 +56,7 @@ public class PositiveParserTest {
 
     @Test
     public void parse() throws Exception {
-        Parser parser = new Parser();
+        SchemaParser parser = new SchemaParser();
 
         try (InputStream is = new FileInputStream(input)) {
             SchemaDocument document = parser.parse(is);
@@ -69,5 +71,14 @@ public class PositiveParserTest {
     public interface NoLocationMixIn {
         @JsonIgnore
         Object getLocation();
+
+        @JsonInclude(JsonInclude.Include.NON_EMPTY)
+        List<String> getInterfaces();
+
+        @JsonInclude(JsonInclude.Include.NON_EMPTY)
+        Collection<? extends SchemaField> getFields();
+
+        @JsonInclude(JsonInclude.Include.NON_EMPTY)
+        Map<String, ? extends SchemaAnnotation> getAnnotations();
     }
 }

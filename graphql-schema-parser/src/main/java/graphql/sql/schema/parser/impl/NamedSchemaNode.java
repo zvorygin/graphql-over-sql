@@ -1,9 +1,9 @@
 package graphql.sql.schema.parser.impl;
 
-abstract class NamedNode extends Node {
+abstract class NamedSchemaNode extends SchemaNode {
     private final String name;
 
-    public NamedNode(String name, Location location) {
+    public NamedSchemaNode(String name, Location location) {
         super(location);
         this.name = name;
     }

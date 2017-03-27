@@ -1,9 +1,9 @@
 package graphql.sql.schema.parser.impl;
 
-class Node {
+class SchemaNode {
     private final Location location;
 
-    public Node(Location location) {
+    public SchemaNode(Location location) {
         this.location = location;
     }
 

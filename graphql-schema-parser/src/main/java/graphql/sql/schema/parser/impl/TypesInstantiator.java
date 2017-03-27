@@ -14,43 +14,43 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 class TypesInstantiator extends GraphqlSchemaBaseVisitor<Void> {
-    private static final Map<String, ScalarImpl> buildInScalars = new HashMap<>();
+    private static final Map<String, SchemaScalarImpl> buildInScalars = new HashMap<>();
     private static final FieldInstantiator fieldInstantiator = new FieldInstantiator();
 
     static {
-        buildInScalars.put("String", new ScalarImpl(Collections.emptyMap(), "String", new Location(0, 0)));
-        buildInScalars.put("Int", new ScalarImpl(Collections.emptyMap(), "Int", new Location(0, 0)));
-        buildInScalars.put("Boolean", new ScalarImpl(Collections.emptyMap(), "Boolean", new Location(0, 0)));
-        buildInScalars.put("Float", new ScalarImpl(Collections.emptyMap(), "Float", new Location(0, 0)));
+        buildInScalars.put("String", new SchemaScalarImpl(Collections.emptyMap(), "String", new Location(0, 0)));
+        buildInScalars.put("Int", new SchemaScalarImpl(Collections.emptyMap(), "Int", new Location(0, 0)));
+        buildInScalars.put("Boolean", new SchemaScalarImpl(Collections.emptyMap(), "Boolean", new Location(0, 0)));
+        buildInScalars.put("Float", new SchemaScalarImpl(Collections.emptyMap(), "Float", new Location(0, 0)));
     }
 
-    private final Map<String, ScalarImpl> scalars = new HashMap<>();
+    private final Map<String, SchemaScalarImpl> scalars = new HashMap<>();
 
-    private final Map<String, InterfaceImpl> interfaces = new HashMap<>();
+    private final Map<String, SchemaInterfaceImpl> interfaces = new HashMap<>();
 
-    private final Map<String, ObjectTypeImpl> objectTypes = new HashMap<>();
+    private final Map<String, SchemaObjectTypeImpl> objectTypes = new HashMap<>();
 
-    private final Map<String, InputImpl> inputs = new HashMap<>();
+    private final Map<String, SchemaInputImpl> inputs = new HashMap<>();
 
     public TypesInstantiator() {
-        for (Map.Entry<String, ScalarImpl> scalarEntry : buildInScalars.entrySet()) {
+        for (Map.Entry<String, SchemaScalarImpl> scalarEntry : buildInScalars.entrySet()) {
             scalars.put(scalarEntry.getKey(), scalarEntry.getValue());
         }
     }
 
-    public Map<String, ScalarImpl> getScalars() {
+    public Map<String, SchemaScalarImpl> getScalars() {
         return scalars;
     }
 
-    public Map<String, InterfaceImpl> getInterfaces() {
+    public Map<String, SchemaInterfaceImpl> getInterfaces() {
         return interfaces;
     }
 
-    public Map<String, ObjectTypeImpl> getObjectTypes() {
+    public Map<String, SchemaObjectTypeImpl> getObjectTypes() {
         return objectTypes;
     }
 
-    public Map<String, InputImpl> getInputs() {
+    public Map<String, SchemaInputImpl> getInputs() {
         return inputs;
     }
 
@@ -59,7 +59,7 @@ class TypesInstantiator extends GraphqlSchemaBaseVisitor<Void> {
         Token nameToken = ctx.TYPE_NAME().getSymbol();
         String scalarName = nameToken.getText();
 
-        ScalarImpl existing = scalars.get(scalarName);
+        SchemaScalarImpl existing = scalars.get(scalarName);
 
         if (existing != null) {
             if (buildInScalars.containsKey(scalarName)) {
@@ -74,7 +74,7 @@ class TypesInstantiator extends GraphqlSchemaBaseVisitor<Void> {
                             nameToken.getLine(), nameToken.getCharPositionInLine()));
         }
 
-        ScalarImpl scalar = new ScalarImpl(buildAnnotations(ctx.annotation()), scalarName, new Location(nameToken));
+        SchemaScalarImpl scalar = new SchemaScalarImpl(buildAnnotations(ctx.annotation()), scalarName, new Location(nameToken));
         scalars.put(scalar.getName(), scalar);
         return null;
     }
@@ -82,7 +82,7 @@ class TypesInstantiator extends GraphqlSchemaBaseVisitor<Void> {
     @Override
     public Void visitInterfaceDefinition(GraphqlSchemaParser.InterfaceDefinitionContext ctx) {
         Token nameToken = ctx.TYPE_NAME().getSymbol();
-        InterfaceImpl iface = new InterfaceImpl(buildAnnotations(ctx.annotation()), buildFields(ctx.fieldDefinition()), nameToken.getText(), new Location(nameToken));
+        SchemaInterfaceImpl iface = new SchemaInterfaceImpl(buildAnnotations(ctx.annotation()), buildFields(ctx.fieldDefinition()), nameToken.getText(), new Location(nameToken));
         interfaces.put(iface.getName(), iface);
         return null;
     }
@@ -90,7 +90,18 @@ class TypesInstantiator extends GraphqlSchemaBaseVisitor<Void> {
     @Override
     public Void visitTypeDefinition(GraphqlSchemaParser.TypeDefinitionContext ctx) {
         Token nameToken = ctx.TYPE_NAME().getSymbol();
-        ObjectTypeImpl objectType = new ObjectTypeImpl(buildFields(ctx.fieldDefinition()), buildAnnotations(ctx.annotation()), nameToken.getText(), new Location(nameToken));
+        List<String> interfaces;
+        GraphqlSchemaParser.ImplementsListContext implementsListContext = ctx.implementsList();
+        if (implementsListContext != null) {
+            interfaces = implementsListContext.TYPE_NAME().stream()
+                    .map(TerminalNode::getSymbol)
+                    .map(Token::getText)
+                    .collect(Collectors.toList());
+        } else {
+            interfaces = Collections.emptyList();
+        }
+        SchemaObjectTypeImpl objectType = new SchemaObjectTypeImpl(buildFields(ctx.fieldDefinition()),
+                buildAnnotations(ctx.annotation()), interfaces, nameToken.getText(), new Location(nameToken));
         objectTypes.put(objectType.getName(), objectType);
         return null;
     }
@@ -98,28 +109,28 @@ class TypesInstantiator extends GraphqlSchemaBaseVisitor<Void> {
     @Override
     public Void visitInputDefinition(GraphqlSchemaParser.InputDefinitionContext ctx) {
         Token nameToken = ctx.TYPE_NAME().getSymbol();
-        InputImpl input = new InputImpl(buildAnnotations(ctx.annotation()), buildFields(ctx.fieldDefinition()), nameToken.getText(), new Location(nameToken));
+        SchemaInputImpl input = new SchemaInputImpl(buildAnnotations(ctx.annotation()), buildFields(ctx.fieldDefinition()), nameToken.getText(), new Location(nameToken));
         inputs.put(input.getName(), input);
         return null;
     }
 
-    private Map<String, FieldImpl> buildFields(List<GraphqlSchemaParser.FieldDefinitionContext> contexts) {
+    private Map<String, SchemaFieldImpl> buildFields(List<GraphqlSchemaParser.FieldDefinitionContext> contexts) {
         try {
             return contexts.stream().map(context -> {
                 Token fieldNameSymbol = context.FIELD_NAME().getSymbol();
-                return new FieldImpl(
+                return new SchemaFieldImpl(
                         fieldNameSymbol.getText(),
                         new Location(fieldNameSymbol),
                         fieldInstantiator.visitFieldDefinition(context));
-            }).collect(Collectors.toMap(FieldImpl::getName, Function.identity()));
+            }).collect(Collectors.toMap(SchemaFieldImpl::getName, Function.identity()));
         } catch (IllegalStateException ise) {
             throw new SchemaParserException("Failed to build fields", ise);
         }
     }
 
-    private Map<String, AnnotationImpl> buildAnnotations(List<GraphqlSchemaParser.AnnotationContext> contexts) {
-        return contexts.stream().map(context -> new AnnotationImpl(buildArguments(context.annotationArguments()), context.TYPE_NAME().getSymbol().getText(),
-                new Location(context.ANNOTATION_START().getSymbol()))).collect(Collectors.toMap(AnnotationImpl::getName, Function.identity()));
+    private Map<String, SchemaAnnotationImpl> buildAnnotations(List<GraphqlSchemaParser.AnnotationContext> contexts) {
+        return contexts.stream().map(context -> new SchemaAnnotationImpl(buildArguments(context.annotationArguments()), context.TYPE_NAME().getSymbol().getText(),
+                new Location(context.ANNOTATION_START().getSymbol()))).collect(Collectors.toMap(SchemaAnnotationImpl::getName, Function.identity()));
     }
 
     private Map<String, Object> buildArguments(GraphqlSchemaParser.AnnotationArgumentsContext arguments) {

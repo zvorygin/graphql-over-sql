@@ -1,6 +1,6 @@
 package graphql.sql.schema.parser;
 
-public interface TypeReference {
+public interface SchemaTypeReference {
     default boolean isCollection() {
         return false;
     }
@@ -9,7 +9,7 @@ public interface TypeReference {
         return false;
     }
 
-    default TypeReference getWrappedType() {
+    default SchemaTypeReference getWrappedType() {
         return null;
     }
 

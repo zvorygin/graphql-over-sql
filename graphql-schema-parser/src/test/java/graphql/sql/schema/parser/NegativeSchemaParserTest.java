@@ -16,18 +16,18 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 @RunWith(Parameterized.class)
-public class NegativeParserTest {
+public class NegativeSchemaParserTest {
     private static final Path TEST_DATA = Paths.get("src/test/negative");
     private static final String SCHEMA_SUFFIX = ".graphqls";
     private final File input;
 
-    public NegativeParserTest(String resourcePath) {
+    public NegativeSchemaParserTest(String resourcePath) {
         input = TEST_DATA.resolve(resourcePath + SCHEMA_SUFFIX).toFile();
     }
 
     @Test(expected = SchemaParserException.class)
     public void parse() throws Exception {
-        Parser parser = new Parser();
+        SchemaParser parser = new SchemaParser();
 
         try (InputStream is = new FileInputStream(input)) {
             TestUtil.valueToTree(parser.parse(is));

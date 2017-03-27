@@ -2,7 +2,7 @@ schema {
     query: Query
 }
 
-type Query {
+typeReference Query {
     someIntField(arg:Input): Int
     someStringField: String
 }

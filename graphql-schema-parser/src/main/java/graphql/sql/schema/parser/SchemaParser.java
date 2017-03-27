@@ -10,13 +10,11 @@ import org.antlr.v4.runtime.InputMismatchException;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.Vocabulary;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-public class Parser {
+public class SchemaParser {
     private final SchemaDocumentVisitor visitor = new SchemaDocumentVisitor();
 
     public SchemaDocument parse(InputStream inputStream) throws IOException {

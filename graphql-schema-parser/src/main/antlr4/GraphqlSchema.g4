@@ -14,7 +14,7 @@ scalarDefinition : annotation* 'scalar' TYPE_NAME ;
 
 interfaceDefinition : annotation* 'interface' TYPE_NAME LCURLY fieldDefinition* RCURLY ;
 
-typeDefinition : annotation* 'type' TYPE_NAME implementsList? LCURLY fieldDefinition* RCURLY ;
+typeDefinition : annotation* 'typeReference' TYPE_NAME implementsList? LCURLY fieldDefinition* RCURLY ;
 
 inputDefinition : annotation* 'input' TYPE_NAME LCURLY fieldDefinition+ RCURLY ;
 

@@ -31,7 +31,6 @@ interface IEmployee {
     email: String!
 }
 
-#@Provider(name="activeDirectory")
 interface IUser {
     email: String!
     ldap: String

@@ -6,8 +6,8 @@ import javax.annotation.Nullable;
 public interface Schema {
 
     @Nonnull
-    TypeReference getQueryType();
+    SchemaTypeReference getQueryType();
 
     @Nullable
-    TypeReference getMutationType();
+    SchemaTypeReference getMutationType();
 }
