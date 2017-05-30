@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonNode;
 import graphql.sql.core.TestUtil;
+import graphql.sql.core.config.TypeReference;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +39,7 @@ public class PositiveSchemaParserTest {
     @BeforeClass
     public static void beforeClass() {
         TestUtil.addMixIn(SchemaType.class, NoLocationMixIn.class);
-        TestUtil.addMixIn(SchemaTypeReference.class, NoLocationMixIn.class);
+        TestUtil.addMixIn(TypeReference.class, NoLocationMixIn.class);
         TestUtil.addMixIn(Schema.class, NoLocationMixIn.class);
         TestUtil.addMixIn(SchemaField.class, NoLocationMixIn.class);
         TestUtil.addMixIn(SchemaAnnotation.class, NoLocationMixIn.class);

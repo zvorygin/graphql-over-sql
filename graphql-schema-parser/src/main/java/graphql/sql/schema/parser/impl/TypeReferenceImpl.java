@@ -1,10 +1,10 @@
 package graphql.sql.schema.parser.impl;
 
-import graphql.sql.schema.parser.SchemaTypeReference;
+import graphql.sql.core.config.TypeReference;
 
 import javax.annotation.Nonnull;
 
-public class TypeReferenceImpl extends SchemaNode implements SchemaTypeReference {
+class TypeReferenceImpl extends SchemaNode implements TypeReference {
     @Nonnull
     private final String typeName;
 

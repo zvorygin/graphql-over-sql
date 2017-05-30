@@ -30,7 +30,7 @@
         </dependency>
         <dependency>
             <groupId>com.graphql-over-sql</groupId>
-            <artifactId>graphql-sql</artifactId>
+            <artifactId>graphql-engine</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

@@ -1,24 +1,24 @@
 package graphql.sql.schema.parser.impl;
 
-import graphql.sql.schema.parser.SchemaTypeReference;
+import graphql.sql.core.config.TypeReference;
 import graphql.sql.schema.antlr.GraphqlSchemaBaseVisitor;
 import graphql.sql.schema.antlr.GraphqlSchemaParser;
 import org.antlr.v4.runtime.Token;
 
-class FieldInstantiator extends GraphqlSchemaBaseVisitor<SchemaTypeReference> {
+class FieldInstantiator extends GraphqlSchemaBaseVisitor<TypeReference> {
     @Override
-    public SchemaTypeReference visitFieldTypeNameReference(GraphqlSchemaParser.FieldTypeNameReferenceContext ctx) {
+    public TypeReference visitFieldTypeNameReference(GraphqlSchemaParser.FieldTypeNameReferenceContext ctx) {
         Token symbol = ctx.TYPE_NAME().getSymbol();
         return new TypeReferenceImpl(symbol.getText(), new Location(symbol));
     }
 
     @Override
-    public SchemaTypeReference visitFieldTypeList(GraphqlSchemaParser.FieldTypeListContext ctx) {
-        return new ListSchemaTypeReference(ctx.fieldType().accept(this), new Location(ctx.LBRACKET().getSymbol()));
+    public TypeReference visitFieldTypeList(GraphqlSchemaParser.FieldTypeListContext ctx) {
+        return new ListTypeReference(ctx.fieldType().accept(this), new Location(ctx.LBRACKET().getSymbol()));
     }
 
     @Override
-    public SchemaTypeReference visitFieldTypeNotNull(GraphqlSchemaParser.FieldTypeNotNullContext ctx) {
-        return new NotNullSchemaTypeReference(ctx.fieldType().accept(this), new Location(ctx.EXCLM().getSymbol()));
+    public TypeReference visitFieldTypeNotNull(GraphqlSchemaParser.FieldTypeNotNullContext ctx) {
+        return new NotNullTypeReference(ctx.fieldType().accept(this), new Location(ctx.EXCLM().getSymbol()));
     }
 }

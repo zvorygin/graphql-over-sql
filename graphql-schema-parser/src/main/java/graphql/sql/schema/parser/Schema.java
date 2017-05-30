@@ -1,13 +1,15 @@
 package graphql.sql.schema.parser;
 
+import graphql.sql.core.config.TypeReference;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public interface Schema {
 
     @Nonnull
-    SchemaTypeReference getQueryType();
+    TypeReference getQueryType();
 
     @Nullable
-    SchemaTypeReference getMutationType();
+    TypeReference getMutationType();
 }

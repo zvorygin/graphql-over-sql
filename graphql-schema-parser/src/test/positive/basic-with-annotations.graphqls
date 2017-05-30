@@ -4,7 +4,7 @@ schema {
 
 #Some comment
 #@QueryAnnotation(intValue=10, floatValue=1.5, stringValue="Query", bool=true)
-typeReference Query {
+type Query {
     someIntField(arg:Input): Int
     someStringField: String
 }

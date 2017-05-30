@@ -1,8 +1,15 @@
 package graphql.sql.schema.engine;
 
 import com.google.common.collect.ImmutableMap;
+import graphql.schema.GraphQLType;
+import graphql.sql.core.config.Field;
+import graphql.sql.core.config.Interface;
+import graphql.sql.core.config.ObjectType;
+import graphql.sql.core.config.QueryNode;
+import graphql.sql.schema.engine.querygraph.GenericQueryNode;
 import graphql.sql.schema.parser.SchemaField;
 import graphql.sql.schema.parser.SchemaInterface;
+import graphql.sql.schema.parser.SchemaObjectType;
 import org.junit.Test;
 
 import java.io.FileInputStream;
@@ -18,12 +25,12 @@ public class SchemaConfigProviderTest {
     public void testSchemaConfigProvider() throws IOException {
         SchemaConfigProvider provider =
                 new SchemaConfigProvider(new FileInputStream("src/test/data/classic_models.graphqls"),
-                        new MapBasedInterfaceBuilderRegistry(ImmutableMap.of(
-                                "sql", new TestInterfaceBuilder(),
-                                "activeDirectory", new TestInterfaceBuilder())));
+                        new MapBasedTypeProviderRegistry(ImmutableMap.of(
+                                "sql", new TestTypeProvider(),
+                                "activeDirectory", new TestTypeProvider())));
     }
 
-    private static class TestInterfaceBuilder implements InterfaceBuilder {
+    private static class TestTypeProvider implements TypeProvider {
         @Override
         public Interface buildInterface(SchemaInterface schemaInterface, Map<String, Interface> interfaces) {
             return new Interface() {
@@ -36,10 +43,30 @@ public class SchemaConfigProviderTest {
                 }
 
                 @Override
+                public QueryNode buildQueryNode() {
+                    return new GenericQueryNode(this);
+                }
+
+                @Override
+                public Collection<Interface> getInterfaces() {
+                    return Collections.emptyList();
+                }
+
+                @Override
                 public String getName() {
                     return schemaInterface.getName();
                 }
+
+                @Override
+                public GraphQLType getGraphQLType(Map<String, GraphQLType> dictionary) {
+                    return null;
+                }
             };
+        }
+
+        @Override
+        public ObjectType buildObjectType(SchemaObjectType objectType, Map<String, Interface> interfaces) {
+            return null;
         }
     }
 }

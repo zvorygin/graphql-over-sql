@@ -12,12 +12,13 @@
 
     <modules>
         <module>graphql-common</module>
-        <module>graphql-config</module>
         <module>graphql-schema-parser</module>
         <module>graphql-sql</module>
         <module>graphql-web</module>
         <module>graphql-it</module>
         <module>graphql-schema-engine</module>
+        <module>graphql-engine</module>
+        <module>graphql-test-data</module>
     </modules>
 
     <properties>
@@ -125,6 +126,12 @@
             </dependency>
             <dependency>
                 <groupId>com.graphql-over-sql</groupId>
+                <artifactId>graphql-test-data</artifactId>
+                <version>${project.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.graphql-over-sql</groupId>
                 <artifactId>graphql-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -140,17 +147,17 @@
             </dependency>
             <dependency>
                 <groupId>com.graphql-over-sql</groupId>
+                <artifactId>graphql-engine</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.graphql-over-sql</groupId>
                 <artifactId>graphql-it</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.graphql-over-sql</groupId>
                 <artifactId>graphql-web</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.graphql-over-sql</groupId>
-                <artifactId>graphql-config</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

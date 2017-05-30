@@ -16,48 +16,69 @@
         <jdbc:script location="classpath:data/08_payment.sql"/>
     </jdbc:embedded-database>
 
-    <bean id="databaseIntrospector" class="graphql.sql.core.introspect.JDBCIntrospector">
+    <bean id="databaseIntrospector" class="graphql.sql.engine.sql.introspect.JDBCIntrospector">
         <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="nameProvider" class="graphql.sql.core.config.impl.UnderscoreToCamelcaseNameProvider">
+    <bean id="nameProvider" class="graphql.sql.engine.sql.UnderscoreToCamelcaseNameProvider">
         <constructor-arg>
             <bean class="graphql.sql.core.config.impl.IdentityAbbreviationResolver"/>
         </constructor-arg>
     </bean>
 
-    <bean id="configProvider" class="graphql.sql.core.config.groovy.GroovyConfigProvider">
-        <constructor-arg index="0" value="classpath:integration-test-graphql-config.graphqlsql"/>
-        <constructor-arg index="1" ref="nameProvider"/>
-        <constructor-arg index="2" ref="databaseIntrospector"/>
+    <bean id="providerRegistry" class="graphql.sql.schema.engine.MapBasedTypeProviderRegistry">
+        <constructor-arg>
+            <map key-type="java.lang.String" value-type="graphql.sql.schema.engine.TypeProvider">
+                <entry key="sql">
+                    <bean class="graphql.sql.engine.sql.SqlTypeProvider">
+                        <constructor-arg index="0" ref="databaseIntrospector"/>
+                        <constructor-arg index="1">
+                            <bean class="graphql.sql.engine.sql.UnderscoreToCamelcaseNameProvider">
+                                <constructor-arg index="0">
+                                    <bean class="graphql.sql.core.config.impl.IdentityAbbreviationResolver"/>
+                                </constructor-arg>
+                            </bean>
+                        </constructor-arg>
+                        <constructor-arg index="2">
+                            <bean class="graphql.sql.engine.sql.SqlExecutorBuilder">
+                                <constructor-arg index="0" ref="dataSource"/>
+                            </bean>
+                        </constructor-arg>
+                    </bean>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="configProvider" class="graphql.sql.schema.engine.SchemaConfigProvider">
+        <constructor-arg index="0" value="classpath:integration-test.graphqls"/>
+        <constructor-arg index="1" ref="providerRegistry"/>
     </bean>
 
     <bean id="config" factory-bean="configProvider" factory-method="getConfig"/>
 
     <bean id="graphQLSchema" factory-bean="typesProvider" factory-method="getSchema"/>
 
-    <bean id="documentExecutor" class="graphql.sql.core.DocumentExecutor">
+    <bean id="documentExecutor" class="graphql.sql.engine.DocumentExecutor">
         <constructor-arg index="0" ref="graphQLSchema"/>
         <constructor-arg index="1" ref="operationExecutor"/>
         <constructor-arg index="2" value="10"/>
     </bean>
 
-    <bean id="operationExecutor" class="graphql.sql.core.OperationExecutor">
+    <bean id="operationExecutor" class="graphql.sql.engine.OperationExecutor">
         <constructor-arg index="0" ref="typesProvider"/>
         <constructor-arg index="1" ref="config"/>
-        <constructor-arg index="2" ref="queryExecutorBuilder"/>
-        <constructor-arg index="3" ref="dataSource"/>
+        <constructor-arg index="2" ref="queryGraphBuilder"/>
+        <constructor-arg index="3" value="10"/>
         <constructor-arg index="4" value="10"/>
-        <constructor-arg index="5" value="10"/>
     </bean>
 
     <bean id="typesProvider" class="graphql.sql.core.config.GraphQLTypesProvider">
         <constructor-arg index="0" ref="config"/>
     </bean>
 
-    <bean id="queryExecutorBuilder" class="graphql.sql.core.GraphQLQueryExecutorBuilder">
-        <constructor-arg index="0" ref="config"/>
-        <constructor-arg index="1" ref="typesProvider"/>
+    <bean id="queryGraphBuilder" class="graphql.sql.engine.QueryGraphBuilder">
+        <constructor-arg ref="config"/>
     </bean>
 
 </beans>

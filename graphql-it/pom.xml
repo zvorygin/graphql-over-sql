@@ -47,7 +47,17 @@
         </dependency>
         <dependency>
             <groupId>com.graphql-over-sql</groupId>
-            <artifactId>graphql-config</artifactId>
+            <artifactId>graphql-test-data</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.graphql-over-sql</groupId>
+            <artifactId>graphql-sql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.graphql-over-sql</groupId>
+            <artifactId>graphql-schema-engine</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>

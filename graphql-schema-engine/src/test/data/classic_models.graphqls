@@ -2,7 +2,7 @@ schema {
     query: Query
 }
 
-typeReference Query {
+type Query {
     personById(id: [Int!]!): [IPerson!]!
     customerById(id: [Int!]!): [ICustomer!]!
     employeeById(id: [Int!]!): [IEmployee!]!
@@ -11,24 +11,18 @@ typeReference Query {
 #@Provider(name="sql")
 #@Table(name="PERSON", discover=true)
 interface IPerson {
-#    #@Column("PERSON_NUMBER")
-#    #@Id
-    id: Int!
 }
 
 #@Provider(name="sql")
 #@Table(name="CUSTOMER", discover=true)
 #@Parent(name="IPerson")
 interface ICustomer {
-    id: Int!
 }
 
 #@Provider(name="sql")
 #@Table(name="EMPLOYEE", discover=true)
 #@Parent(name="IPerson")
 interface IEmployee {
-    id: Int!
-    email: String!
 }
 
 #@Provider(name="activeDirectory")
@@ -38,10 +32,10 @@ interface IUser {
     hiredAt: String
 }
 
-typeReference Customer implements ICustomer, IUser {
+type Customer implements ICustomer, IUser {
 
 }
 
-typeReference Employee implements IEmployee {
+type Employee implements IEmployee {
 
 }

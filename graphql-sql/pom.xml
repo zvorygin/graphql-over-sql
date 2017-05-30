@@ -28,12 +28,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.graphql-over-sql</groupId>
-            <artifactId>graphql-common</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.graphql-java</groupId>
             <artifactId>graphql-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.graphql-over-sql</groupId>
+            <artifactId>graphql-schema-engine</artifactId>
         </dependency>
         <dependency>
             <groupId>org.antlr</groupId>
@@ -85,6 +85,10 @@
             <artifactId>javaee-api</artifactId>
             <version>7.0</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.graphql-over-sql</groupId>
+            <artifactId>graphql-test-data</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

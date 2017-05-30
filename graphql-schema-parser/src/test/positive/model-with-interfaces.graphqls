@@ -2,7 +2,7 @@ schema {
     query: Query
 }
 
-typeReference Query {
+type Query {
     personById(id: [Int!]!): [IPerson!]!
     customerById(id: [Int!]!): [ICustomer!]!
     employeeById(id: [Int!]!): [IEmployee!]!
@@ -37,10 +37,10 @@ interface IUser {
     hiredAt: String
 }
 
-typeReference Customer implements ICustomer, IUser {
+type Customer implements ICustomer, IUser {
 
 }
 
-typeReference Employee implements IEmployee {
+type Employee implements IEmployee {
 
 }

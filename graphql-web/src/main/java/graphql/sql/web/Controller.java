@@ -1,11 +1,12 @@
 package graphql.sql.web;
 
 import graphql.ExecutionResult;
-import graphql.sql.core.DocumentExecutor;
+import graphql.sql.engine.DocumentExecutor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -45,6 +46,10 @@ public class Controller {
         String operationName = request.getOperationName();
 
         Map<String, Object> variables = request.getVariables();
+
+        if (variables == null) {
+            variables = Collections.emptyMap();
+        }
 
         return documentExecutor.execute(query, operationName, variables);
     }

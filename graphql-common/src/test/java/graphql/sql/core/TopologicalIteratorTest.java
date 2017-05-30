@@ -1,6 +1,8 @@
 package graphql.sql.core;
 
 import com.google.common.collect.Lists;
+import graphql.sql.core.graph.LoopException;
+import graphql.sql.core.graph.TopologicalIterator;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -24,7 +26,7 @@ public class TopologicalIteratorTest {
     public void testInfiniteLoop() {
         try {
             new TopologicalIterator<>(Collections.singleton("A"), Collections::<String>singleton);
-        } catch (TopologicalIterator.LoopException le) {
+        } catch (LoopException le) {
             List<String> ordered = (List<String>) le.getLoop();
             Assert.assertEquals(Collections.singletonList("A"), ordered);
         }
@@ -63,7 +65,7 @@ public class TopologicalIteratorTest {
 
         try {
             new TopologicalIterator<>(Arrays.asList(a, b, c), TopologicalIteratorTest::getChildren);
-        } catch (TopologicalIterator.LoopException le) {
+        } catch (LoopException le) {
             List<Node> ordered = (List<Node>) le.getLoop();
             Assert.assertEquals(Arrays.asList(a, b), ordered);
         }

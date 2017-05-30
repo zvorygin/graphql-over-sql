@@ -1,5 +1,6 @@
 package graphql.sql.schema.parser.impl;
 
+import graphql.sql.core.config.TypeReference;
 import graphql.sql.schema.antlr.GraphqlSchemaBaseVisitor;
 import graphql.sql.schema.antlr.GraphqlSchemaParser;
 import graphql.sql.schema.parser.SchemaParserException;
@@ -118,10 +119,16 @@ class TypesInstantiator extends GraphqlSchemaBaseVisitor<Void> {
         try {
             return contexts.stream().map(context -> {
                 Token fieldNameSymbol = context.FIELD_NAME().getSymbol();
+                Map<String, SchemaFieldArgumentImpl> arguments =
+                        context.fieldArguments().fieldArgument().stream().map(fac -> {
+                            String argumentName = fac.FIELD_NAME().getSymbol().getText();
+                            TypeReference typeReference = fieldInstantiator.visit(fac.fieldType());
+                            return new SchemaFieldArgumentImpl(argumentName, typeReference);
+                        }).collect(Collectors.toMap(SchemaFieldArgumentImpl::getArgumentName, Function.identity()));
                 return new SchemaFieldImpl(
                         fieldNameSymbol.getText(),
                         new Location(fieldNameSymbol),
-                        fieldInstantiator.visitFieldDefinition(context));
+                        fieldInstantiator.visitFieldDefinition(context), arguments);
             }).collect(Collectors.toMap(SchemaFieldImpl::getName, Function.identity()));
         } catch (IllegalStateException ise) {
             throw new SchemaParserException("Failed to build fields", ise);

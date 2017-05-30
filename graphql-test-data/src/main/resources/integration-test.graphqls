@@ -1,0 +1,49 @@
+schema {
+    query: Query
+}
+
+type Query {
+    orderById(orderNumber:[Int!]!): [Order!]!
+    employeeById(employeeNumber:[Int!]!): [Employee!]!
+    personById(personNumber:[Int!]!): [IPerson!]!
+}
+
+#@Provider(name="sql")
+#@Table(name="OFFICE", discover=true)
+type Office {
+}
+
+#@Provider(name="sql")
+#@Table(name="PERSON", discover=true)
+interface IPerson {
+}
+
+#@Provider(name="sql")
+#@Table(name="EMPLOYEE", discover=true)
+type Employee implements IPerson {
+}
+
+#@Provider(name="sql")
+#@Table(name="CUSTOMER", discover=true)
+type Customer implements IPerson {
+}
+
+#@Provider(name="sql")
+#@Table(name="PRODUCT", discover=true)
+type Product {
+}
+
+#@Provider(name="sql")
+#@Table(name="ORDER", discover=true)
+type Order {
+}
+
+#@Provider(name="sql")
+#@Table(name="ORDER_DETAIL", discover=true)
+type OrderDetail {
+}
+
+#@Provider(name="sql")
+#@Table(name="PAYMENT", discover=true)
+type Payment {
+}

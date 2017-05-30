@@ -4,6 +4,6 @@ schema {
 
 scalar Url
 
-typeReference Query {
+type Query {
     url : [Url!]!
 }
