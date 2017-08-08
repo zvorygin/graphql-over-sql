@@ -1,6 +1,5 @@
 package graphql.sql.core.config.domain.type;
 
-import com.healthmarketscience.sqlbuilder.QueryPreparer;
 import graphql.Scalars;
 import graphql.language.IntValue;
 import graphql.language.Node;
@@ -14,7 +13,7 @@ public class IntegerTypeUtil extends AbstractTypeUtil<Integer> {
     public static final IntegerTypeUtil INSTANCE = new IntegerTypeUtil();
 
     private IntegerTypeUtil() {
-        super(Scalars.GraphQLInt);
+        super(Scalars.GraphQLInt, Integer.class);
     }
 
     @Override
@@ -37,10 +36,5 @@ public class IntegerTypeUtil extends AbstractTypeUtil<Integer> {
     public Integer getValue(ResultSet rs, int position) throws SQLException {
         int result = rs.getInt(position);
         return rs.wasNull() ? null : result;
-    }
-
-    @Override
-    public QueryPreparer.StaticPlaceHolder createStaticPlaceHolder(Integer value, QueryPreparer queryPreparer) {
-        return queryPreparer.addStaticPlaceHolder(value);
     }
 }

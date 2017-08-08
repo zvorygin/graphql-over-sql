@@ -1,12 +1,20 @@
 package graphql.sql.core.config;
 
 
+import com.google.common.base.MoreObjects;
+import graphql.execution.ExecutionContext;
+import graphql.language.Argument;
+import graphql.language.SelectionSet;
 import graphql.schema.GraphQLArgument;
 import graphql.schema.GraphQLFieldDefinition;
+import graphql.sql.core.QueryBuilderException;
+import graphql.sql.core.config.domain.Config;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class Field {
     @Nonnull
@@ -79,4 +87,43 @@ public class Field {
                 '}';
     }
 
+    public QueryNode fetch(Config config, QueryNode queryNode, ExecutionContext ctx, graphql.language.Field queryField) {
+        CompositeType type = config.getType(getTypeReference());
+        String alias = MoreObjects.firstNonNull(queryField.getAlias(), name);
+
+        if (type != null) {
+            QueryNode result = type.buildQueryNode(config, queryField.getSelectionSet(), ctx);
+
+            queryField.getArguments().forEach(result::addArgument);
+
+            queryNode.addReference(alias, result);
+
+            SelectionSet selectionSet = queryField.getSelectionSet();
+
+            if (selectionSet != null) {
+                if (result == null) {
+                    throw new QueryBuilderException(
+                            String.format("Field [%s] with alias [%s] has selection set, but doesn't have QueryNode",
+                                    name, queryField.getAlias()));
+                }
+            }
+            return result;
+        }
+
+        Scalar scalar = config.getScalar(getTypeReference());
+        if (scalar == null) {
+            throw new QueryBuilderException(String.format("Unknown field [%s] with alias [%s] type [%s]",
+                    name, queryField.getAlias(), getTypeReference().getTypeName()));
+        }
+
+        CompositeType nodeType = queryNode.getType();
+
+        //TODO(dzvorygin) join to find proper queryNode for the field
+
+        Field field = nodeType.getField(name);
+
+        queryNode.addField(alias, field);
+
+        return null;
+    }
 }

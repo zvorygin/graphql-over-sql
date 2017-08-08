@@ -1,8 +1,9 @@
 package graphql.sql.engine.sql;
 
 import graphql.execution.ExecutionContext;
+import graphql.language.SelectionSet;
 import graphql.sql.core.config.Field;
-import graphql.sql.core.config.FieldExecutor;
+import graphql.sql.core.config.TypeExecutor;
 
 import javax.annotation.Nonnull;
 import javax.sql.DataSource;
@@ -15,7 +16,7 @@ public class SqlExecutorBuilder {
         this.dataSource = dataSource;
     }
 
-    public FieldExecutor build(Field schemaField, TableNode tableNode, ExecutionContext executionContext) {
-        return new SqlFieldExecutor(schemaField, tableNode, executionContext, dataSource);
+    public TypeExecutor build(TableNode tableNode, ExecutionContext executionContext) {
+        return new SqlTypeExecutor(tableNode, executionContext, dataSource);
     }
 }

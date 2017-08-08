@@ -34,6 +34,11 @@ public interface Config {
         return getType(typeReference.getTypeName());
     }
 
+    default Scalar getScalar(TypeReference typeReference) {
+        return getScalars().get(typeReference.getTypeName());
+    }
+
+
     default Collection<CompositeType> getJoinableTypes(CompositeType type) {
         //TODO(dzvorygin) introduce some sort of caching here.
 
@@ -44,7 +49,7 @@ public interface Config {
             Collection<Interface> interfaces = objectType.getInterfaces();
             if (interfaces.contains(type)) {
                 addJoinableInterfaces(type, interfaces, result);
-                if (isJoineable(type, objectType)) {
+                if (isJoinable(type, objectType)) {
                     result.add(objectType);
                 }
             }
@@ -57,13 +62,13 @@ public interface Config {
                                       Collection<Interface> interfaces,
                                       Collection<CompositeType> result) {
         for (Interface anInterface : interfaces) {
-            if (isJoineable(type, anInterface)) {
+            if (isJoinable(type, anInterface)) {
                 result.add(anInterface);
             }
         }
     }
 
-    static boolean isJoineable(CompositeType typeA, CompositeType typeB) {
+    static boolean isJoinable(CompositeType typeA, CompositeType typeB) {
         return typeB != typeA && !Sets.intersection(typeB.getFields().keySet(),
                 typeA.getFields().keySet()).isEmpty();
     }

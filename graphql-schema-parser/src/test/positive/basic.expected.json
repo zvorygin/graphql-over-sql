@@ -1,92 +1,93 @@
 {
-  "schema": {
-    "queryType": {
-      "collection": false,
-      "nonNull": false,
-      "typeName": "Query"
+  "schema" : {
+    "queryType" : {
+      "collection" : false,
+      "nonNull" : false,
+      "typeName" : "Query"
     }
   },
-  "types": {
-    "Query": {
-      "fields": [
-        {
-          "name": "someIntField",
-          "type": {
-            "collection": false,
-            "nonNull": false,
-            "typeName": "Int"
+  "types" : {
+    "Query" : {
+      "fields" : [ {
+        "arguments" : {
+          "arg" : {
+            "argumentName" : "arg",
+            "typeReference" : {
+              "collection" : false,
+              "nonNull" : false,
+              "typeName" : "Input"
+            }
           }
         },
-        {
-          "name": "someStringField",
-          "type": {
-            "collection": false,
-            "nonNull": false,
-            "typeName": "String"
-          }
+        "name" : "someIntField",
+        "type" : {
+          "collection" : false,
+          "nonNull" : false,
+          "typeName" : "Int"
         }
-      ],
-      "name": "Query"
+      }, {
+        "name" : "someStringField",
+        "type" : {
+          "collection" : false,
+          "nonNull" : false,
+          "typeName" : "String"
+        }
+      } ],
+      "name" : "Query"
     }
   },
-  "interfaces": {
-    "Interface": {
-      "fields": [
-        {
-          "name": "first",
-          "type": {
-            "collection": false,
-            "nonNull": false,
-            "typeName": "Int"
-          }
-        },
-        {
-          "name": "second",
-          "type": {
-            "collection": false,
-            "nonNull": false,
-            "typeName": "Float"
-          }
+  "interfaces" : {
+    "Interface" : {
+      "fields" : [ {
+        "name" : "first",
+        "type" : {
+          "collection" : false,
+          "nonNull" : false,
+          "typeName" : "Int"
         }
-      ],
-      "name": "Interface"
+      }, {
+        "name" : "second",
+        "type" : {
+          "collection" : false,
+          "nonNull" : false,
+          "typeName" : "Float"
+        }
+      } ],
+      "name" : "Interface"
     }
   },
-  "scalars": {
-    "Float": {
-      "name": "Float"
+  "scalars" : {
+    "Float" : {
+      "name" : "Float"
     },
-    "String": {
-      "name": "String"
+    "String" : {
+      "name" : "String"
     },
-    "Boolean": {
-      "name": "Boolean"
+    "Boolean" : {
+      "name" : "Boolean"
     },
-    "Int": {
-      "name": "Int"
+    "Int" : {
+      "name" : "Int"
     }
   },
-  "inputs": {
-    "Input": {
-      "fields": [
-        {
-          "name": "first",
-          "type": {
-            "collection": false,
-            "nonNull": false,
-            "typeName": "Int"
-          }
-        },
-        {
-          "name": "second",
-          "type": {
-            "collection": false,
-            "nonNull": false,
-            "typeName": "Float"
-          }
+  "inputs" : {
+    "Input" : {
+      "fields" : [ {
+        "name" : "first",
+        "type" : {
+          "collection" : false,
+          "nonNull" : false,
+          "typeName" : "Int"
         }
-      ],
-      "name": "Input"
+      }, {
+        "name" : "second",
+        "type" : {
+          "collection" : false,
+          "nonNull" : false,
+          "typeName" : "Float"
+        }
+      } ],
+      "name" : "Input"
     }
   }
 }

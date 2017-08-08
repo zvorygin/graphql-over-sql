@@ -1,11 +1,14 @@
 package graphql.sql.schema.engine;
 
 import com.google.common.collect.ImmutableMap;
+import graphql.execution.ExecutionContext;
+import graphql.language.SelectionSet;
 import graphql.schema.GraphQLType;
 import graphql.sql.core.config.Field;
 import graphql.sql.core.config.Interface;
 import graphql.sql.core.config.ObjectType;
 import graphql.sql.core.config.QueryNode;
+import graphql.sql.core.config.domain.Config;
 import graphql.sql.schema.engine.querygraph.GenericQueryNode;
 import graphql.sql.schema.parser.SchemaField;
 import graphql.sql.schema.parser.SchemaInterface;
@@ -25,7 +28,7 @@ public class SchemaConfigProviderTest {
     public void testSchemaConfigProvider() throws IOException {
         SchemaConfigProvider provider =
                 new SchemaConfigProvider(new FileInputStream("src/test/data/classic_models.graphqls"),
-                        new MapBasedTypeProviderRegistry(ImmutableMap.of(
+                        new MapBasedTypeProviderRegistry(new DefaultTypeProvider(), ImmutableMap.of(
                                 "sql", new TestTypeProvider(),
                                 "activeDirectory", new TestTypeProvider())));
     }
@@ -43,8 +46,8 @@ public class SchemaConfigProviderTest {
                 }
 
                 @Override
-                public QueryNode buildQueryNode() {
-                    return new GenericQueryNode(this);
+                public QueryNode buildQueryNode(Config config, SelectionSet selectionSet, ExecutionContext executionContext) {
+                    return new GenericQueryNode(config, this);
                 }
 
                 @Override
@@ -65,7 +68,7 @@ public class SchemaConfigProviderTest {
         }
 
         @Override
-        public ObjectType buildObjectType(SchemaObjectType objectType, Map<String, Interface> interfaces) {
+        public ObjectType buildObjectType(SchemaObjectType objectType, Map<String, Interface> interfaces, boolean isQueryType) {
             return null;
         }
     }

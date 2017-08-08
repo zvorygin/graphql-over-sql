@@ -1,4 +1,4 @@
-package graphql.sql.engine;
+package graphql.sql.schema.engine;
 
 import graphql.ExecutionResult;
 import graphql.execution.ExecutionContext;

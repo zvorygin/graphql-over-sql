@@ -1,6 +1,5 @@
 package graphql.sql.core.config.domain.type;
 
-import com.healthmarketscience.sqlbuilder.QueryPreparer;
 import graphql.Scalars;
 import graphql.language.Node;
 import graphql.language.StringValue;
@@ -14,7 +13,7 @@ public class StringTypeUtil extends AbstractTypeUtil<String> {
     public static final StringTypeUtil INSTANCE = new StringTypeUtil();
 
     private StringTypeUtil() {
-        super(Scalars.GraphQLString);
+        super(Scalars.GraphQLString, String.class);
     }
 
     @Override
@@ -37,8 +36,4 @@ public class StringTypeUtil extends AbstractTypeUtil<String> {
         return rs.getString(position);
     }
 
-    @Override
-    public QueryPreparer.StaticPlaceHolder createStaticPlaceHolder(String value, QueryPreparer queryPreparer) {
-        return queryPreparer.addStaticPlaceHolder(value);
-    }
 }

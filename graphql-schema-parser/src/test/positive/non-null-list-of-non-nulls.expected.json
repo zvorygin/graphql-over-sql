@@ -1,55 +1,56 @@
 {
-  "schema": {
-    "queryType": {
-      "collection": false,
-      "nonNull": false,
-      "typeName": "Query"
+  "schema" : {
+    "queryType" : {
+      "collection" : false,
+      "nonNull" : false,
+      "typeName" : "Query"
     }
   },
-  "types": {
-    "Query": {
-      "fields": [
-        {
-          "name": "url",
-          "type": {
-            "collection": false,
-            "nonNull": true,
-            "wrappedType": {
-              "collection": true,
-              "nonNull": false,
-              "wrappedType": {
-                "collection": false,
-                "nonNull": true,
-                "wrappedType": {
-                  "collection": false,
-                  "nonNull": false,
-                  "typeName": "Url"
-                }
+  "types" : {
+    "Query" : {
+      "fields" : [ {
+        "name" : "url",
+        "type" : {
+          "collection" : false,
+          "nonNull" : true,
+          "typeName" : "Url",
+          "wrappedType" : {
+            "collection" : true,
+            "nonNull" : false,
+            "typeName" : "Url",
+            "wrappedType" : {
+              "collection" : false,
+              "nonNull" : true,
+              "typeName" : "Url",
+              "wrappedType" : {
+                "collection" : false,
+                "nonNull" : false,
+                "typeName" : "Url"
               }
             }
           }
         }
-      ],
-      "name": "Query"
+      } ],
+      "name" : "Query"
     }
   },
-  "interfaces": {},
-  "scalars": {
-    "Float": {
-      "name": "Float"
+  "interfaces" : { },
+  "scalars" : {
+    "Float" : {
+      "name" : "Float"
     },
-    "String": {
-      "name": "String"
+    "String" : {
+      "name" : "String"
     },
-    "Boolean": {
-      "name": "Boolean"
+    "Boolean" : {
+      "name" : "Boolean"
     },
-    "Int": {
-      "name": "Int"
+    "Int" : {
+      "name" : "Int"
     },
-    "Url": {
-      "name": "Url"
+    "Url" : {
+      "name" : "Url"
     }
   },
-  "inputs": {}
+  "inputs" : { }
 }

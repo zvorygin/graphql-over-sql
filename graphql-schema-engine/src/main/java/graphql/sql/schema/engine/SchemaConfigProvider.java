@@ -54,11 +54,11 @@ public class SchemaConfigProvider implements ConfigProvider {
 
         Map<String, Interface> interfaces = buildInterfaces(schemaDocument.getInterfaces());
 
-        Map<String, ObjectType> types = buildObjects(schemaDocument.getTypes(), interfaces);
+        TypeReference queryTypeReference = schemaDocument.getSchema().getQueryType();
 
-        TypeReference queryType = schemaDocument.getSchema().getQueryType();
+        Map<String, ObjectType> types = buildObjects(schemaDocument.getTypes(), interfaces, queryTypeReference.getTypeName());
 
-        return new ConfigImpl(interfaces, types, scalars, queryType.getTypeName());
+        return new ConfigImpl(interfaces, types, scalars, queryTypeReference.getTypeName());
     }
 
     private Map<String, Scalar> buildScalars(SchemaDocument schemaDocument) {
@@ -103,25 +103,22 @@ public class SchemaConfigProvider implements ConfigProvider {
     }
 
     private Map<String, ObjectType> buildObjects(Map<String, ? extends SchemaObjectType> types,
-                                                 Map<String, Interface> interfaces) {
+                                                 Map<String, Interface> interfaces,
+                                                 String queryTypeName) {
 
         Map<String, ObjectType> result = new HashMap<>();
         for (SchemaObjectType schemaObjectType : types.values()) {
             String providerName = getProviderName(schemaObjectType);
-            ObjectType objectType;
+            TypeProvider typeProvider;
+
             if (providerName != null) {
-                TypeProvider typeProvider = typeProviderRegistry.getTypeBuilder(providerName);
-                objectType = typeProvider.buildObjectType(schemaObjectType, interfaces);
-            } else if (!schemaObjectType.getFields().isEmpty()) {
-                if (!schemaObjectType.getInterfaces().isEmpty()) {
-                    throw new ConfigurationException(
-                            String.format("Object type [%s] without @Provider annotation should have either " +
-                                    "interfaces or fields but not both", schemaObjectType.getName()));
-                }
-                objectType = buildFromFields(schemaObjectType);
+                typeProvider = typeProviderRegistry.getTypeBuilder(providerName);
             } else {
-                objectType = buildFromInterfaces(schemaObjectType, interfaces);
+                typeProvider = typeProviderRegistry.getDefaultTypeProvider();
             }
+
+            boolean isQueryType = schemaObjectType.getName().equals(queryTypeName);
+            ObjectType objectType = typeProvider.buildObjectType(schemaObjectType, interfaces, isQueryType);
 
             result.put(schemaObjectType.getName(), objectType);
         }
@@ -141,46 +138,5 @@ public class SchemaConfigProvider implements ConfigProvider {
                             schemaType.getName()));
         }
         return (String) name;
-    }
-
-    @Nonnull
-    private ObjectType buildFromInterfaces(SchemaObjectType objectType, Map<String, Interface> interfaces) {
-        Map<String, Field> fields = new LinkedHashMap<>();
-        Map<String, Interface> fieldSource = new HashMap<>();
-
-        for (String interfaceName : objectType.getInterfaces()) {
-            Interface iface = interfaces.get(interfaceName);
-
-            Map<String, Field> interfaceFields = iface.getFields();
-            for (Map.Entry<String, Field> fieldEntry : interfaceFields.entrySet()) {
-                Field existing = fields.putIfAbsent(fieldEntry.getKey(), fieldEntry.getValue());
-                if (existing != null && !existing.equals(fieldEntry.getValue())) {
-                    Interface existingIface = fieldSource.get(existing.getName());
-                    throw new ConfigurationException(
-                            String.format(
-                                    "CompositeType [%s] has conflict in field [%s] defined at [%s] as [%s] and [%s] as [%s]",
-                                    objectType.getName(),
-                                    existing.getName(),
-                                    iface.getName(),
-                                    fieldEntry.getValue().getTypeReference(),
-                                    existingIface.getName(),
-                                    existing.getTypeReference()));
-                }
-                fieldSource.put(fieldEntry.getKey(), iface);
-            }
-        }
-
-        List<Interface> implementedInterfaces = objectType.getInterfaces().stream().map(interfaces::get).collect(Collectors.toList());
-
-        return new ObjectTypeImpl(objectType.getName(), fields, implementedInterfaces);
-    }
-
-    private ObjectType buildFromFields(SchemaObjectType objectType) {
-        Map<String, Field> fields = new LinkedHashMap<>();
-        for (SchemaField schemaField : objectType.getFields()) {
-            fields.put(schemaField.getName(), new Field(schemaField.getName(), schemaField.getType()));
-        }
-
-        return new ObjectTypeImpl(objectType.getName(), fields, Collections.emptyList());
     }
 }

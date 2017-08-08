@@ -3,6 +3,7 @@ package graphql.sql.engine.sql;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 import graphql.sql.core.Scalars;
+import graphql.sql.core.config.Field;
 import graphql.sql.core.config.Interface;
 import graphql.sql.core.config.ObjectType;
 import graphql.sql.core.config.TypeReference;
@@ -16,7 +17,6 @@ import graphql.sql.schema.parser.SchemaObjectType;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -51,13 +51,13 @@ public class SqlTypeProvider implements TypeProvider {
         }
 
         boolean discover = getDiscover(annotations);
-        Map<String, SqlField> fields = buildFields(table, schemaInterface.getFields(), discover);
+        Map<String, Field> fields = buildFields(table, schemaInterface.getFields(), discover);
 
         return new TableInterface(table, schemaInterface.getName(), fields, executorBuilder);
     }
 
     @Override
-    public ObjectType buildObjectType(SchemaObjectType objectType, Map<String, Interface> interfaces) {
+    public ObjectType buildObjectType(SchemaObjectType objectType, Map<String, Interface> interfaces, boolean isQueryType) {
         Map<String, ? extends SchemaAnnotation> annotations = objectType.getAnnotations();
 
         DbTable dbTable = getTableName(annotations);
@@ -69,7 +69,7 @@ public class SqlTypeProvider implements TypeProvider {
         }
 
         boolean discover = getDiscover(annotations);
-        Map<String, SqlField> fields = buildFields(dbTable, objectType.getFields(), discover);
+        Map<String, Field> fields = buildFields(dbTable, objectType.getFields(), discover);
 
         List<Interface> implementedInterfaces =
                 objectType.getInterfaces().stream().map(interfaces::get).collect(Collectors.toList());
@@ -78,15 +78,23 @@ public class SqlTypeProvider implements TypeProvider {
     }
 
     @Nonnull
-    private Map<String, SqlField> buildFields(DbTable dbTable,
-                                              Collection<? extends SchemaField> fields,
-                                              boolean discover) {
+    private Map<String, Field> buildFields(DbTable dbTable,
+                                           Collection<? extends SchemaField> fields,
+                                           boolean discover) {
         Map<String, DbColumn> columns =
                 dbTable.getColumns().stream().collect(Collectors.toMap(DbColumn::getColumnNameSQL, Function.identity()));
 
         Set<String> mappedColumns = new HashSet<>();
 
-        HashMap<String, SqlField> sqlFields = fields.stream().map(field -> {
+        Map<String, Field> sqlFields = fields.stream().map(field -> {
+            Map<String, SchemaAnnotation> annotations = field.getAnnotations();
+
+            if (annotations.containsKey("OneToMany")) {
+                return buildOneToManyField(field);
+            } else if (annotations.containsKey("ManyToOne")) {
+                return buildManyToOneField(field);
+            }
+
             DbColumn dbColumn = columns.get(field.getName());
             if (dbColumn == null) {
                 throw new ConfigurationException(
@@ -105,7 +113,7 @@ public class SqlTypeProvider implements TypeProvider {
             }
 
             return new SqlField(field.getName(), Scalars.getByColumn(dbColumn), dbColumn);
-        }).collect(Collectors.toMap(SqlField::getName, Function.identity(), null, HashMap::new));
+        }).collect(Collectors.toMap(Field::getName, Function.identity()));
 
         if (discover) {
             for (DbColumn dbColumn : columns.values()) {
@@ -118,6 +126,14 @@ public class SqlTypeProvider implements TypeProvider {
         }
 
         return sqlFields;
+    }
+
+    private CompositeSqlField buildManyToOneField(SchemaField schemaField) {
+        return new CompositeSqlField(schemaField.getName(), schemaField.getType(), schemaField.getAnnotations());
+    }
+
+    private CompositeSqlField buildOneToManyField(SchemaField schemaField) {
+        return new CompositeSqlField(schemaField.getName(), schemaField.getType(), schemaField.getAnnotations());
     }
 
     private static boolean getDiscover(Map<String, ? extends SchemaAnnotation> annotations) {

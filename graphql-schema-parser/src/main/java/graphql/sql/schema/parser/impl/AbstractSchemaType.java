@@ -1,7 +1,9 @@
 package graphql.sql.schema.parser.impl;
 
+import graphql.sql.schema.parser.SchemaAnnotation;
 import graphql.sql.schema.parser.SchemaType;
 
+import java.util.Collections;
 import java.util.Map;
 
 public class AbstractSchemaType extends NamedSchemaNode implements SchemaType {
@@ -13,7 +15,7 @@ public class AbstractSchemaType extends NamedSchemaNode implements SchemaType {
     }
 
     @Override
-    public Map<String, SchemaAnnotationImpl> getAnnotations() {
-        return annotations;
+    public Map<String, SchemaAnnotation> getAnnotations() {
+        return Collections.unmodifiableMap(annotations);
     }
 }

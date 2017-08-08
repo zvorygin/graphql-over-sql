@@ -22,7 +22,7 @@ query : 'query' COLON TYPE_NAME ;
 
 mutation : 'mutation' COLON TYPE_NAME ;
 
-fieldDefinition : FIELD_NAME fieldArguments? COLON fieldType ;
+fieldDefinition : annotation* FIELD_NAME fieldArguments? COLON fieldType ;
 
 schema : SCHEMA LCURLY query? mutation? RCURLY ;
 

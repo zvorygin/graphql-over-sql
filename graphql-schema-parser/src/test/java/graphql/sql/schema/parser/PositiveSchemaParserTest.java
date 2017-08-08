@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.JsonNode;
+import graphql.schema.GraphQLInputType;
+import graphql.schema.GraphQLOutputType;
 import graphql.sql.core.TestUtil;
 import graphql.sql.core.config.TypeReference;
 import org.junit.BeforeClass;
@@ -77,9 +79,18 @@ public class PositiveSchemaParserTest {
         List<String> getInterfaces();
 
         @JsonInclude(JsonInclude.Include.NON_EMPTY)
-        Collection<? extends SchemaField> getFields();
+        Collection<SchemaField> getFields();
 
         @JsonInclude(JsonInclude.Include.NON_EMPTY)
-        Map<String, ? extends SchemaAnnotation> getAnnotations();
+        Map<String, SchemaAnnotation> getAnnotations();
+
+        @JsonInclude(JsonInclude.Include.NON_EMPTY)
+        Map<String, SchemaFieldArgument> getArguments();
+
+        @JsonIgnore
+        GraphQLInputType getGraphQLInputTypeReference();
+
+        @JsonIgnore
+        GraphQLOutputType getGraphQLOutputTypeReference();
     }
 }

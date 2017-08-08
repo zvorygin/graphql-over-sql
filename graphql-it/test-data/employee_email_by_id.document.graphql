@@ -1,5 +1,5 @@
 query employees($employeeIds:[Int!]!) {
-    employeeById(employeeNumbers: $employeeIds) {
+    employeeById(employeeNumber: $employeeIds) {
         email
     }
 }

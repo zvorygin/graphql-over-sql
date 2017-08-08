@@ -27,7 +27,10 @@
     </bean>
 
     <bean id="providerRegistry" class="graphql.sql.schema.engine.MapBasedTypeProviderRegistry">
-        <constructor-arg>
+        <constructor-arg index="0">
+            <bean class="graphql.sql.schema.engine.DefaultTypeProvider"/>
+        </constructor-arg>
+        <constructor-arg index="1">
             <map key-type="java.lang.String" value-type="graphql.sql.schema.engine.TypeProvider">
                 <entry key="sql">
                     <bean class="graphql.sql.engine.sql.SqlTypeProvider">

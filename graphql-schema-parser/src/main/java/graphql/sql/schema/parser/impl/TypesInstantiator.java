@@ -119,16 +119,24 @@ class TypesInstantiator extends GraphqlSchemaBaseVisitor<Void> {
         try {
             return contexts.stream().map(context -> {
                 Token fieldNameSymbol = context.FIELD_NAME().getSymbol();
-                Map<String, SchemaFieldArgumentImpl> arguments =
-                        context.fieldArguments().fieldArgument().stream().map(fac -> {
-                            String argumentName = fac.FIELD_NAME().getSymbol().getText();
-                            TypeReference typeReference = fieldInstantiator.visit(fac.fieldType());
-                            return new SchemaFieldArgumentImpl(argumentName, typeReference);
-                        }).collect(Collectors.toMap(SchemaFieldArgumentImpl::getArgumentName, Function.identity()));
+                GraphqlSchemaParser.FieldArgumentsContext fieldArgumentsContext = context.fieldArguments();
+                Map<String, SchemaFieldArgumentImpl> arguments;
+                if (fieldArgumentsContext != null) {
+                    arguments = fieldArgumentsContext.fieldArgument().stream().map(fac -> {
+                        String argumentName = fac.FIELD_NAME().getSymbol().getText();
+                        TypeReference typeReference = fieldInstantiator.visit(fac.fieldType());
+                        return new SchemaFieldArgumentImpl(argumentName, typeReference);
+                    }).collect(Collectors.toMap(SchemaFieldArgumentImpl::getArgumentName, Function.identity()));
+                } else {
+                    arguments = Collections.emptyMap();
+                }
+
                 return new SchemaFieldImpl(
                         fieldNameSymbol.getText(),
                         new Location(fieldNameSymbol),
-                        fieldInstantiator.visitFieldDefinition(context), arguments);
+                        fieldInstantiator.visitFieldDefinition(context),
+                        arguments,
+                        buildAnnotations(context.annotation()));
             }).collect(Collectors.toMap(SchemaFieldImpl::getName, Function.identity()));
         } catch (IllegalStateException ise) {
             throw new SchemaParserException("Failed to build fields", ise);

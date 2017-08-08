@@ -1,14 +1,5 @@
 package graphql.sql.engine.sql;
 
-import graphql.execution.ExecutionContext;
-import graphql.schema.GraphQLNonNull;
-import graphql.schema.GraphQLType;
-import graphql.sql.core.config.CompositeType;
-import graphql.sql.core.config.Field;
-import graphql.sql.core.config.FieldExecutor;
-
-import java.util.Map;
-
 /*public class SqlType implements CompositeType {
     @Override
     public Map<String, Field> getFields() {
@@ -26,10 +17,10 @@ import java.util.Map;
     }
 
     @Override
-    public FieldExecutor buildExecutor(Field schemaField, graphql.language.Field queryDocumentField, ExecutionContext executionContext) {
+    public TypeExecutor buildExecutor(Field schemaField, graphql.language.Field queryDocumentField, ExecutionContext executionContext) {
         throw new IllegalStateException("Not implemented yet");
         *//*
-        SqlFieldExecutor fieldExecutor;
+        SqlTypeExecutor fieldExecutor;
 
         GraphQLQueryExecutor executor = graphQLQueryExecutorBuilder.build(entityQuery.getEntity(), queryDocumentField, executionContext);
 
@@ -92,7 +83,7 @@ import java.util.Map;
 
         LOGGER.info("Created query {}", queryString);
 
-        fieldExecutor = new SqlFieldExecutor(queryString, executor.getNodeExtractor(), placeholders, staticPlaceHolders);
+        fieldExecutor = new SqlTypeExecutor(queryString, executor.getNodeExtractor(), placeholders, staticPlaceHolders);
         return fieldExecutor;*//*
     }
 

@@ -1,17 +1,21 @@
 package graphql.sql.engine.sql;
 
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
+import graphql.execution.ExecutionContext;
+import graphql.language.SelectionSet;
 import graphql.schema.GraphQLNonNull;
 import graphql.schema.GraphQLType;
+import graphql.sql.core.config.Field;
 import graphql.sql.core.config.Interface;
 import graphql.sql.core.config.QueryNode;
+import graphql.sql.core.config.domain.Config;
 import graphql.sql.schema.engine.AbstractCompositeType;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Map;
 
-public abstract class AbstractTableCompositeType extends AbstractCompositeType<SqlField> {
+public abstract class AbstractTableCompositeType extends AbstractCompositeType<Field> {
     @Nonnull
     private final DbTable dbTable;
 
@@ -20,7 +24,7 @@ public abstract class AbstractTableCompositeType extends AbstractCompositeType<S
 
     public AbstractTableCompositeType(@Nonnull DbTable dbTable,
                                       @Nonnull String name,
-                                      @Nonnull Map<String, SqlField> fields,
+                                      @Nonnull Map<String, Field> fields,
                                       @Nonnull Collection<Interface> interfaces,
                                       @Nonnull SqlExecutorBuilder sqlExecutorBuilder) {
         super(name, fields, interfaces);
@@ -35,13 +39,13 @@ public abstract class AbstractTableCompositeType extends AbstractCompositeType<S
 
     /*
     @Override
-    public FieldExecutor buildExecutor(Field schemaField,
+    public TypeExecutor buildExecutor(Field schemaField,
                                        graphql.language.Field queryDocumentField,
                                        ExecutionContext executionContext) {
 
         this.buildQueryNode(null);
 
-        SqlFieldExecutor fieldExecutor;
+        SqlTypeExecutor fieldExecutor;
 
         GraphQLQueryExecutor executor = QueryGraphBuilder.build(this, queryDocumentField, executionContext);
 
@@ -104,7 +108,7 @@ public abstract class AbstractTableCompositeType extends AbstractCompositeType<S
 
         LOGGER.info("Created query {}", queryString);
 
-        fieldExecutor = new SqlFieldExecutor(queryString, executor.getNodeExtractor(), placeholders, staticPlaceHolders);
+        fieldExecutor = new SqlTypeExecutor(queryString, executor.getNodeExtractor(), placeholders, staticPlaceHolders);
         return fieldExecutor;
     }*/
 
@@ -118,7 +122,9 @@ public abstract class AbstractTableCompositeType extends AbstractCompositeType<S
     }
 
     @Override
-    public QueryNode buildQueryNode() {
-        return new TableNode(this, sqlExecutorBuilder);
+    public QueryNode buildQueryNode(Config config, SelectionSet selectionSet, ExecutionContext executionContext) {
+        TableNode tableNode = new TableNode(config, this, sqlExecutorBuilder);
+        tableNode.processSelectionSet(executionContext, selectionSet);
+        return tableNode;
     }
 }

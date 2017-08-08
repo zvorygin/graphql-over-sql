@@ -10,5 +10,5 @@ import java.util.Map;
 public interface TypeProvider {
     Interface buildInterface(SchemaInterface schemaInterface, Map<String, Interface> interfaces);
 
-    ObjectType buildObjectType(SchemaObjectType objectType, Map<String, Interface> interfaces);
+    ObjectType buildObjectType(SchemaObjectType objectType, Map<String, Interface> interfaces, boolean isQueryType);
 }

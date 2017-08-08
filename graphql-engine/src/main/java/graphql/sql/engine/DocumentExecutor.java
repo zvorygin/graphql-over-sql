@@ -90,6 +90,11 @@ public class DocumentExecutor {
         Validator validator = new Validator();
         List<ValidationError> validationErrors = validator.validateDocument(graphQLSchema, document);
         if (!validationErrors.isEmpty()) {
+            if (LOGGER.isInfoEnabled()) {
+                for (ValidationError validationError : validationErrors) {
+                    LOGGER.info(validationError.toString());
+                }
+            }
             throw new DocumentExecutionException(validationErrors);
         }
 

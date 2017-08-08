@@ -1,30 +1,48 @@
 package graphql.sql.schema.engine.querygraph;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.Sets;
+import graphql.execution.ExecutionContext;
+import graphql.language.Argument;
+import graphql.language.FragmentDefinition;
+import graphql.language.FragmentSpread;
+import graphql.language.InlineFragment;
+import graphql.language.Selection;
+import graphql.language.SelectionSet;
+import graphql.language.TypeName;
 import graphql.sql.core.QueryBuilderException;
 import graphql.sql.core.config.CompositeType;
 import graphql.sql.core.config.Field;
+import graphql.sql.core.config.Interface;
 import graphql.sql.core.config.QueryNode;
+import graphql.sql.core.config.domain.Config;
+import graphql.sql.core.graph.BfsFinder;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 
 public abstract class AbstractQueryNode<T extends CompositeType> implements QueryNode {
+    private final Config config;
+
     private final T type;
 
-    private final Map<String, Field> fieldsToQuery = new LinkedHashMap<>();
+    protected final Map<String, Field> fieldsToQuery = new LinkedHashMap<>();
 
-    private final Map<String, QueryNode> references = new LinkedHashMap<>();
+    protected final Map<String, QueryNode> references = new LinkedHashMap<>();
 
-    private final Collection<QueryNode> children = new ArrayList<>();
+    protected final Collection<QueryNode> children = new ArrayList<>();
 
-    private final Collection<QueryNode> parents = new ArrayList<>();
+    protected final Collection<QueryNode> parents = new ArrayList<>();
 
-    public AbstractQueryNode(T type) {
+    protected final Map<String, Object> constants = new LinkedHashMap<>();
+    protected final List<Argument> arguments = new ArrayList<>();
+
+    public AbstractQueryNode(Config config, T type) {
+        this.config = config;
         this.type = type;
     }
 
@@ -34,9 +52,10 @@ public abstract class AbstractQueryNode<T extends CompositeType> implements Quer
     }
 
     @Override
-    public void fetchField(String name, String alias) {
-        Field field = type.getField(name);
-        if (field == null) {
+    public QueryNode fetchField(Config config, graphql.language.Field queryField, ExecutionContext ctx) {
+        Field field = type.getField(queryField.getName());
+        return field.fetch(config, this, ctx, queryField);
+        /*if (field == null) {
             throw new QueryBuilderException(String.format("Type [%s] doesn't have field [%s]", type.getName(), name));
         }
         Field existing = fieldsToQuery.putIfAbsent(alias, field);
@@ -45,9 +64,48 @@ public abstract class AbstractQueryNode<T extends CompositeType> implements Quer
                     String.format("Can't fetch field [%s]. Field [%s] was already fetched same alias [%s]",
                             name, existing.getName(), alias));
         }
+*/
+        /*
+
+        CompositeType nodeType = currentNode.getType();
+        graphql.sql.core.config.Field field = nodeType.getField(fieldName);
+
+        CompositeType fieldType = config.getType(field.getTypeReference());
+
+        if (fieldType == null) {
+            // If raw field
+            currentNode.fetchField(fieldName, fieldAlias);
+        } else {
+            // If composite field
+        }
+
+        currentNode.fetchField(field.getName(), fieldAlias);
+
+        if (field != null) {
+            //TODO(dzvorygin) handle composite fields here somehow
+            currentNode.fetchField(fieldName, fieldAlias);
+            return;
+        }
+
+        for (Interface iface : nodeType.getInterfaces()) {
+            graphql.sql.core.config.Field interfaceField = iface.getField(fieldName);
+            if (interfaceField != null) {
+                QueryNode targetNode = fetchInterface(currentNode, iface);
+                targetNode.fetchField(fieldName, fieldAlias);
+                return;
+            }
+        }
+
+        throw new QueryBuilderException(
+                String.format("Failed to find field [%s] in hierarchy of type [%s]",
+                        fieldName, currentNode.getType().getName()));
+
+
+
+         */
     }
 
-    @Override
+    /*@Override
     public QueryNode fetchChild(CompositeType type) {
         return fetchType(type, children);
     }
@@ -71,11 +129,37 @@ public abstract class AbstractQueryNode<T extends CompositeType> implements Quer
                             this.type.getName(), type.getName()));
         }
 
-        QueryNode result = type.buildQueryNode();
+        QueryNode result = type.buildQueryNode(config, selectionSet, executionContext);
 
         nodes.add(result);
 
         return result;
+    }
+*/
+
+    @Override
+    public void fetchConstant(String alias, Object result) {
+        constants.put(alias, result);
+    }
+
+    @Override
+    public void addReference(String alias, QueryNode node) {
+        references.put(alias, node);
+    }
+
+    @Override
+    public void addField(String alias, Field field) {
+        fieldsToQuery.put(alias, field);
+    }
+
+    @Override
+    public void addArgument(Argument argument) {
+        arguments.add(argument);
+    }
+
+    @Override
+    public List<Argument> getArguments() {
+        return Collections.unmodifiableList(arguments);
     }
 
     public Map<String, Field> getFieldsToQuery() {
@@ -88,6 +172,14 @@ public abstract class AbstractQueryNode<T extends CompositeType> implements Quer
 
     public Collection<QueryNode> getParents() {
         return parents;
+    }
+
+    public Map<String, Object> getConstants() {
+        return constants;
+    }
+
+    public Map<String, QueryNode> getReferences() {
+        return references;
     }
 
     /*public AbstractQueryNode fetchEntityAtHierarchy(Entity entity) {
@@ -235,5 +327,86 @@ public abstract class AbstractQueryNode<T extends CompositeType> implements Quer
     /*public RejoinTable getTable() {
         return table;
     }*/
+
+
+    public void processSelectionSet(ExecutionContext executionContext, SelectionSet selectionSet) {
+        for (Selection selection : selectionSet.getSelections()) {
+            processSelection(executionContext, selection);
+        }
+    }
+
+    private void processSelection(ExecutionContext executionContext, Selection selection) {
+        if (selection instanceof graphql.language.Field) {
+            processField(this, (graphql.language.Field) selection, executionContext);
+        } else if (selection instanceof InlineFragment) {
+            InlineFragment fragment = (InlineFragment) selection;
+            TypeName typeCondition = fragment.getTypeCondition();
+
+            processFragment(executionContext, typeCondition.getName(), fragment.getSelectionSet());
+
+        } else if (selection instanceof FragmentSpread) {
+            FragmentSpread fragmentSpread = (FragmentSpread) selection;
+            FragmentDefinition fragment = executionContext.getFragment(fragmentSpread.getName());
+            processFragment(executionContext, fragment.getTypeCondition().getName(), fragment.getSelectionSet());
+        }
+    }
+
+    private void processField(QueryNode currentNode, graphql.language.Field queryField, ExecutionContext ctx) {
+        //TODO(dzvorygin) search for field with more logic - in nested objects, or parent objects
+        currentNode.fetchField(config, queryField, ctx);
+    }
+
+    /*private QueryNode fetchInterface(Interface iface) {
+        CompositeType current = this.getType();
+
+        List<CompositeType> path = BfsFinder.findPath(current, iface, config::getJoinableTypes);
+        if (path == null) {
+            throw new QueryBuilderException(
+                    String.format("There's no join path from type [%s] to type [%s]",
+                            this.getType().getName(), iface.getName()));
+        }
+        QueryNode result = null;
+
+        for (CompositeType compositeType : path) {
+            result = this.fetchParent(compositeType);
+        }
+
+        return result;
+    }*/
+
+    private void processFragment(ExecutionContext executionContext,
+                                 String typeName,
+                                 SelectionSet selectionSet) {
+        CompositeType referencedEntity = config.getType(typeName);
+        if (referencedEntity == null) {
+            throw new QueryBuilderException(
+                    String.format("Invalid fragment name [%s] doesn't match any type", typeName));
+        }
+
+        List<CompositeType> path = BfsFinder.findPath(this.getType(),
+                referencedEntity,
+                config::getJoinableTypes);
+
+        if (path == null) {
+            throw new QueryBuilderException(
+                    String.format("Unable to join [%s] with [%s]",
+                            this.getType().getName(), referencedEntity.getName()));
+        }
+
+        QueryNode current = this;
+
+        // TODO(dzvorygin) fetch children here somehow
+
+/*
+        for (CompositeType compositeType : path) {
+            current = current.fetchChild(compositeType);
+        }
+
+        current.fetchChild(referencedEntity);*/
+
+        // TODO(dzvorygin) do something with commented line below
+
+        //current.processSelectionSet(executionContext, selectionSet);
+    }
 
 }

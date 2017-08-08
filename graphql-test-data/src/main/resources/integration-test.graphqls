@@ -21,11 +21,15 @@ interface IPerson {
 #@Provider(name="sql")
 #@Table(name="EMPLOYEE", discover=true)
 type Employee implements IPerson {
+    #@OneToMany(from="EMPLOYEE_NUMBER", to="SALES_REP_EMPLOYEE_NUMBER")
+    clients:[Customer!]
 }
 
 #@Provider(name="sql")
 #@Table(name="CUSTOMER", discover=true)
 type Customer implements IPerson {
+    #@ManyToOne(from="SALES_REP_EMPLOYEE_NUMBER", to="EMPLOYEE_NUMBER")
+    salesRep:Employee!
 }
 
 #@Provider(name="sql")

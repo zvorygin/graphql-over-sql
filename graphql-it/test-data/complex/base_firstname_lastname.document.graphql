@@ -1,5 +1,5 @@
 {
-    personById(personNumbers: [10, 11, 12, 13, 14]) {
+    personById(personNumber: [10, 11, 12, 13, 14]) {
         firstName
         lastName
         ... on Customer {
@@ -25,7 +25,7 @@
             }
         }
     }
-    employeeById(employeeNumbers:[1002]) {
+    employeeById(employeeNumber:[1002]) {
         firstName
         lastName
         email

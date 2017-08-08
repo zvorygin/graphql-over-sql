@@ -1,25 +1,18 @@
 package graphql.sql.core.config.domain.type;
 
-import com.healthmarketscience.common.util.AppendableExt;
-import com.healthmarketscience.sqlbuilder.QueryPreparer;
-import graphql.language.ArrayValue;
 import graphql.language.Node;
 import graphql.language.Value;
-import graphql.language.VariableReference;
 import graphql.schema.GraphQLScalarType;
-import graphql.sql.core.HsqldbArrayPlaceholder;
-
-import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.List;
 
 public abstract class AbstractTypeUtil<T> implements TypeUtil<T> {
 
     private final GraphQLScalarType graphQLScalarType;
 
-    protected AbstractTypeUtil(GraphQLScalarType graphQLScalarType) {
+    private final Class<T> clazz;
+
+    protected AbstractTypeUtil(GraphQLScalarType graphQLScalarType, Class<T> clazz) {
         this.graphQLScalarType = graphQLScalarType;
+        this.clazz = clazz;
     }
 
     @Override
@@ -33,6 +26,11 @@ public abstract class AbstractTypeUtil<T> implements TypeUtil<T> {
     }
 
     @Override
+    public T getValue(Object raw) {
+        return clazz.cast(raw);
+    }
+
+/*    @Override
     public QueryPreparer.PlaceHolder createArrayPlaceholder(QueryPreparer preparer) {
         return new HsqldbArrayPlaceholder(preparer, getSqlType());
     }
@@ -59,13 +57,13 @@ public abstract class AbstractTypeUtil<T> implements TypeUtil<T> {
         }
 
         return new DelegatingStaticPlaceHolder(preparer, new HsqldbArrayPlaceholder(preparer, getSqlType()), data);
-    }
+    }*/
 
     protected abstract T getRawValue(Value value);
 
     protected abstract String getSqlType();
 
-    private static class DelegatingStaticPlaceHolder extends QueryPreparer.StaticPlaceHolder {
+    /*private static class DelegatingStaticPlaceHolder extends QueryPreparer.StaticPlaceHolder {
         private final Object[] data;
         private final HsqldbArrayPlaceholder arrayPlaceHolder;
 
@@ -90,5 +88,5 @@ public abstract class AbstractTypeUtil<T> implements TypeUtil<T> {
         public String displayToString() {
             return null;
         }
-    }
+    }*/
 }

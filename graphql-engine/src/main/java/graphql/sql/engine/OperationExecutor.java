@@ -4,36 +4,26 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.collect.Iterables;
 import graphql.ExceptionWhileDataFetching;
 import graphql.ExecutionResult;
 import graphql.ExecutionResultImpl;
 import graphql.execution.ExecutionContext;
+import graphql.execution.ExecutionStrategy;
 import graphql.execution.FieldCollector;
-import graphql.language.Field;
 import graphql.language.OperationDefinition;
-import graphql.schema.GraphQLFieldDefinition;
-import graphql.schema.GraphQLSchema;
 import graphql.sql.core.config.CompositeType;
-import graphql.sql.core.config.FieldExecutor;
+import graphql.sql.core.config.TypeExecutor;
 import graphql.sql.core.config.GraphQLTypesProvider;
 import graphql.sql.core.config.QueryNode;
-import graphql.sql.core.config.TypeReference;
 import graphql.sql.core.config.domain.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
-
-import static graphql.introspection.Introspection.SchemaMetaFieldDef;
-import static graphql.introspection.Introspection.TypeMetaFieldDef;
 
 public class OperationExecutor {
     private static final Logger LOGGER = LoggerFactory.getLogger(OperationExecutor.class);
@@ -42,7 +32,7 @@ public class OperationExecutor {
     private final QueryGraphBuilder queryGraphBuilder;
 
     private final FieldCollector fieldCollector = new FieldCollector();
-    private final LoadingCache<DocumentContext, Cache<OperationKey, Map<Field, FieldExecutor>>> cache;
+    private final LoadingCache<DocumentContext, Cache<OperationKey, TypeExecutor>> cache;
     private final long maxOperationsPerDocument;
 
 
@@ -63,73 +53,48 @@ public class OperationExecutor {
     public ExecutionResult execute(DocumentContext documentContext,
                                    OperationDefinition operationDefinition,
                                    Map<String, Object> variables) {
+
         OperationKey operationKey = buildOperationKey(documentContext, operationDefinition, variables);
 
-        Cache<OperationKey, Map<Field, FieldExecutor>> documentOperationCache = cache.getUnchecked(documentContext);
+        Cache<OperationKey, TypeExecutor> documentOperationCache = cache.getUnchecked(documentContext);
 
-        Map<Field, FieldExecutor> queryFields;
+        TypeExecutor queryFields;
 
         try {
             queryFields = documentOperationCache.get(operationKey,
-                    () -> buildOperationContext(documentContext, operationDefinition, variables));
+                    () -> buildOperationExecutor(documentContext, operationDefinition, variables));
         } catch (ExecutionException e) {
             LOGGER.error("Failed to build query fields executors", e);
             return new ExecutionResultImpl(Collections.singletonList(new ExceptionWhileDataFetching(e.getCause())));
         }
 
-        Map<String, Object> result = new LinkedHashMap<>();
-        for (Map.Entry<Field, FieldExecutor> entry : queryFields.entrySet()) {
-            Field field = entry.getKey();
-            FieldExecutor fieldExecutor = entry.getValue();
-            String name = field.getAlias() == null ? field.getName() : field.getAlias();
-            result.put(name, fieldExecutor.execute(variables));
+        Object result = queryFields.execute(variables);
 
-        }
         return new ExecutionResultImpl(result, Collections.emptyList());
     }
 
-    private Map<Field, FieldExecutor> buildOperationContext(DocumentContext documentContext,
-                                                            OperationDefinition operationDefinition,
-                                                            Map<String, Object> variables) {
-        GraphQLSchema schema = typesProvider.getSchema();
-        ExecutionContext executionContext = buildExecutionContext(documentContext, operationDefinition, variables, new GenericExecutionStrategy());
+    private TypeExecutor buildOperationExecutor(DocumentContext documentContext,
+                                                OperationDefinition operationDefinition,
+                                                Map<String, Object> variables) {
 
-        LinkedHashMap<String, List<Field>> fields = new LinkedHashMap<>();
-        fieldCollector.collectFields(executionContext, schema.getQueryType(), operationDefinition.getSelectionSet(), new ArrayList<>(), fields);
-
-        Map<Field, FieldExecutor> result = new LinkedHashMap<>();
-
-        for (Map.Entry<String, List<Field>> entry : fields.entrySet()) {
-            FieldExecutor fieldExecutor;
-            Field field = Iterables.getOnlyElement(entry.getValue());
-
-            if (field.getName().equals(SchemaMetaFieldDef.getName())) {
-                fieldExecutor = getGenericFieldExecutor(SchemaMetaFieldDef, field, documentContext, variables, operationDefinition);
-            } else if (field.getName().equals(TypeMetaFieldDef.getName())) {
-                fieldExecutor = getGenericFieldExecutor(TypeMetaFieldDef, field, documentContext, variables, operationDefinition);
-            } else {
-                fieldExecutor = getFieldExecutor(executionContext, field);
-            }
-
-            result.put(field, fieldExecutor);
+        if (operationDefinition.getOperation() != OperationDefinition.Operation.QUERY) {
+            throw new IllegalStateException("Only QUERY operations are currently supported.");
         }
 
-        return result;
-    }
+        CompositeType type = config.getType(config.getQueryTypeName());
 
-    private StaticFieldExecutor getGenericFieldExecutor(GraphQLFieldDefinition fieldDefinition, Field field, DocumentContext documentContext, Map<String, Object> variables, OperationDefinition operationDefinition) {
-        GenericExecutionStrategy genericExecutionStrategy = new GenericExecutionStrategy();
-        Object value = genericExecutionStrategy.executeField(fieldDefinition, field,
-                buildExecutionContext(documentContext, operationDefinition, variables, genericExecutionStrategy));
+        ExecutionContext executionContext = buildExecutionContext(documentContext, operationDefinition, variables, null);
 
-        return new StaticFieldExecutor(value);
+        QueryNode queryNode = queryGraphBuilder.build(type, operationDefinition.getSelectionSet(), executionContext);
+
+        return queryNode.buildExecutor(executionContext);
     }
 
     @Nonnull
     private ExecutionContext buildExecutionContext(DocumentContext documentContext,
                                                    OperationDefinition operationDefinition,
                                                    Map<String, Object> variables,
-                                                   GenericExecutionStrategy queryStrategy) {
+                                                   ExecutionStrategy queryStrategy) {
         return new ExecutionContext(
                 typesProvider.getSchema(),
                 queryStrategy,
@@ -139,9 +104,10 @@ public class OperationExecutor {
                 variables,
                 null);
     }
+/*
 
     @Nonnull
-    private FieldExecutor getFieldExecutor(ExecutionContext executionContext, Field queryDocumentField) {
+    private TypeExecutor getFieldExecutor(ExecutionContext executionContext, Field queryDocumentField) {
 
         String queryTypeName = config.getQueryTypeName();
 
@@ -155,6 +121,7 @@ public class OperationExecutor {
 
         return rootNode.buildExecutor(schemaField, executionContext);
     }
+*/
 
     public void onDocumentContextEvicted(DocumentContext value) {
         cache.invalidate(value);

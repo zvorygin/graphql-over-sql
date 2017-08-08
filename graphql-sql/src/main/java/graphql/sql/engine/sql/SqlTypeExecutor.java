@@ -1,15 +1,19 @@
 package graphql.sql.engine.sql;
 
 import com.google.common.collect.Sets;
+import com.healthmarketscience.sqlbuilder.InCondition;
 import com.healthmarketscience.sqlbuilder.QueryPreparer;
+import com.healthmarketscience.sqlbuilder.SelectQuery;
 import com.healthmarketscience.sqlbuilder.dbspec.Constraint;
 import com.healthmarketscience.sqlbuilder.dbspec.RejoinTable;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbConstraint;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 import graphql.execution.ExecutionContext;
+import graphql.language.Argument;
+import graphql.sql.core.HsqldbArrayPlaceholder;
 import graphql.sql.core.config.Field;
-import graphql.sql.core.config.FieldExecutor;
+import graphql.sql.core.config.TypeExecutor;
 import graphql.sql.core.config.QueryNode;
 import graphql.sql.core.config.domain.ScalarType;
 import graphql.sql.engine.sql.extractor.ArrayKey;
@@ -37,8 +41,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class SqlFieldExecutor implements FieldExecutor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SqlFieldExecutor.class);
+public class SqlTypeExecutor implements TypeExecutor {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SqlTypeExecutor.class);
+
     @Nonnull
     private final String query;
 
@@ -46,27 +52,22 @@ public class SqlFieldExecutor implements FieldExecutor {
     private final NodeExtractor nodeExtractor;
 
     @Nonnull
-    private final Map<String, QueryPreparer.PlaceHolder> placeHolders;
-
-    @Nonnull
-    private final Collection<QueryPreparer.StaticPlaceHolder> staticPlaceHolders;
+    private final Collection<PlaceHolder> placeHolders;
 
     @Nonnull
     private final DataSource dataSource;
 
-    public SqlFieldExecutor(@Nonnull Field schemaField,
-                            @Nonnull TableNode tableNode,
-                            @Nonnull ExecutionContext executionContext,
-                            @Nonnull DataSource dataSource) {
+    public SqlTypeExecutor(@Nonnull TableNode inputQueryNode,
+                           @Nonnull ExecutionContext executionContext,
+                           @Nonnull DataSource dataSource) {
         this.dataSource = dataSource;
 
         nodeExtractor = new NodeExtractor();
-        placeHolders = new HashMap<>();
-        staticPlaceHolders = new ArrayList<>();
+        placeHolders = new ArrayList<>();
         HashMap<TableNode, RejoinTable> tableCache = new HashMap<>();
-        SqlQueryRoot queryRoot = new SqlQueryRoot(getRejoinTable(tableNode, tableCache));
+        SqlQueryRoot queryRoot = new SqlQueryRoot(getRejoinTable(inputQueryNode, tableCache));
 
-        List<DbConstraint> constraints = tableNode.getType().getDbTable().getConstraints();
+        List<DbConstraint> constraints = inputQueryNode.getType().getDbTable().getConstraints();
 
         for (DbConstraint constraint : constraints) {
             if (constraint.getType() == Constraint.Type.UNIQUE || constraint.getType() == Constraint.Type.PRIMARY_KEY) {
@@ -79,8 +80,11 @@ public class SqlFieldExecutor implements FieldExecutor {
             }
         }
 
-        init(tableNode, queryRoot, queryRoot, nodeExtractor, placeHolders, staticPlaceHolders, tableCache);
-        query = queryRoot.buildSelectQuery().toString();
+        QueryPreparer preparer = new QueryPreparer();
+
+        init(inputQueryNode, queryRoot, queryRoot, nodeExtractor, placeHolders, tableCache, preparer);
+        SelectQuery selectQuery = queryRoot.buildSelectQuery();
+        query = selectQuery.toString();
         LOGGER.info("Created query {}", query);
     }
 
@@ -88,9 +92,8 @@ public class SqlFieldExecutor implements FieldExecutor {
                              SqlQueryRoot root,
                              SqlQueryNode current,
                              FragmentExtractor nodeExtractor,
-                             Map<String, QueryPreparer.PlaceHolder> placeHolders,
-                             Collection<QueryPreparer.StaticPlaceHolder> staticPlaceHolders,
-                             HashMap<TableNode, RejoinTable> tableCache) {
+                             Collection<PlaceHolder> placeHolders,
+                             HashMap<TableNode, RejoinTable> tableCache, QueryPreparer preparer) {
 
         List<DbConstraint> constraints = tableNode.getType().getDbTable().getConstraints();
 
@@ -103,7 +106,7 @@ public class SqlFieldExecutor implements FieldExecutor {
                 List<RejoinTable.RejoinColumn> toColumns = getRejoinColumns(parentNode.getType().getFields(), commonFields, parentTable);
                 SqlQueryNode with = new SqlQueryNode(parentTable);
                 current.addParent(new JoinWithSqlQueryNode(with, fromColumns, toColumns));
-                init((TableNode) parentNode, root, with, nodeExtractor, placeHolders, staticPlaceHolders, tableCache);
+                init((TableNode) parentNode, root, with, nodeExtractor, placeHolders, tableCache, preparer);
             } else {
                 throw new IllegalStateException("Not implemented yet");
             }
@@ -139,7 +142,7 @@ public class SqlFieldExecutor implements FieldExecutor {
                 }
                 FragmentExtractor fragmentExtractor = new FragmentExtractor(nodeExtractor, keyPositions);
                 nodeExtractor.addFragment(fragmentExtractor);
-                init((TableNode) childNode, root, with, fragmentExtractor, placeHolders, staticPlaceHolders, tableCache);
+                init((TableNode) childNode, root, with, fragmentExtractor, placeHolders, tableCache, preparer);
             } else {
                 throw new IllegalStateException("Not implemented yet");
             }
@@ -152,9 +155,32 @@ public class SqlFieldExecutor implements FieldExecutor {
                 int position = root.addColumn(current.getTable().findColumn(dbColumn));
                 nodeExtractor.addScalarField(fieldEntry.getKey(),
                         new ScalarExtractor<>(position, dbColumn.getColumnNameSQL(), ScalarType.getByColumn(dbColumn).getTypeUtil()));
-            } else {
-                throw new IllegalStateException("Unsupported yet");
+            } else if (field instanceof CompositeSqlField) {
+                throw new IllegalStateException("Shouldn't happen!");
+                //CompositeSqlField compositeSqlField = (CompositeSqlField) field;
+/*
+                root.addNestedNode(new JoinWithSqlQueryNode(new SqlQueryNode(getRejoinTable(null, tableCache)), ))
+                nodeExtractor.addCompositeFieldExtractor(compositeSqlField.getName(), new NodeExtractor());
+*/
             }
+        }
+
+        for (Argument argument : tableNode.getArguments()) {
+            AbstractTableCompositeType compositeType = tableNode.getType();
+
+            Field field = compositeType.getField(argument.getName());
+
+            if (!(field instanceof SqlField)) {
+                throw new IllegalStateException("Shouldn't happen");
+            }
+
+            SqlField sqlField = (SqlField) field;
+
+            //tableNode.get
+            RejoinTable.RejoinColumn column = current.getTable().findColumn(sqlField.getDbColumn());
+            HsqldbArrayPlaceholder placeHolder = new HsqldbArrayPlaceholder(preparer, ScalarType.getByColumn(sqlField.getDbColumn()), column.getTypeNameSQL(), argument);
+            placeHolders.add(placeHolder);
+            root.addCondition(new InCondition(column, placeHolder));
         }
     }
 
@@ -163,7 +189,9 @@ public class SqlFieldExecutor implements FieldExecutor {
                                                                    RejoinTable targetTable) {
         return allFields.entrySet().stream()
                 .filter(e -> commonFields.contains(e.getKey()))
-                .map(Map.Entry::getValue).map(SqlField.class::cast)
+                .map(Map.Entry::getValue)
+                .filter(SqlField.class::isInstance)
+                .map(SqlField.class::cast)
                 .map(c -> targetTable.findColumn(c.getDbColumn()))
                 .collect(Collectors.toList());
     }
@@ -186,24 +214,15 @@ public class SqlFieldExecutor implements FieldExecutor {
     }
 
     @Nonnull
-    public Map<String, QueryPreparer.PlaceHolder> getPlaceHolders() {
+    public Collection<PlaceHolder> getPlaceHolders() {
         return placeHolders;
-    }
-
-    @Nonnull
-    public Collection<QueryPreparer.StaticPlaceHolder> getStaticPlaceHolders() {
-        return staticPlaceHolders;
     }
 
     ResultSet setParametersAndExecute(PreparedStatement ps, Map<String, Object> variables)
             throws SQLException {
 
-        for (Map.Entry<String, QueryPreparer.PlaceHolder> entry : getPlaceHolders().entrySet()) {
-            entry.getValue().setObject(variables.get(entry.getKey()), ps);
-        }
-
-        for (QueryPreparer.StaticPlaceHolder placeHolder : getStaticPlaceHolders()) {
-            placeHolder.setValue(ps);
+        for (PlaceHolder placeHolder : placeHolders) {
+            placeHolder.setValue(ps, variables);
         }
 
         return ps.executeQuery();

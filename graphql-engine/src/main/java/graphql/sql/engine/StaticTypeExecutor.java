@@ -1,14 +1,14 @@
 package graphql.sql.engine;
 
-import graphql.sql.core.config.FieldExecutor;
+import graphql.sql.core.config.TypeExecutor;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
 
-class StaticFieldExecutor implements FieldExecutor {
+class StaticTypeExecutor implements TypeExecutor {
     private final Object value;
 
-    public StaticFieldExecutor(Object value) {
+    public StaticTypeExecutor(Object value) {
         this.value = value;
     }
 

@@ -4,6 +4,7 @@ import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 import graphql.schema.GraphQLFieldDefinition;
 import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLType;
+import graphql.sql.core.config.Field;
 import graphql.sql.core.config.Interface;
 import graphql.sql.core.config.ObjectType;
 
@@ -14,7 +15,7 @@ import java.util.Map;
 public class TableObjectType extends AbstractTableCompositeType implements ObjectType {
     public TableObjectType(@Nonnull DbTable dbTable,
                            @Nonnull String name,
-                           @Nonnull Map<String, SqlField> fields,
+                           @Nonnull Map<String, Field> fields,
                            @Nonnull List<Interface> interfaces,
                            @Nonnull SqlExecutorBuilder executorBuilder) {
         super(dbTable, name, fields, interfaces, executorBuilder);

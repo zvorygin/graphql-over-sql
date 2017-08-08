@@ -1,5 +1,5 @@
 {
-    personById(personNumbers: [10]) {
+    personById(personNumber: [10]) {
         lastName
         firstName
     }

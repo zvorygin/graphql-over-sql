@@ -4,6 +4,7 @@ import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 import graphql.schema.GraphQLInterfaceType;
 import graphql.schema.GraphQLType;
 import graphql.schema.TypeResolverProxy;
+import graphql.sql.core.config.Field;
 import graphql.sql.core.config.Interface;
 
 import javax.annotation.Nonnull;
@@ -13,7 +14,7 @@ import java.util.Map;
 public class TableInterface extends AbstractTableCompositeType implements Interface {
     public TableInterface(@Nonnull DbTable dbTable,
                           @Nonnull String name,
-                          @Nonnull Map<String, SqlField> fields,
+                          @Nonnull Map<String, Field> fields,
                           @Nonnull SqlExecutorBuilder executorBuilder) {
         super(dbTable, name, fields, Collections.emptyList(), executorBuilder);
     }
