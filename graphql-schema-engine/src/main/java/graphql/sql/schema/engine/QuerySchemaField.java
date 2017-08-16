@@ -16,7 +16,7 @@ public class QuerySchemaField extends Field {
 
 
     @Override
-    public QueryNode fetch(Config config, QueryNode queryNode, ExecutionContext ctx, graphql.language.Field queryField) {
+    public QueryNode fetch(Config config, QueryNode queryNode, QueryNode owningNode, ExecutionContext ctx, graphql.language.Field queryField) {
         GenericExecutionStrategy executionStrategy = new GenericExecutionStrategy();
 
         ExecutionContext copy = new ExecutionContext(

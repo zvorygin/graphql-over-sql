@@ -12,10 +12,6 @@ public interface QueryNode {
     CompositeType getType();
 
     QueryNode fetchField(Config config, graphql.language.Field queryField, ExecutionContext ctx);
-/*
-    QueryNode fetchChild(CompositeType type);
-
-    QueryNode fetchParent(CompositeType type);*/
 
     TypeExecutor buildExecutor(ExecutionContext executionContext);
 
@@ -23,7 +19,7 @@ public interface QueryNode {
 
     void addReference(String s, QueryLink result);
 
-    void addField(String alias, Field field);
+    void addField(FieldLink fieldLink);
 
     void addArgument(Argument argument);
 

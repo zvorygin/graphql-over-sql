@@ -52,6 +52,7 @@ public class GenericQueryNode extends AbstractQueryNode<CompositeType> {
 
         Field field = getType().getField(fieldName);
 
-        return field.fetch(config, this, ctx, queryField);
+        //TODO(dzvorygin) pass proper ownerNode value
+        return field.fetch(config, this, this, ctx, queryField);
     }
 }

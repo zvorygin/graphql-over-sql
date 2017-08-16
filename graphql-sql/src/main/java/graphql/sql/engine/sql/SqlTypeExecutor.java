@@ -12,10 +12,7 @@ import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 import graphql.execution.ExecutionContext;
 import graphql.language.Argument;
 import graphql.sql.core.HsqldbArrayPlaceholder;
-import graphql.sql.core.config.Field;
-import graphql.sql.core.config.QueryLink;
-import graphql.sql.core.config.TypeExecutor;
-import graphql.sql.core.config.QueryNode;
+import graphql.sql.core.config.*;
 import graphql.sql.core.config.domain.ScalarType;
 import graphql.sql.engine.sql.extractor.ArrayKey;
 import graphql.sql.engine.sql.extractor.FragmentExtractor;
@@ -155,16 +152,27 @@ public class SqlTypeExecutor implements TypeExecutor {
             }
         }
 
-        for (Map.Entry<String, Field> fieldEntry : tableNode.getFieldsToQuery().entrySet()) {
-            Field field = fieldEntry.getValue();
+        for (Map.Entry<String, FieldLink> fieldEntry : tableNode.getFieldsToQuery().entrySet()) {
+            FieldLink link = fieldEntry.getValue();
+            Field field = link.getTargetField();
+
+            QueryNode targetNode = link.getTargetNode();
+            if (!(targetNode instanceof TableNode)) {
+                //TODO(dzvorygin) solve this somehow later
+                throw new IllegalStateException("Mix of SQL and non-SQL nodes");
+            }
+            RejoinTable targetTable = tableCache.get(targetNode);
+            if (targetTable == null) {
+                throw new IllegalStateException("Target table not yet fetched - that's strange");
+            }
             if (field instanceof SqlField) {
                 DbColumn dbColumn = ((SqlField) field).getDbColumn();
-                int position = root.addColumn(current.getTable().findColumn(dbColumn));
+                int position = root.addColumn(targetTable.findColumn(dbColumn));
                 nodeExtractor.addScalarField(fieldEntry.getKey(),
                         new ScalarExtractor<>(position, dbColumn.getColumnNameSQL(), ScalarType.getByColumn(dbColumn).getTypeUtil()));
             } else if (field instanceof CompositeSqlField) {
                 throw new IllegalStateException("Shouldn't happen!");
-                //CompositeSqlField compositeSqlField = (CompositeSqlField) field;
+                //CompositeSqlField compositeSqlField = (CompositeSqlField) link;
 /*
                 root.addNestedNode(new JoinWithSqlQueryNode(new SqlQueryNode(getRejoinTable(null, tableCache)), ))
                 nodeExtractor.addCompositeFieldExtractor(compositeSqlField.getName(), new NodeExtractor());

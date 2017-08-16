@@ -84,7 +84,7 @@ public class Field {
                 '}';
     }
 
-    public QueryNode fetch(Config config, QueryNode queryNode, ExecutionContext ctx, graphql.language.Field queryField) {
+    public QueryNode fetch(Config config, QueryNode queryNode, QueryNode ownerNode, ExecutionContext ctx, graphql.language.Field queryField) {
         CompositeType type = config.getType(getTypeReference());
         String alias = MoreObjects.firstNonNull(queryField.getAlias(), name);
 
@@ -114,13 +114,13 @@ public class Field {
                     name, queryField.getAlias(), getTypeReference().getTypeName()));
         }
 
-        CompositeType nodeType = queryNode.getType();
+        CompositeType nodeType = ownerNode.getType();
 
         //TODO(dzvorygin) join to find proper queryNode for the field
 
         Field field = nodeType.getField(name);
 
-        queryNode.addField(alias, field);
+        queryNode.addField(new FieldLink(ownerNode, field, alias));
 
         return null;
     }

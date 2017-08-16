@@ -1,13 +1,14 @@
 {
-  "data" : {
-    "personById" : [ {
-      "firstName" : "Adrian",
-      "lastName" : "Huxley",
-      "phone" : " + 61 2 9495 8555"
-    }, {
-      "firstName" : "Diane",
-      "lastName" : "Murphy",
-      "email" : "dmurphy@classicmodelcars.com"
-    } ]
+  "data": {
+    "personById": [
+      {
+        "firstName": "Diane",
+        "email": "dmurphy@classicmodelcars.com"
+      },
+      {
+        "lastName": "Huxley",
+        "phone": " + 61 2 9495 8555"
+      }
+    ]
   }
 }
