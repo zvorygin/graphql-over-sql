@@ -122,9 +122,7 @@ public abstract class AbstractTableCompositeType extends AbstractCompositeType<F
     }
 
     @Override
-    public QueryNode buildQueryNode(Config config, SelectionSet selectionSet, ExecutionContext executionContext) {
-        TableNode tableNode = new TableNode(config, this, sqlExecutorBuilder);
-        tableNode.processSelectionSet(executionContext, selectionSet);
-        return tableNode;
+    public QueryNode buildQueryNode(Config config) {
+        return new TableNode(config, this, sqlExecutorBuilder);
     }
 }

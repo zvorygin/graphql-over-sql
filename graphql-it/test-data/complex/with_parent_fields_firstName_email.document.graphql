@@ -1,0 +1,8 @@
+{
+    employeeById(employeeNumber:[1002]) {
+        firstName
+        lastName
+        email
+        jobTitle
+    }
+}

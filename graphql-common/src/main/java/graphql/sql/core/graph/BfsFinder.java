@@ -10,18 +10,20 @@ import java.util.Set;
 import java.util.function.Function;
 
 public class BfsFinder {
-    public static <R, T extends R> List<T> findPath(R root, T needle, Function<R, Iterable<? extends T>> childrenFunction) {
+    public static <R extends T, T> List<T> findPath(R root, Function<T, Boolean > needle, Function<T, Iterable<? extends T>> childrenFunction) {
         Set<T> processed = new HashSet<>();
 
         Queue<LinkedNode<T>> queue = new ArrayDeque<>();
 
-        childrenFunction.apply(root).forEach(i -> queue.add(new LinkedNode<>(i, null)));
+        queue.add(new LinkedNode<>(root, null));
+
+        //childrenFunction.apply(root).forEach(i -> queue.add(new LinkedNode<>(i, null)));
 
         while (!queue.isEmpty()) {
             LinkedNode<T> head = queue.poll();
-            if (head.item.equals(needle)) {
+            if (needle.apply(head.item)) {
                 ArrayList<T> result = new ArrayList<>();
-                while (head != null) {
+                while (head.parent != null) {
                     result.add(head.item);
                     head = head.parent;
                 }

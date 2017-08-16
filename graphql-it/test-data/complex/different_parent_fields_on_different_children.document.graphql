@@ -1,0 +1,12 @@
+{
+    personById(personNumber:[0, 24]) {
+        ... on Employee {
+            firstName
+            email
+        }
+        ... on Customer {
+            lastName
+            phone
+        }
+    }
+}

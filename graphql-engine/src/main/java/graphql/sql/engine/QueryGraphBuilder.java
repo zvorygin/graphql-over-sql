@@ -15,6 +15,8 @@ public class QueryGraphBuilder {
     }
 
     public QueryNode build(CompositeType rootType, SelectionSet selectionSet, ExecutionContext executionContext) {
-        return rootType.buildQueryNode(config, selectionSet, executionContext);
+        QueryNode queryNode = rootType.buildQueryNode(config);
+        queryNode.processSelectionSet(selectionSet, executionContext);
+        return queryNode;
     }
 }

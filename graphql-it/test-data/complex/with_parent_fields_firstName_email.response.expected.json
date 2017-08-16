@@ -1,0 +1,12 @@
+{
+  "data": {
+    "employeeById": [
+      {
+        "firstName": "Diane",
+        "lastName": "Murphy",
+        "email": "dmurphy@classicmodelcars.com",
+        "jobTitle": "President"
+      }
+    ]
+  }
+}

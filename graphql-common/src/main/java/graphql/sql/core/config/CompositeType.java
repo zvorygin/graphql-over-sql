@@ -1,7 +1,5 @@
 package graphql.sql.core.config;
 
-import graphql.execution.ExecutionContext;
-import graphql.language.SelectionSet;
 import graphql.sql.core.config.domain.Config;
 
 import javax.annotation.Nonnull;
@@ -19,7 +17,7 @@ public interface CompositeType extends Type {
                 () -> String.format("Field [%s] not found in type [%s].", name, getName()));
     }
 
-    QueryNode buildQueryNode(Config config, SelectionSet selectionSet, ExecutionContext executionContext);
+    QueryNode buildQueryNode(Config config);
 
     Collection<Interface> getInterfaces();
 }

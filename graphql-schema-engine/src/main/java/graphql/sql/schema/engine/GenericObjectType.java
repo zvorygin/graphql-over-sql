@@ -20,9 +20,7 @@ public class GenericObjectType extends AbstractObjectTypeImpl<Field> {
     }
 
     @Override
-    public QueryNode buildQueryNode(Config config, SelectionSet selectionSet, ExecutionContext executionContext) {
-        GenericQueryNode result = new GenericQueryNode(config, this);
-        result.processSelectionSet(executionContext, selectionSet);
-        return result;
+    public QueryNode buildQueryNode(Config config) {
+        return new GenericQueryNode(config, this);
     }
 }

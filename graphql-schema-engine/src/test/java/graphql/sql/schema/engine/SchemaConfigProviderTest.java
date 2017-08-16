@@ -46,7 +46,7 @@ public class SchemaConfigProviderTest {
                 }
 
                 @Override
-                public QueryNode buildQueryNode(Config config, SelectionSet selectionSet, ExecutionContext executionContext) {
+                public QueryNode buildQueryNode(Config config) {
                     return new GenericQueryNode(config, this);
                 }
 

@@ -11,10 +11,7 @@ import graphql.sql.core.QueryBuilderException;
 import graphql.sql.core.config.domain.Config;
 
 import javax.annotation.Nonnull;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class Field {
     @Nonnull
@@ -92,22 +89,23 @@ public class Field {
         String alias = MoreObjects.firstNonNull(queryField.getAlias(), name);
 
         if (type != null) {
-            QueryNode result = type.buildQueryNode(config, queryField.getSelectionSet(), ctx);
+            QueryNode target = type.buildQueryNode(config);
+            target.processSelectionSet(queryField.getSelectionSet(), ctx);
 
-            queryField.getArguments().forEach(result::addArgument);
+            queryField.getArguments().forEach(target::addArgument);
 
-            queryNode.addReference(alias, result);
+            queryNode.addReference(alias, buildLink(queryNode, target));
 
             SelectionSet selectionSet = queryField.getSelectionSet();
 
             if (selectionSet != null) {
-                if (result == null) {
+                if (target == null) {
                     throw new QueryBuilderException(
                             String.format("Field [%s] with alias [%s] has selection set, but doesn't have QueryNode",
                                     name, queryField.getAlias()));
                 }
             }
-            return result;
+            return target;
         }
 
         Scalar scalar = config.getScalar(getTypeReference());
@@ -125,5 +123,27 @@ public class Field {
         queryNode.addField(alias, field);
 
         return null;
+    }
+
+    @Nonnull
+    public QueryLink buildLink(QueryNode source, QueryNode target) {
+        Map<String, Field> sourceFields = source.getType().getFields();
+        Map<String, Field> targetFields = target.getType().getFields();
+
+        List<Field> sourceLinkFields = new ArrayList<>();
+        List<Field> targetLinkFields = new ArrayList<>();
+
+        for (Map.Entry<String, Field> sourceEntry : sourceFields.entrySet()) {
+            if (targetFields.containsKey(sourceEntry.getKey())) {
+                sourceLinkFields.add(sourceEntry.getValue());
+                targetLinkFields.add(targetFields.get(sourceEntry.getKey()));
+            }
+        }
+
+
+        return new QueryLink(source,
+                target,
+                sourceLinkFields.toArray(new Field[sourceLinkFields.size()]),
+                targetLinkFields.toArray(new Field[targetLinkFields.size()]));
     }
 }

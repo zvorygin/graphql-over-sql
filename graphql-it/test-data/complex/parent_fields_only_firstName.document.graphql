@@ -1,0 +1,5 @@
+{
+    employeeById(employeeNumber:[1002]) {
+        firstName
+    }
+}

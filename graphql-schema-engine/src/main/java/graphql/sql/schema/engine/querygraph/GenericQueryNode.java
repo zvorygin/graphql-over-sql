@@ -25,7 +25,7 @@ public class GenericQueryNode extends AbstractQueryNode<CompositeType> {
 
         Map<String, TypeExecutor> executors = new LinkedHashMap<>();
 
-        getReferences().forEach((k, v) -> executors.put(k, v.buildExecutor(executionContext)));
+        getReferences().forEach((k, v) -> executors.put(k, v.getTarget().buildExecutor(executionContext)));
 
         if (!getChildren().isEmpty()) {
             throw new IllegalStateException("Children of generic query node should be empty");

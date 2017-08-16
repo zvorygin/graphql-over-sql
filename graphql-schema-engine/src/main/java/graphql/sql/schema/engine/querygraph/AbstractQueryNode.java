@@ -1,7 +1,5 @@
 package graphql.sql.schema.engine.querygraph;
 
-import com.google.common.base.MoreObjects;
-import com.google.common.collect.Sets;
 import graphql.execution.ExecutionContext;
 import graphql.language.Argument;
 import graphql.language.FragmentDefinition;
@@ -13,17 +11,12 @@ import graphql.language.TypeName;
 import graphql.sql.core.QueryBuilderException;
 import graphql.sql.core.config.CompositeType;
 import graphql.sql.core.config.Field;
-import graphql.sql.core.config.Interface;
+import graphql.sql.core.config.QueryLink;
 import graphql.sql.core.config.QueryNode;
 import graphql.sql.core.config.domain.Config;
 import graphql.sql.core.graph.BfsFinder;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class AbstractQueryNode<T extends CompositeType> implements QueryNode {
     private final Config config;
@@ -32,11 +25,11 @@ public abstract class AbstractQueryNode<T extends CompositeType> implements Quer
 
     protected final Map<String, Field> fieldsToQuery = new LinkedHashMap<>();
 
-    protected final Map<String, QueryNode> references = new LinkedHashMap<>();
+    protected final Map<String, QueryLink> references = new LinkedHashMap<>();
 
-    protected final Collection<QueryNode> children = new ArrayList<>();
+    protected final Collection<QueryLink> children = new ArrayList<>();
 
-    protected final Collection<QueryNode> parents = new ArrayList<>();
+    protected final Collection<QueryLink> parents = new ArrayList<>();
 
     protected final Map<String, Object> constants = new LinkedHashMap<>();
     protected final List<Argument> arguments = new ArrayList<>();
@@ -143,8 +136,13 @@ public abstract class AbstractQueryNode<T extends CompositeType> implements Quer
     }
 
     @Override
-    public void addReference(String alias, QueryNode node) {
+    public void addReference(String alias, QueryLink node) {
         references.put(alias, node);
+    }
+
+    @Override
+    public void addChild(QueryLink link) {
+        children.add(link);
     }
 
     @Override
@@ -166,11 +164,16 @@ public abstract class AbstractQueryNode<T extends CompositeType> implements Quer
         return fieldsToQuery;
     }
 
-    public Collection<QueryNode> getChildren() {
+    public Collection<QueryLink> getChildren() {
         return children;
     }
 
-    public Collection<QueryNode> getParents() {
+    @Override
+    public void addParent(QueryLink link) {
+        parents.add(link);
+    }
+
+    public Collection<QueryLink> getParents() {
         return parents;
     }
 
@@ -178,7 +181,7 @@ public abstract class AbstractQueryNode<T extends CompositeType> implements Quer
         return constants;
     }
 
-    public Map<String, QueryNode> getReferences() {
+    public Map<String, QueryLink> getReferences() {
         return references;
     }
 
@@ -329,13 +332,14 @@ public abstract class AbstractQueryNode<T extends CompositeType> implements Quer
     }*/
 
 
-    public void processSelectionSet(ExecutionContext executionContext, SelectionSet selectionSet) {
+    @Override
+    public void processSelectionSet(SelectionSet selectionSet, ExecutionContext executionContext) {
         for (Selection selection : selectionSet.getSelections()) {
-            processSelection(executionContext, selection);
+            processSelection(selection, executionContext);
         }
     }
 
-    private void processSelection(ExecutionContext executionContext, Selection selection) {
+    private void processSelection(Selection selection, ExecutionContext executionContext) {
         if (selection instanceof graphql.language.Field) {
             processField(this, (graphql.language.Field) selection, executionContext);
         } else if (selection instanceof InlineFragment) {
@@ -353,7 +357,52 @@ public abstract class AbstractQueryNode<T extends CompositeType> implements Quer
 
     private void processField(QueryNode currentNode, graphql.language.Field queryField, ExecutionContext ctx) {
         //TODO(dzvorygin) search for field with more logic - in nested objects, or parent objects
+        List<CompositeType> path = BfsFinder.findPath(currentNode.getType(),
+                (c) -> c.getFields().containsKey(queryField.getName()),
+                CompositeType::getInterfaces);
+
+        if (path == null) {
+            throw new IllegalStateException(String.format("Can't fetch field [%s] from type [%s]: field not found",
+                    queryField.getName(), currentNode.getType().getName()));
+        }
+
+        for (CompositeType compositeType : path) {
+            currentNode = currentNode.fetchParent(compositeType);
+        }
+
         currentNode.fetchField(config, queryField, ctx);
+    }
+
+    public QueryNode fetchParent(CompositeType compositeType) {
+        for (QueryLink parent : parents) {
+            if (parent.getTarget().getType().equals(compositeType)) {
+                return parent.getTarget();
+            }
+        }
+
+        Field[] sourceFields = new Field[]{};
+        Field[] targetFields = new Field[]{};
+        QueryNode target = compositeType.buildQueryNode(config);
+        QueryLink link = new QueryLink(this, target, sourceFields, targetFields);
+        parents.add(link);
+        target.addChild(link.reverse());
+        return link.getTarget();
+    }
+
+    public QueryNode fetchChild(CompositeType compositeType) {
+        for (QueryLink child : children) {
+            if (child.getTarget().getType().equals(compositeType)) {
+                return child.getTarget();
+            }
+        }
+
+        Field[] sourceFields = new Field[]{};
+        Field[] targetFields = new Field[]{};
+        QueryNode target = compositeType.buildQueryNode(config);
+        QueryLink link = new QueryLink(this, target, sourceFields, targetFields);
+        children.add(link);
+        target.addParent(link.reverse());
+        return link.getTarget();
     }
 
     /*private QueryNode fetchInterface(Interface iface) {
@@ -384,7 +433,7 @@ public abstract class AbstractQueryNode<T extends CompositeType> implements Quer
         }
 
         List<CompositeType> path = BfsFinder.findPath(this.getType(),
-                referencedEntity,
+                referencedEntity::equals,
                 config::getJoinableTypes);
 
         if (path == null) {
@@ -393,20 +442,14 @@ public abstract class AbstractQueryNode<T extends CompositeType> implements Quer
                             this.getType().getName(), referencedEntity.getName()));
         }
 
+
         QueryNode current = this;
 
-        // TODO(dzvorygin) fetch children here somehow
-
-/*
         for (CompositeType compositeType : path) {
             current = current.fetchChild(compositeType);
         }
 
-        current.fetchChild(referencedEntity);*/
-
-        // TODO(dzvorygin) do something with commented line below
-
-        //current.processSelectionSet(executionContext, selectionSet);
+        current.processSelectionSet(selectionSet, executionContext);
     }
 
 }

@@ -13,6 +13,7 @@ import graphql.execution.ExecutionContext;
 import graphql.language.Argument;
 import graphql.sql.core.HsqldbArrayPlaceholder;
 import graphql.sql.core.config.Field;
+import graphql.sql.core.config.QueryLink;
 import graphql.sql.core.config.TypeExecutor;
 import graphql.sql.core.config.QueryNode;
 import graphql.sql.core.config.domain.ScalarType;
@@ -33,12 +34,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class SqlTypeExecutor implements TypeExecutor {
@@ -82,7 +78,9 @@ public class SqlTypeExecutor implements TypeExecutor {
 
         QueryPreparer preparer = new QueryPreparer();
 
-        init(inputQueryNode, queryRoot, queryRoot, nodeExtractor, placeHolders, tableCache, preparer);
+        Set<TableNode> processed = new HashSet<>();
+
+        init(inputQueryNode, queryRoot, queryRoot, nodeExtractor, placeHolders, tableCache, preparer, processed);
         SelectQuery selectQuery = queryRoot.buildSelectQuery();
         query = selectQuery.toString();
         LOGGER.info("Created query {}", query);
@@ -93,11 +91,19 @@ public class SqlTypeExecutor implements TypeExecutor {
                              SqlQueryNode current,
                              FragmentExtractor nodeExtractor,
                              Collection<PlaceHolder> placeHolders,
-                             HashMap<TableNode, RejoinTable> tableCache, QueryPreparer preparer) {
+                             HashMap<TableNode, RejoinTable> tableCache,
+                             QueryPreparer preparer,
+                             Set<TableNode> processed) {
+
+        if (processed.contains(tableNode)) {
+            return;
+        }
+        processed.add(tableNode);
 
         List<DbConstraint> constraints = tableNode.getType().getDbTable().getConstraints();
 
-        for (QueryNode parentNode : tableNode.getParents()) {
+        for (QueryLink link : tableNode.getParents()) {
+            QueryNode parentNode = link.getTarget();
             if (parentNode instanceof TableNode) {
                 Sets.SetView<String> commonFields =
                         Sets.intersection(tableNode.getType().getFields().keySet(), parentNode.getType().getFields().keySet());
@@ -106,13 +112,14 @@ public class SqlTypeExecutor implements TypeExecutor {
                 List<RejoinTable.RejoinColumn> toColumns = getRejoinColumns(parentNode.getType().getFields(), commonFields, parentTable);
                 SqlQueryNode with = new SqlQueryNode(parentTable);
                 current.addParent(new JoinWithSqlQueryNode(with, fromColumns, toColumns));
-                init((TableNode) parentNode, root, with, nodeExtractor, placeHolders, tableCache, preparer);
+                init((TableNode) parentNode, root, with, nodeExtractor, placeHolders, tableCache, preparer, processed);
             } else {
                 throw new IllegalStateException("Not implemented yet");
             }
         }
 
-        for (QueryNode childNode : tableNode.getChildren()) {
+        for (QueryLink link : tableNode.getChildren()) {
+            QueryNode childNode = link.getTarget();
             if (childNode instanceof TableNode) {
                 Sets.SetView<String> commonFields =
                         Sets.intersection(tableNode.getType().getFields().keySet(), childNode.getType().getFields().keySet());
@@ -142,7 +149,7 @@ public class SqlTypeExecutor implements TypeExecutor {
                 }
                 FragmentExtractor fragmentExtractor = new FragmentExtractor(nodeExtractor, keyPositions);
                 nodeExtractor.addFragment(fragmentExtractor);
-                init((TableNode) childNode, root, with, fragmentExtractor, placeHolders, tableCache, preparer);
+                init((TableNode) childNode, root, with, fragmentExtractor, placeHolders, tableCache, preparer, processed);
             } else {
                 throw new IllegalStateException("Not implemented yet");
             }
